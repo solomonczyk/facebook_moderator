@@ -92,12 +92,15 @@ def _build_inline_keyboard(item_id: str) -> InlineKeyboardMarkup:
             InlineKeyboardButton("❌ Reject", callback_data=f"reject:{item_id}"),
         ],
         [
-            InlineKeyboardButton("✏️ Edit", callback_data=f"edit:{item_id}"),
             InlineKeyboardButton("✅ Executed", callback_data=f"mark_executed:{item_id}"),
+            InlineKeyboardButton("❓ Needs Info", callback_data=f"needs_info:{item_id}"),
+        ],
+        [
+            InlineKeyboardButton("🚫 Spam", callback_data=f"mark_spam:{item_id}"),
+            InlineKeyboardButton("📋 Duplicate", callback_data=f"mark_duplicate:{item_id}"),
         ],
         [
             InlineKeyboardButton("🔒 Closed", callback_data=f"mark_closed:{item_id}"),
-            InlineKeyboardButton("📋 Duplicate", callback_data=f"mark_duplicate:{item_id}"),
         ],
     ]
     return InlineKeyboardMarkup(keyboard)
@@ -164,7 +167,8 @@ async def queue_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text("Runtime agent not initialized.")
         return
 
-    pending = agent.queue.get_all()
+    from ..runtime_agent.action_queue import QueueStatus
+    pending = agent.queue.get_all(QueueStatus.PENDING)
     if not pending:
         await update.message.reply_text("✅ No pending items in queue.")
         return
@@ -258,13 +262,24 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         await query.edit_message_text(f"✅ Executed manually\nID: `{item_id[:16]}...`", parse_mode="Markdown")
 
     elif action == "mark_closed":
-        item.status = type(item.status)("cancelled")
-        agent.audit.record("telegram_closed", f"Item: {item_id}", new_state="cancelled", operator=operator)
+        item.mark_closed(operator)
+        agent.audit.record("telegram_closed", f"Item: {item_id}", new_state="closed", operator=operator)
         await query.edit_message_text(f"🔒 Closed\nID: `{item_id[:16]}...`", parse_mode="Markdown")
 
     elif action == "mark_duplicate":
-        agent.audit.record("telegram_marked_duplicate", f"Item: {item_id}", operator=operator)
-        await query.edit_message_text(f"📋 Marked duplicate\nID: `{item_id[:16]}...`", parse_mode="Markdown")
+        item.mark_duplicate(operator)
+        agent.audit.record("telegram_marked_duplicate", f"Item: {item_id}", new_state="duplicate", operator=operator)
+        await query.edit_message_text(f"📋 Duplicate\nID: `{item_id[:16]}...`", parse_mode="Markdown")
+
+    elif action == "mark_spam":
+        item.mark_spam("Marked spam from Telegram", operator)
+        agent.audit.record("telegram_spam", f"Item: {item_id}", new_state="spam", operator=operator)
+        await query.edit_message_text(f"🚫 Spam\nID: `{item_id[:16]}...`", parse_mode="Markdown")
+
+    elif action == "needs_info":
+        item.mark_needs_info("Missing info flagged from Telegram", operator)
+        agent.audit.record("telegram_needs_info", f"Item: {item_id}", new_state="needs_info", operator=operator)
+        await query.edit_message_text(f"❓ Needs info\nID: `{item_id[:16]}...`", parse_mode="Markdown")
 
     elif action == "edit":
         await query.edit_message_text(

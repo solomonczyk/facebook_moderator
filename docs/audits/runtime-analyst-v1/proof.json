@@ -1,0 +1,47 @@
+{
+  "task": "TASK-006C-RUNTIME-ANALYST-STABILIZATION",
+  "status": "completed",
+  "verdict": "ACCEPTED_FOR_OPERATOR_MODE",
+  "classification": {
+    "employer_posts": true,
+    "worker_posts": true,
+    "spam_detection": true,
+    "order_fixed": "employer_before_worker",
+    "employer_patterns_expanded": true,
+    "spam_patterns_expanded": true
+  },
+  "telegram": {
+    "callbacks_working": true,
+    "queue_updated": true,
+    "audit_created": true,
+    "new_actions": ["mark_spam", "needs_info"],
+    "pending_only_in_queue": true
+  },
+  "digest": {
+    "candidate_selection": true,
+    "warnings_added": true,
+    "pay_warning": "Dnevnica nije navedena. Proverite direktno kod poslodavca."
+  },
+  "queue": {
+    "state_machine_complete": true,
+    "new_statuses": ["needs_info", "duplicate", "spam", "closed"],
+    "processed_excluded_from_pending": true
+  },
+  "dangerous_gates": {
+    "autonomous": false,
+    "facebook_auto_post": false,
+    "facebook_auto_comment": false,
+    "facebook_auto_message": false,
+    "account_worker": false,
+    "production": false
+  },
+  "tests_passed": true,
+  "test_count": 46,
+  "git": {
+    "committed": false,
+    "commit_hash": null,
+    "pushed": false,
+    "working_tree_clean": false
+  },
+  "operator_manual_review_required": true
+}

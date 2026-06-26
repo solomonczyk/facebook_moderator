@@ -35,6 +35,8 @@ def _format_lead_for_digest(lead: JobLead, index: int) -> str:
         lines.append(f"Hrana: obezbeđena" + (f" ({lead.food_details})" if lead.food_details else ""))
     if lead.pay_amount:
         lines.append(f"Plata: {lead.pay_amount}")
+    else:
+        lines.append("Dnevnica nije navedena. Proverite direktno kod poslodavca.")
     if lead.missing_info:
         lines.append(f"Nedostaje: {', '.join(lead.missing_info[:5])}")
     lines.append("")

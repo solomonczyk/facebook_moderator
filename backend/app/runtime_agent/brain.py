@@ -51,18 +51,35 @@ WORKER_GROUP_PATTERNS = [
     r'\d+\s+(?:ljudi|radnika|članova)', r'sa\s+(?:svojim\s+)?prevozom?\s+\d+\s+(?:ljudi|radnika)',
 ]
 EMPLOYER_JOB_PATTERNS = [
-    r'tražim\s+radnik', r'tražim\s+radnic', r'potreban\s+radnik', r'potrebni\s+radnici',
-    r'potrebna\s+\d+\s+radnik', r'trebaju\s+(?:mi\s+)?radnici',
-    r'zapošljavam', r'firma\s+traži', r'hitno\s+(?:potreb|traž)',
+    # Direct employer signals — check FIRST
+    r'tražimo\s+radnik', r'tražimo\s+berač', r'tražimo\s+\d+\s+radnik',
+    r'tražim\s+radnik', r'tražim\s+radnic', r'tražim\s+berač',
+    r'potreban\s+radnik', r'potrebni\s+radnici', r'potrebne\s+radnice',
+    r'potrebna\s+\d+\s+radnik', r'potrebno\s+\d+\s+radnik',
+    r'trebaju\s+(?:mi\s+)?radnici', r'treba\s+nam\s+ekipa',
+    r'zapošljavamo?', r'firma\s+traži', r'hitno\s+(?:potreb|traž)',
+    # Job type signals (when combined with contact/location → employer)
+    r'za\s+berbu\s+(?:malina|višanja|jabuka|trešanja|borovnica|kupina|šljiva)',
+    r'za\s+branje\s+(?:malina|višanja|jabuka|trešanja|borovnica)',
+    r'radnike?\s+za\s+(?:berbu|branje|pakovanje|sortiranje)',
+    r'radnice?\s+za\s+(?:berbu|branje|pakovanje|sortiranje)',
+    r'(?:berba|branje|pakovanje|sortiranje)\s+(?:malina|voća|povrća|jabuka)',
+    r'plastenik', r'hladnjač', r'na\s+farmi\s+traž',
 ]
 EXPERIENCE_PATTERNS = [
     r'radio\s+sam', r'radila\s+sam', r'moje\s+iskustvo', r'lično\s+sam',
     r'bio\s+sam\s+na', r'bila\s+sam\s+na', r'preporučujem', r'ne\s+preporučujem',
 ]
 SPAM_PATTERNS = [
-    r'zaradite?\s+od\s+kuće', r'brza\s+zarada', r'laka\s+zarada',
-    r'kazino', r'kladionica', r'kredit', r'kripto', r'mlm',
+    # High-risk spam
+    r'kazino', r'casino', r'kripto', r'crypto', r'bitcoin',
+    r'forex', r'trading', r'uplata\s+unapred', r'depozit',
+    r'brza\s+zarada', r'pasivna\s+zarada', r'bez\s+ulaganja',
+    r'laka\s+zarada', r'zaradite?\s+od\s+kuće', r'kladionica',
+    r'kredit\s+online', r'mlm', r'online\s+kazino',
     r'bez\s+iskustva\s+puno\s+para', r'klikni', r'kliknite',
+    # Suspicious
+    r'garantovan\s+prihod', r'zagarantovan',
 ]
 
 
@@ -71,7 +88,7 @@ def classify(raw_text: str, source_group: str = "") -> ClassificationResult:
     text = raw_text.lower().strip()
     result = ClassificationResult()
 
-    # Spam check first
+    # 1. SPAM — always check first
     for pattern in SPAM_PATTERNS:
         if re.search(pattern, text):
             result.classification = ContentClass.SPAM
@@ -81,36 +98,45 @@ def classify(raw_text: str, source_group: str = "") -> ClassificationResult:
             result.suggested_reply = "Ova objava ne može biti odobrena jer ne pripada temama grupe."
             return result
 
-    # Worker group available
+    # 2. EMPLOYER — check BEFORE worker patterns
+    for pattern in EMPLOYER_JOB_PATTERNS:
+        if re.search(pattern, text):
+            result.classification = ContentClass.EMPLOYER_JOB_POST
+            result.confidence = 0.85
+            result.record_actions = ["create_job_lead", "create_employer_profile"]
+            result.recommended_action = "create_job_lead"
+            result.extracted_entities["locations"] = _extract_locations(text)
+            if re.search(r'(?:smeštaj|stan|smeštajem)', text):
+                result.extracted_entities["accommodation"] = True
+            if re.search(r'(?:hrana|hranu|obrok)', text):
+                result.extracted_entities["food"] = True
+            if re.search(r'(?:dnevnica|plata|RSD|dinara|evra|€)', text):
+                result.extracted_entities["pay_mentioned"] = True
+            result.risk_level = "low"
+            return result
+
+    # 3. WORKER GROUP — only after employer check passes
     for pattern in WORKER_GROUP_PATTERNS:
         if re.search(pattern, text):
             result.classification = ContentClass.WORKER_GROUP_AVAILABLE
             result.confidence = 0.85
             result.record_actions = ["create_worker_profile", "create_worker_lead"]
             result.recommended_action = "ask_for_missing_info"
-
-            # Extract worker count
             count_match = re.search(r'(\d+)\s*(?:ljudi|radnika|ljude|članova)', text)
             if count_match:
                 result.extracted_entities["workers_count"] = int(count_match.group(1))
-
-            # Extract location
             locations = _extract_locations(text)
             if locations:
                 result.extracted_entities["locations"] = locations
-
-            # Extract transport
             if re.search(r'(?:svoj\w*|sopstveni|vlastiti)\s+(?:prevoz|kombi|auto)', text):
                 result.extracted_entities["transport"] = "own_transport"
-
             result.extracted_entities["experience"] = _extract_experience(text)
             result.extracted_entities["contact_status"] = "missing" if not _has_contact(text) else "present"
-
             result.suggested_reply = _build_worker_group_reply(result.extracted_entities)
             result.risk_level = "low"
             return result
 
-    # Worker looking for job (individual)
+    # 4. WORKER LOOKING (individual)
     for pattern in WORKER_LOOKING_PATTERNS:
         if re.search(pattern, text):
             result.classification = ContentClass.WORKER_LOOKING_FOR_JOB
@@ -120,21 +146,6 @@ def classify(raw_text: str, source_group: str = "") -> ClassificationResult:
             result.extracted_entities["locations"] = _extract_locations(text)
             result.extracted_entities["contact_status"] = "missing" if not _has_contact(text) else "present"
             result.suggested_reply = _build_worker_reply(result.extracted_entities)
-            result.risk_level = "low"
-            return result
-
-    # Employer job post
-    for pattern in EMPLOYER_JOB_PATTERNS:
-        if re.search(pattern, text):
-            result.classification = ContentClass.EMPLOYER_JOB_POST
-            result.confidence = 0.80
-            result.record_actions = ["create_job_lead", "create_employer_profile"]
-            result.recommended_action = "create_job_lead"
-            result.extracted_entities["locations"] = _extract_locations(text)
-            if re.search(r'(?:smeštaj|stan|smeštajem)', text):
-                result.extracted_entities["accommodation"] = True
-            if re.search(r'(?:hrana|hranu|obrok)', text):
-                result.extracted_entities["food"] = True
             result.risk_level = "low"
             return result
 

@@ -86,6 +86,29 @@ def analyze_queue_item(item: dict) -> AnalystDecision:
     action_type = item.get("action_type", "")
     suggested_text = item.get("suggested_text", "")
 
+    # Employer job post — check BEFORE worker patterns
+    employer_signals = [
+        "tražimo", "tražim radnik", "potrebni radnici", "potreban radnik",
+        "zapošljavamo", "firma traži", "za berbu", "za branje",
+        "plastenik", "hladnjač", "smeštaj obezbeđen", "hrana obezbeđena",
+        "dnevnica", "RSD dnevno",
+    ]
+    has_employer = any(s in suggested_text.lower() for s in employer_signals)
+    has_job_context = bool(re.search(
+        r'(?:berba|branje|pakovanje|sortiranje|malina|višanja|jabuka|borovnica|građevin)',
+        suggested_text, re.IGNORECASE,
+    ))
+    if has_employer and has_job_context:
+        return AnalystDecision(
+            action="save_job_lead",
+            confidence=0.88,
+            risk_level="low",
+            reasoning="Employer job post detected. Save as job lead.",
+            extracted_entities={"has_job_context": True},
+            flags=[],
+            requires_operator=False,
+        )
+
     # Worker lead detection — check action_type AND text patterns
     worker_text_signals = ["grupu", "grupa", "ekipa", "ljudi sa", "radnika sa", "prevozom"]
     has_worker_signal = (
@@ -123,10 +146,15 @@ def analyze_queue_item(item: dict) -> AnalystDecision:
                 requires_operator=False,
             )
 
-    # Spam detection
-    spam_signals = ["brza zarada", "kazino", "kripto", "klikni", "laka zarada"]
+    # Spam detection — expanded keywords
+    spam_signals = [
+        "kazino", "casino", "kripto", "crypto", "bitcoin", "forex", "trading",
+        "uplata unapred", "depozit", "brza zarada", "pasivna zarada",
+        "bez ulaganja", "laka zarada", "kladionica", "online kazino",
+        "garantovan prihod", "klikni", "kliknite",
+    ]
     spam_count = sum(1 for s in spam_signals if s in suggested_text.lower())
-    if spam_count >= 2:
+    if spam_count >= 1:
         return AnalystDecision(
             action="mark_spam_candidate",
             confidence=0.95,

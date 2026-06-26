@@ -29,6 +29,10 @@ class QueueStatus(str, Enum):
     EXECUTED_MANUALLY = "executed_manually"
     FAILED = "failed"
     CANCELLED = "cancelled"
+    NEEDS_INFO = "needs_info"
+    DUPLICATE = "duplicate"
+    SPAM = "spam"
+    CLOSED = "closed"
 
 
 @dataclass
@@ -65,6 +69,28 @@ class QueueItem:
 
     def mark_executed(self, operator: str = "") -> None:
         self.status = QueueStatus.EXECUTED_MANUALLY
+        self.operator = operator
+        self.updated_at = datetime.utcnow().isoformat()
+
+    def mark_spam(self, reason: str = "", operator: str = "") -> None:
+        self.status = QueueStatus.SPAM
+        self.reason = reason
+        self.operator = operator
+        self.updated_at = datetime.utcnow().isoformat()
+
+    def mark_needs_info(self, reason: str = "", operator: str = "") -> None:
+        self.status = QueueStatus.NEEDS_INFO
+        self.reason = reason
+        self.operator = operator
+        self.updated_at = datetime.utcnow().isoformat()
+
+    def mark_duplicate(self, operator: str = "") -> None:
+        self.status = QueueStatus.DUPLICATE
+        self.operator = operator
+        self.updated_at = datetime.utcnow().isoformat()
+
+    def mark_closed(self, operator: str = "") -> None:
+        self.status = QueueStatus.CLOSED
         self.operator = operator
         self.updated_at = datetime.utcnow().isoformat()
 
