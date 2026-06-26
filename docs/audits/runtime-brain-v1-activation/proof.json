@@ -1,0 +1,53 @@
+{
+  "task": "TASK-007B-FIX-1-ACTIVATE-DEEPSEEK-BRAIN",
+  "status": "completed",
+  "verdict": "ACCEPTED",
+  "vps_env": {
+    "env_file_present": true,
+    "systemd_environment_file": true,
+    "process_env_has_llm_key": true,
+    "keys_masked_in_reports": true
+  },
+  "llm": {
+    "provider": "deepseek",
+    "model": "DeepSeek-V4-Pro",
+    "available": true,
+    "llm_primary": true,
+    "regex_only": false,
+    "fallback_available": true,
+    "fallback_used_in_smoke_test": false
+  },
+  "smoke_test": {
+    "input": "Tražimo 5 radnika za berbu malina Arilje, smeštaj obezbeđen, dnevnica 5000 RSD, kontakt 064-111-222.",
+    "classification": "employer_job_post",
+    "confidence": 1.0,
+    "risk_level": "low",
+    "recommended_action": "approve_with_edits",
+    "digest_candidate": true,
+    "provider_used": "deepseek",
+    "llm_used": true,
+    "fallback_used": false
+  },
+  "root_cause": "anthropic package not installed in VPS venv",
+  "fix": "pip install anthropic in /opt/facebook_moderator/backend/.venv",
+  "security": {
+    "env_not_tracked": true,
+    "secrets_not_logged": true,
+    "secrets_not_in_git_diff": true,
+    "secrets_not_in_artifacts": true
+  },
+  "dangerous_gates": {
+    "facebook_auto_post": false,
+    "facebook_auto_comment": false,
+    "facebook_auto_message": false,
+    "account_worker": false,
+    "autonomous": false,
+    "production": false
+  },
+  "git": {
+    "committed": false,
+    "commit_hash": null,
+    "pushed": false,
+    "working_tree_clean": false
+  }
+}
