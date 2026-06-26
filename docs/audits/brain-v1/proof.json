@@ -1,0 +1,50 @@
+{
+  "task": "TASK-008A-FB-RUNTIME-MANAGER-BRAIN-V1-CANON-PACKAGE",
+  "status": "completed",
+  "verdict": "ACCEPTED",
+  "brain_version": "1.0.0",
+  "created": {
+    "version_file": true,
+    "readme": true,
+    "canon": true,
+    "knowledge": true,
+    "prompts": true,
+    "tests": true,
+    "system_prompt": true,
+    "fewshot": true,
+    "negative_examples": true,
+    "json_contract": true
+  },
+  "coverage": {
+    "classification_policy": true,
+    "risk_policy": true,
+    "field_extraction": true,
+    "digest_policy": true,
+    "language_policy": true,
+    "operator_policy": true,
+    "safety_model": true,
+    "edge_cases": true
+  },
+  "examples": {
+    "employer": 20,
+    "worker": 20,
+    "worker_group": 20,
+    "spam": 20,
+    "suspicious": 20,
+    "review": 10,
+    "question": 10
+  },
+  "safety": {
+    "no_facebook_automation": true,
+    "no_autonomous_enable": true,
+    "no_production_enable": true,
+    "no_secrets_in_files": true,
+    "forbidden_public_claims_documented": true
+  },
+  "git": {
+    "committed": false,
+    "commit_hash": null,
+    "pushed": false,
+    "working_tree_clean": false
+  }
+}
