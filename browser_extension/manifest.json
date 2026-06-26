@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Sezonski Rad Intake",
+  "version": "0.1.0",
+  "description": "Captures selected Facebook post text and sends it to the Sezonski Rad runtime agent for classification and draft replies.",
+  "permissions": ["activeTab", "storage"],
+  "host_permissions": ["http://localhost:8000/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Sezonski Rad — Capture Selection"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

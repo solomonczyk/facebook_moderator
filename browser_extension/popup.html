@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sezonski Rad — Intake</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>📌 Sezonski Rad</h1>
+    <p class="subtitle">Capture & Classify</p>
+
+    <div id="status" class="status idle">Ready — select text on Facebook and click Capture</div>
+
+    <button id="captureBtn" class="btn primary">📋 Capture Selection</button>
+
+    <div id="result" class="result hidden">
+      <div class="result-row"><strong>Classification:</strong> <span id="classification">—</span></div>
+      <div class="result-row"><strong>Suggested:</strong> <span id="suggested">—</span></div>
+    </div>
+
+    <div class="footer">
+      <small>No auto-posting. Everything goes to operator queue.</small>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
