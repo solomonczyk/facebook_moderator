@@ -88,6 +88,23 @@ def classify(raw_text: str, source_group: str = "") -> ClassificationResult:
     text = raw_text.lower().strip()
     result = ClassificationResult()
 
+    # 0. SUSPICIOUS — check before spam for document/payment red flags
+    suspicious_patterns = [
+        r'uplata\s+unapred', r'depozit', r'JMBG', r'slika\s+pasoša',
+        r'slika\s+lične\s+karte', r'dokumenta\s+unapred',
+        r'pošaljite\s+(?:sliku|sken)', r'šaljite\s+(?:sliku|sken)',
+        r'(?:2000|3000)\s*(?:€|EUR|evra)\s+dnevno',  # Too good to be true
+    ]
+    for pattern in suspicious_patterns:
+        if re.search(pattern, text):
+            result.classification = ContentClass.SUSPICIOUS
+            result.confidence = 0.90
+            result.risk_level = "high"
+            result.recommended_action = "escalate"
+            result.record_actions = []
+            result.suggested_reply = "Ova objava zahteva dodatnu proveru pre objave."
+            return result
+
     # 1. SPAM — always check first
     for pattern in SPAM_PATTERNS:
         if re.search(pattern, text):

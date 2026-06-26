@@ -46,6 +46,13 @@ try:
 except ImportError:
     pass
 
+# Runtime Manager Agent API (007A)
+try:
+    from ..agents.manager_api import router as manager_router
+    app.include_router(manager_router)
+except ImportError:
+    pass
+
 
 @app.on_event("startup")
 def on_startup():
@@ -81,6 +88,14 @@ def on_startup():
             logger.info(f"Analyst agent initialized (enabled={analyst_config.analyst_enabled}, autonomous={analyst_config.autonomous_mode_enabled})")
         except Exception as e:
             logger.warning(f"Analyst agent init skipped: {e}")
+
+        # Initialize Runtime Manager Agent (007A)
+        try:
+            from ..agents.facebook_runtime_manager import FacebookGroupRuntimeManagerAgent
+            app.state.runtime_manager = FacebookGroupRuntimeManagerAgent()
+            logger.info(f"Runtime Manager Agent initialized (LLM: {app.state.runtime_manager.llm_available})")
+        except Exception as e:
+            logger.warning(f"Runtime Manager init skipped: {e}")
 
         bot = start_bot()
         if bot:

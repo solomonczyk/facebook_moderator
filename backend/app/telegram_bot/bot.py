@@ -202,14 +202,57 @@ async def digest_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         await update.message.reply_text(f"Digest not run: {result.get('reason', 'unknown')}")
 
 
+async def addlead_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update):
+        await _reject_unknown(update, context)
+        return
+
+    text = update.message.text or ""
+    # Remove the /addlead command prefix
+    lead_text = text.removeprefix("/addlead").strip()
+    if not lead_text:
+        await update.message.reply_text(
+            "Usage: /addlead <text>\n\n"
+            "Example:\n"
+            "/addlead Tražimo 5 radnika za berbu malina Arilje, smeštaj i hrana, 064-123-4567"
+        )
+        return
+
+    # Send to runtime manager
+    try:
+        from ..agents.facebook_runtime_manager import FacebookGroupRuntimeManagerAgent
+        manager = FacebookGroupRuntimeManagerAgent()
+        decision = manager.analyze({
+            "source_type": "telegram_lead",
+            "source_label": "Telegram /addlead",
+            "raw_text": lead_text,
+            "operator_note": f"From Telegram, operator: {update.effective_user.username or 'unknown'}",
+        })
+
+        msg = (
+            f"📌 *Lead analyzed*\n\n"
+            f"Classification: `{decision.classification}`\n"
+            f"Risk: {decision.risk_level} | Confidence: {decision.confidence:.0%}\n"
+            f"Action: `{decision.recommended_action}`\n"
+            f"Digest candidate: {'Yes' if decision.digest_candidate else 'No'}\n\n"
+            f"*Operator summary:*\n{decision.operator_summary}\n\n"
+            f"*Prepared FB text:*\n{decision.prepared_public_text[:500]}\n\n"
+            f"*Missing:* {', '.join(decision.missing_info) if decision.missing_info else 'none'}"
+        )
+        await update.message.reply_text(msg, parse_mode="Markdown")
+    except Exception as e:
+        await update.message.reply_text(f"Error analyzing lead: {e}")
+
+
 async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not _is_operator(update):
         await _reject_unknown(update, context)
         return
     await update.message.reply_text(
         "/status — Runtime health & gates\n"
-        "/queue — Pending action items with approve/reject buttons\n"
+        "/queue — Pending action items with buttons\n"
         "/digest — Generate daily digest draft\n"
+        "/addlead <text> — Analyze a lead from text\n"
         "/help — This help"
     )
 
@@ -323,6 +366,7 @@ def start_bot():
     app.add_handler(CommandHandler("status", status_cmd))
     app.add_handler(CommandHandler("queue", queue_cmd))
     app.add_handler(CommandHandler("digest", digest_cmd))
+    app.add_handler(CommandHandler("addlead", addlead_cmd))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CallbackQueryHandler(handle_callback))
 

@@ -146,6 +146,22 @@ def analyze_queue_item(item: dict) -> AnalystDecision:
                 requires_operator=False,
             )
 
+    # Suspicious detection — document/payment red flags
+    suspicious_signals = [
+        "uplata unapred", "depozit", "jmbg", "slika pasoša",
+        "slika lične karte", "dokumenta unapred", "pošaljite sliku",
+        "2000e dnevno", "3000 evra dnevno",
+    ]
+    if any(s in suggested_text.lower() for s in suspicious_signals):
+        return AnalystDecision(
+            action="escalate_to_operator",
+            confidence=0.90,
+            risk_level="high",
+            reasoning="Suspicious content: document/payment red flags. Escalate.",
+            flags=["suspicious", "high_risk"],
+            requires_operator=True,
+        )
+
     # Spam detection — expanded keywords
     spam_signals = [
         "kazino", "casino", "kripto", "crypto", "bitcoin", "forex", "trading",

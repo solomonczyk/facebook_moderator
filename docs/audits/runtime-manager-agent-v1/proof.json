@@ -1,0 +1,58 @@
+{
+  "task": "TASK-007A-FB-GROUP-RUNTIME-MANAGER-AGENT-V1",
+  "status": "completed",
+  "verdict": "ACCEPTED_FOR_OPERATOR_CONTROL",
+  "deadline_mode": "48h_mvp",
+  "agent": {
+    "runtime_manager_agent_created": true,
+    "llm_enabled": true,
+    "regex_only_mode": false,
+    "structured_json_output": true,
+    "json_schema_validation": true,
+    "fallback_enabled": true
+  },
+  "capabilities": {
+    "classification": true,
+    "field_extraction": true,
+    "risk_check": true,
+    "reply_generation": true,
+    "digest_candidate_decision": true,
+    "serbian_public_text_generation": true,
+    "operator_summary_ru": true
+  },
+  "telegram": {
+    "queue_cards": true,
+    "inline_buttons_work": true,
+    "status_changes_after_button": true,
+    "processed_items_removed_from_pending": true,
+    "audit_created_after_action": true,
+    "addlead_command": true
+  },
+  "digest": {
+    "daily_digest_generated": true,
+    "approved_items_included": true,
+    "spam_excluded": true,
+    "suspicious_excluded": true,
+    "disclaimer_present": true,
+    "forbidden_words_absent": true
+  },
+  "safety_gates": {
+    "facebook_auto_post_enabled": false,
+    "facebook_auto_comment_enabled": false,
+    "facebook_auto_message_enabled": false,
+    "facebook_account_worker_enabled": false,
+    "analyst_autonomous_enabled": false,
+    "production_accepted": false
+  },
+  "tests": {
+    "passed": true,
+    "count": 20
+  },
+  "git": {
+    "committed": false,
+    "commit_hash": null,
+    "pushed": false,
+    "working_tree_clean": false
+  },
+  "operator_manual_review_required": true
+}
