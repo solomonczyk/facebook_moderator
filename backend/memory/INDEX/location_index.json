@@ -1,0 +1,22 @@
+{
+  "valjevo": [
+    {
+      "type": "employer",
+      "id": "emp_f22e1d298df7"
+    },
+    {
+      "type": "employer",
+      "id": "emp_8f430bc937c8"
+    }
+  ],
+  "arilje": [
+    {
+      "type": "employer",
+      "id": "emp_43b0d353b4e1"
+    },
+    {
+      "type": "employer",
+      "id": "emp_38eceb7e3436"
+    }
+  ]
+}

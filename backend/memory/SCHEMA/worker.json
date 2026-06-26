@@ -1,0 +1,21 @@
+{
+  "$schema": "memory/worker/v1",
+  "fields": {
+    "worker_id": "string, unique",
+    "names": ["string"],
+    "phones": ["string"],
+    "group_size": "integer",
+    "experience": ["string"],
+    "regions": ["string"],
+    "languages": ["string"],
+    "transport": "boolean",
+    "previous_requests": "integer",
+    "last_active": "ISO datetime",
+    "trust_score": "float 0.0-1.0",
+    "verified": "boolean",
+    "source": "string",
+    "operator_notes": "string",
+    "created_at": "ISO datetime",
+    "updated_at": "ISO datetime"
+  }
+}

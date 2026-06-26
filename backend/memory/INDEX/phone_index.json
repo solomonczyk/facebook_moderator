@@ -1,0 +1,318 @@
+{
+  "f31b3cd4812eea02": [
+    {
+      "type": "employer",
+      "id": "emp_f22e1d298df7",
+      "phone": "064-111-222"
+    },
+    {
+      "type": "employer",
+      "id": "emp_8f430bc937c8",
+      "phone": "064-111-222"
+    }
+  ],
+  "9abd176aa888b382": [
+    {
+      "type": "employer",
+      "id": "emp_6d53b43133ee",
+      "phone": "060-999-888"
+    },
+    {
+      "type": "employer",
+      "id": "emp_1583ee5249cc",
+      "phone": "060-999-888"
+    }
+  ],
+  "978d94c62512dd36": [
+    {
+      "type": "employer",
+      "id": "emp_22725574de9e",
+      "phone": "061-000-111"
+    },
+    {
+      "type": "employer",
+      "id": "emp_c38b921b239e",
+      "phone": "061-000-111"
+    }
+  ],
+  "b4c11391a413daf0": [
+    {
+      "type": "employer",
+      "id": "emp_0fc6a429542f",
+      "phone": "062-111-333"
+    },
+    {
+      "type": "employer",
+      "id": "emp_ad58148c22fe",
+      "phone": "062-111-333"
+    }
+  ],
+  "6ef8a2ade407041a": [
+    {
+      "type": "employer",
+      "id": "emp_d16970af4c11",
+      "phone": "063-444-555"
+    },
+    {
+      "type": "employer",
+      "id": "emp_f14b26f710ce",
+      "phone": "063-444-555"
+    }
+  ],
+  "60298ecf5b444502": [
+    {
+      "type": "employer",
+      "id": "emp_551f646884be",
+      "phone": "064-666-777"
+    },
+    {
+      "type": "employer",
+      "id": "emp_0c0e3c390e4a",
+      "phone": "064-666-777"
+    }
+  ],
+  "6e00fef8e77e99eb": [
+    {
+      "type": "employer",
+      "id": "emp_87dadbec7346",
+      "phone": "065-888-999"
+    },
+    {
+      "type": "employer",
+      "id": "emp_42c0ece87885",
+      "phone": "065-888-999"
+    }
+  ],
+  "63d46df5a36551de": [
+    {
+      "type": "worker",
+      "id": "wrk_7ed22c0206b1",
+      "phone": "066-111-222"
+    },
+    {
+      "type": "worker",
+      "id": "wrk_427b683da23f",
+      "phone": "066-111-222"
+    }
+  ],
+  "6d87e8df2b43c20f": [
+    {
+      "type": "worker",
+      "id": "wrk_e0788ac824fd",
+      "phone": "067-333-444"
+    },
+    {
+      "type": "worker",
+      "id": "wrk_cd3b1eed3d5a",
+      "phone": "067-333-444"
+    }
+  ],
+  "4cce377ef66e1c92": [
+    {
+      "type": "employer",
+      "id": "emp_444115684666",
+      "phone": "069-000-001"
+    },
+    {
+      "type": "employer",
+      "id": "emp_0811bc071135",
+      "phone": "069-000-001"
+    }
+  ],
+  "67f9dc4c00e5addb": [
+    {
+      "type": "employer",
+      "id": "emp_7daf551c669a",
+      "phone": "068-999-000"
+    },
+    {
+      "type": "employer",
+      "id": "emp_2ca742c2254a",
+      "phone": "068-999-000"
+    }
+  ],
+  "fb2641e97532ed18": [
+    {
+      "type": "employer",
+      "id": "emp_43b0d353b4e1",
+      "phone": "068-111-000"
+    },
+    {
+      "type": "employer",
+      "id": "emp_38eceb7e3436",
+      "phone": "068-111-000"
+    }
+  ],
+  "94e1c86e22aa2ae8": [
+    {
+      "type": "employer",
+      "id": "emp_b1671741c586",
+      "phone": "070-111-222"
+    },
+    {
+      "type": "employer",
+      "id": "emp_3b5e150eff91",
+      "phone": "070-111-222"
+    }
+  ],
+  "323465e7ad17a1d2": [
+    {
+      "type": "employer",
+      "id": "emp_ef8d7fa9a2ec",
+      "phone": "070-333-444"
+    },
+    {
+      "type": "employer",
+      "id": "emp_f76a70545b26",
+      "phone": "070-333-444"
+    }
+  ],
+  "5cb47cc31a59571f": [
+    {
+      "type": "employer",
+      "id": "emp_656db9495fe3",
+      "phone": "071-111-222"
+    },
+    {
+      "type": "employer",
+      "id": "emp_2a40bb6ca7fc",
+      "phone": "071-111-222"
+    }
+  ],
+  "c87fa0f8c11b817e": [
+    {
+      "type": "employer",
+      "id": "emp_bb9c3926b29d",
+      "phone": "071-333-444"
+    },
+    {
+      "type": "employer",
+      "id": "emp_a28dc8f2d535",
+      "phone": "071-333-444"
+    }
+  ],
+  "3f017db108f635a6": [
+    {
+      "type": "employer",
+      "id": "emp_99d82e2fe92f",
+      "phone": "072-111-222"
+    },
+    {
+      "type": "employer",
+      "id": "emp_d541de3b1014",
+      "phone": "072-111-222"
+    }
+  ],
+  "7aaf5a32c37e056b": [
+    {
+      "type": "worker",
+      "id": "wrk_3ae58c1f4f9b",
+      "phone": "072-333-444"
+    },
+    {
+      "type": "worker",
+      "id": "wrk_f4fdac66833a",
+      "phone": "072-333-444"
+    }
+  ],
+  "6abdb81ef41c1ff2": [
+    {
+      "type": "employer",
+      "id": "emp_999386e73257",
+      "phone": "073-111-222"
+    },
+    {
+      "type": "employer",
+      "id": "emp_b9bbfb0edb87",
+      "phone": "073-111-222"
+    }
+  ],
+  "9de45f680becc5e4": [
+    {
+      "type": "employer",
+      "id": "emp_5a38da8a1e0b",
+      "phone": "073-333-444"
+    },
+    {
+      "type": "employer",
+      "id": "emp_2edc306aab16",
+      "phone": "073-333-444"
+    }
+  ],
+  "acc8eaa2f3fe8054": [
+    {
+      "type": "employer",
+      "id": "emp_57824dcfea41",
+      "phone": "073-555-666"
+    },
+    {
+      "type": "employer",
+      "id": "emp_600fbb4a72e7",
+      "phone": "073-555-666"
+    }
+  ],
+  "f6998a23c1cefccf": [
+    {
+      "type": "employer",
+      "id": "emp_ec381785d547",
+      "phone": "074-111-222"
+    },
+    {
+      "type": "employer",
+      "id": "emp_f3123941f47e",
+      "phone": "074-111-222"
+    }
+  ],
+  "b01fb78b9b3674d1": [
+    {
+      "type": "employer",
+      "id": "emp_4d33c22c5af3",
+      "phone": "075-111-222"
+    },
+    {
+      "type": "employer",
+      "id": "emp_6d1b424d21a0",
+      "phone": "075-111-222"
+    }
+  ],
+  "590b1db717e76654": [
+    {
+      "type": "worker",
+      "id": "wrk_2767a7445d63",
+      "phone": "075-333-444"
+    },
+    {
+      "type": "worker",
+      "id": "wrk_8cac8f416258",
+      "phone": "075-333-444"
+    }
+  ],
+  "b1fa3334d7427769": [
+    {
+      "type": "employer",
+      "id": "emp_506a5d9bef80",
+      "phone": "080-111-111"
+    }
+  ],
+  "080b3b665bec7916": [
+    {
+      "type": "employer",
+      "id": "emp_506a5d9bef80",
+      "phone": "080-222-222"
+    }
+  ],
+  "b7d23415039824b8": [
+    {
+      "type": "worker",
+      "id": "wrk_831865ebda3e",
+      "phone": "081-111-222"
+    }
+  ],
+  "519e24a3b77cbf43": [
+    {
+      "type": "employer",
+      "id": "emp_9e7a77c095a1",
+      "phone": "082-111-222"
+    }
+  ]
+}

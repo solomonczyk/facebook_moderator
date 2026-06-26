@@ -1,0 +1,18 @@
+{
+  "$schema": "memory/case/v1",
+  "fields": {
+    "case_id": "string, unique",
+    "case_type": "complaint | fraud | spam | investigation | duplicate",
+    "employer_id": "string | null",
+    "worker_id": "string | null",
+    "description": "string",
+    "evidence": ["string"],
+    "status": "open | investigating | resolved | closed",
+    "resolution": "string",
+    "operator_actions": [{"action": "string", "timestamp": "ISO datetime", "operator": "string"}],
+    "risk_level": "low | medium | high",
+    "source": "string",
+    "created_at": "ISO datetime",
+    "updated_at": "ISO datetime"
+  }
+}

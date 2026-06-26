@@ -1,0 +1,26 @@
+{
+  "$schema": "memory/employer/v1",
+  "fields": {
+    "employer_id": "string, unique",
+    "names": ["string"],
+    "phones": ["string"],
+    "viber": ["string"],
+    "whatsapp": ["string"],
+    "regions": ["string"],
+    "job_types": ["string"],
+    "jobs_published": "integer",
+    "first_seen": "ISO datetime",
+    "last_seen": "ISO datetime",
+    "complaints": "integer",
+    "fraud_reports": "integer",
+    "spam_count": "integer",
+    "operator_decisions": [{"action": "string", "timestamp": "ISO datetime", "operator": "string"}],
+    "trust_score": "float 0.0-1.0",
+    "trust_signals": {"positive": ["string"], "negative": ["string"]},
+    "verified": "boolean",
+    "source": "string",
+    "notes": "string",
+    "created_at": "ISO datetime",
+    "updated_at": "ISO datetime"
+  }
+}

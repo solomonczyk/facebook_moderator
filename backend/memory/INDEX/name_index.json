@@ -1,0 +1,214 @@
+{
+  "voćarstvo jović": [
+    {
+      "type": "employer",
+      "id": "emp_f22e1d298df7"
+    },
+    {
+      "type": "employer",
+      "id": "emp_8f430bc937c8"
+    }
+  ],
+  "test employer": [
+    {
+      "type": "employer",
+      "id": "emp_6d53b43133ee"
+    },
+    {
+      "type": "employer",
+      "id": "emp_1583ee5249cc"
+    }
+  ],
+  "update test": [
+    {
+      "type": "employer",
+      "id": "emp_22725574de9e"
+    },
+    {
+      "type": "employer",
+      "id": "emp_c38b921b239e"
+    }
+  ],
+  "trust test": [
+    {
+      "type": "employer",
+      "id": "emp_0fc6a429542f"
+    },
+    {
+      "type": "employer",
+      "id": "emp_ad58148c22fe"
+    }
+  ],
+  "verified co": [
+    {
+      "type": "employer",
+      "id": "emp_d16970af4c11"
+    },
+    {
+      "type": "employer",
+      "id": "emp_f14b26f710ce"
+    }
+  ],
+  "bad co": [
+    {
+      "type": "employer",
+      "id": "emp_551f646884be"
+    },
+    {
+      "type": "employer",
+      "id": "emp_0c0e3c390e4a"
+    }
+  ],
+  "extreme co": [
+    {
+      "type": "employer",
+      "id": "emp_87dadbec7346"
+    },
+    {
+      "type": "employer",
+      "id": "emp_42c0ece87885"
+    }
+  ],
+  "phoneidx": [
+    {
+      "type": "employer",
+      "id": "emp_444115684666"
+    },
+    {
+      "type": "employer",
+      "id": "emp_0811bc071135"
+    }
+  ],
+  "uniquenamexyz": [
+    {
+      "type": "employer",
+      "id": "emp_7daf551c669a"
+    },
+    {
+      "type": "employer",
+      "id": "emp_2ca742c2254a"
+    }
+  ],
+  "locco": [
+    {
+      "type": "employer",
+      "id": "emp_43b0d353b4e1"
+    },
+    {
+      "type": "employer",
+      "id": "emp_38eceb7e3436"
+    }
+  ],
+  "dupphone": [
+    {
+      "type": "employer",
+      "id": "emp_b1671741c586"
+    },
+    {
+      "type": "employer",
+      "id": "emp_3b5e150eff91"
+    }
+  ],
+  "dupname co": [
+    {
+      "type": "employer",
+      "id": "emp_ef8d7fa9a2ec"
+    },
+    {
+      "type": "employer",
+      "id": "emp_f76a70545b26"
+    }
+  ],
+  "ctxemp": [
+    {
+      "type": "employer",
+      "id": "emp_656db9495fe3"
+    },
+    {
+      "type": "employer",
+      "id": "emp_2a40bb6ca7fc"
+    }
+  ],
+  "dupctx": [
+    {
+      "type": "employer",
+      "id": "emp_bb9c3926b29d"
+    },
+    {
+      "type": "employer",
+      "id": "emp_a28dc8f2d535"
+    }
+  ],
+  "histco": [
+    {
+      "type": "employer",
+      "id": "emp_99d82e2fe92f"
+    },
+    {
+      "type": "employer",
+      "id": "emp_d541de3b1014"
+    }
+  ],
+  "posco": [
+    {
+      "type": "employer",
+      "id": "emp_999386e73257"
+    },
+    {
+      "type": "employer",
+      "id": "emp_b9bbfb0edb87"
+    }
+  ],
+  "negco": [
+    {
+      "type": "employer",
+      "id": "emp_5a38da8a1e0b"
+    },
+    {
+      "type": "employer",
+      "id": "emp_2edc306aab16"
+    }
+  ],
+  "zeroco": [
+    {
+      "type": "employer",
+      "id": "emp_57824dcfea41"
+    },
+    {
+      "type": "employer",
+      "id": "emp_600fbb4a72e7"
+    }
+  ],
+  "original": [
+    {
+      "type": "employer",
+      "id": "emp_ec381785d547"
+    },
+    {
+      "type": "employer",
+      "id": "emp_f3123941f47e"
+    }
+  ],
+  "schematest": [
+    {
+      "type": "employer",
+      "id": "emp_4d33c22c5af3"
+    },
+    {
+      "type": "employer",
+      "id": "emp_6d1b424d21a0"
+    }
+  ],
+  "multiphone": [
+    {
+      "type": "employer",
+      "id": "emp_506a5d9bef80"
+    }
+  ],
+  "name1": [
+    {
+      "type": "employer",
+      "id": "emp_9e7a77c095a1"
+    }
+  ]
+}

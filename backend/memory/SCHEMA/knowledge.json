@@ -1,0 +1,16 @@
+{
+  "$schema": "memory/knowledge/v1",
+  "fields": {
+    "entry_id": "string, unique",
+    "category": "crop | salary | region | terminology | pattern",
+    "key": "string",
+    "value": "string",
+    "region": "string | null",
+    "season": "string | null",
+    "confidence": "float 0.0-1.0",
+    "source": "string",
+    "verified": "boolean",
+    "created_at": "ISO datetime",
+    "updated_at": "ISO datetime"
+  }
+}
