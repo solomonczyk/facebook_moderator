@@ -1,0 +1,14 @@
+{
+  "verdict": "APPROVE",
+  "postType": "vacancy",
+  "language": "Serbian",
+  "riskLevel": "low",
+  "reason": "Kompletan oglas za sezonski rad sa svim potrebnim informacijama: mesto, vrsta posla, plata, smeštaj, hrana, kontakt, prijava radnika. Nema spornih formulacija.",
+  "missingInfo": "none",
+  "problemsFound": "none",
+  "action": "Objaviti bez izmena.",
+  "safeVersion": "not needed",
+  "questionToAuthor": "not needed",
+  "serbianVersion": "not needed",
+  "adminNote": "Standardna dobra vakansija. Sva 12 obavezna polja su popunjena."
+}

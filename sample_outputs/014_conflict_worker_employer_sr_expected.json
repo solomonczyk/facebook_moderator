@@ -1,0 +1,14 @@
+{
+  "verdict": "ESCALATE",
+  "postType": "conflict",
+  "language": "Serbian",
+  "riskLevel": "high",
+  "reason": "Ozbiljne optužbe o neisplati plata za više radnika, navodna prevara sa registracijom firme, i poziv na javni protest. Visok pravni rizik za grupu. Uključuje tvrdnje koje se ne mogu proveriti bez dokumentacije. Ne može se objaviti bez detaljne administrativne provere.",
+  "missingInfo": "* dokumentacija o neisplaćenim platama\n* period rada\n* ugovori o radu\n* da li je slučaj prijavljen inspekciji rada",
+  "problemsFound": "* optužbe o neisplati plata za 10 radnika\n* navodna prevara sa registracijom firme\n* poziv na javni protest\n* visok pravni rizik (optužbe protiv imenovane firme)\n* moguća kleveta ako tvrdnje nisu dokazane",
+  "action": "HITNO: Ne objavljivati. Kontaktirati autora privatno i tražiti dokumentaciju. Ako se optužbe potvrde, konsultovati pravnika pre bilo kakve objave. Ako autor ne dostavi dokaze, ne objavljivati.",
+  "safeVersion": "not needed",
+  "questionToAuthor": "Molimo vas da nam pošaljete privatno: dokumentaciju o neisplaćenim platama, ugovore o radu, period rada i potvrdu da li je slučaj prijavljen inspekciji rada. Bez ovih informacija ne možemo objaviti post zbog pravnog rizika po grupu.",
+  "serbianVersion": "not needed",
+  "adminNote": "HITNO — NAJVEĆI RIZIK. Imenovana je konkretna firma. Optužbe su ozbiljne i specifične. Ne objavljivati ništa bez pravne konsultacije. Objavljivanje neproverenih optužbi može dovesti do tužbe protiv grupe. Autor poziva na protest — dodatni rizik."
+}

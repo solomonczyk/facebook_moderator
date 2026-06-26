@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.env
+.env.*
+*.log
+*.tsbuildinfo
+*.pem
+*.key
+*cookie*
+*token*
+*secret*
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+.DS_Store
+*.db

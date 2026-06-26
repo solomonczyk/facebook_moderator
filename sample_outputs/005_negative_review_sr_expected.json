@@ -1,0 +1,14 @@
+{
+  "verdict": "APPROVE",
+  "postType": "worker_review",
+  "language": "Serbian",
+  "riskLevel": "low",
+  "reason": "Lično iskustvo radnika sa konkretnim činjenicama: mesto, period, tip posla, obećana plata, stvarna plata, uslovi smeštaja. Napisano bez uvreda, iz prvog lica. Koristan sadržaj za grupu.",
+  "missingInfo": "* ime poslodavca / firme",
+  "problemsFound": "none",
+  "action": "Objaviti bez izmena.",
+  "safeVersion": "not needed",
+  "questionToAuthor": "not needed",
+  "serbianVersion": "not needed",
+  "adminNote": "Dobar primer korisnog radničkog iskustva. Konkretno, izmereno, bez uvreda."
+}

@@ -1,0 +1,45 @@
+{
+  "task": "TASK-003F-FIX-GROUP-RULES-VERIFICATION",
+  "status": "completed",
+  "verdict": "READY_FOR_OPERATOR_REVIEW",
+  "date": "2026-06-26",
+  "total_groups_checked": 30,
+  "url_confirmed_count": 0,
+  "rules_visible_count": 0,
+  "rules_checked_count": 0,
+  "post_directly_count_likely": 17,
+  "ask_admin_first_count_likely": 5,
+  "comment_only_count_likely": 3,
+  "verify_manually_count": 30,
+  "skip_count": 5,
+  "facebook_auto_actions_enabled": false,
+  "facebook_login_used": false,
+  "auto_join_used": false,
+  "auto_post_used": false,
+  "auto_comment_used": false,
+  "auto_message_used": false,
+  "private_member_data_collected": false,
+  "all_groups_have_recommended_action": true,
+  "unknown_rules_not_marked_post_directly": true,
+  "unconfirmed_urls_not_marked_post_directly": true,
+  "operator_manual_review_required": true,
+  "production_accepted": false,
+  "critical_honesty_note": "The agent CANNOT access Facebook. All 30 groups have url_confirmed=false and rules_checked=false. All recommended_action values are verify_manually. The likely_action field is a group-type-based assessment that guides the operator but does NOT replace reading actual group rules. Every group requires ~30 seconds of operator verification inside Facebook before any posting decision.",
+  "assessment_method": "Group type analysis based on Serbian Facebook community norms: small niche seasonal groups typically allow relevant job posts; large general groups typically prohibit promotion; expat/community groups require soft helpful wording.",
+  "evidence_sources": [
+    "Euronews Serbia (June 2026) — confirms raspberry picker FB groups are active",
+    "Alo.rs (June 2026) — confirms Srem region has active seasonal job groups",
+    "General knowledge of Serbian Facebook group norms",
+    "Standard Facebook group governance patterns"
+  ],
+  "artifacts_created": {
+    "fixed_markdown_report": true,
+    "fixed_csv_table": true,
+    "proof_json": true
+  },
+  "git": {
+    "committed": false,
+    "commit_hash": null,
+    "working_tree_clean": false
+  }
+}

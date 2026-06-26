@@ -1,0 +1,14 @@
+{
+  "verdict": "APPROVE",
+  "postType": "vacancy",
+  "language": "Serbian",
+  "riskLevel": "low",
+  "reason": "Kompletan oglas firme 'Voćarstvo Jović' sa svim obaveznim informacijama: mesto, vrsta posla, broj radnika, plata, način isplate, radno vreme, smeštaj, hrana, prevoz, kontakt, prijava radnika. Jasan, profesionalan, bez spornih formulacija.",
+  "missingInfo": "none",
+  "problemsFound": "none",
+  "action": "Objaviti bez izmena.",
+  "safeVersion": "not needed",
+  "questionToAuthor": "not needed",
+  "serbianVersion": "not needed",
+  "adminNote": "Odličan primer kompletne vakansije. Firma je navedena, svi podaci prisutni."
+}

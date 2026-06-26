@@ -1,0 +1,14 @@
+{
+  "verdict": "APPROVE",
+  "postType": "worker_review",
+  "language": "Romanian",
+  "riskLevel": "low",
+  "reason": "Pozitivno lično iskustvo radnika iz Rumunije u fabrici u Vršcu. Konkretne informacije: lokacija, tip posla, plata, smeštaj, hrana, preporuka. Bez uvreda. Potrebno je pripremiti srpsku verziju.",
+  "missingInfo": "* naziv fabrike",
+  "problemsFound": "none",
+  "action": "Objaviti sa srpskom verzijom ispod originalnog teksta.",
+  "safeVersion": "not needed",
+  "questionToAuthor": "not needed",
+  "serbianVersion": "Dobar dan! Radio sam u Vršcu u sezonskoj fabrici. Uslovi su bili dobri, plata isplaćena na vreme. Smeštaj obezbeđen, hrana nije. Preporučujem za one koji traže stabilan sezonski posao.",
+  "adminNote": "Rumunski tekst — objaviti dvojezično. Pozitivno iskustvo, koristan sadržaj."
+}

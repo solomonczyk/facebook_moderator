@@ -1,0 +1,14 @@
+{
+  "verdict": "REJECT",
+  "postType": "vacancy",
+  "language": "Serbian",
+  "riskLevel": "high",
+  "reason": "Oglas koristi sumnjive formulacije tipične za prevare: 'brza zarada', 'plata neverovatna', 'bez iskustva, puno para'. Nema konkretnih informacija o lokaciji, plati, tipu posla, niti kontakt telefona. Kontakt samo preko inboxa. Visok rizik od prevare.",
+  "missingInfo": "* mesto rada\n* vrsta posla\n* tačna plata\n* način isplate\n* radno vreme\n* smeštaj\n* hrana\n* kontakt telefon\n* ime poslodavca",
+  "problemsFound": "* fraza 'brza zarada' — crvena zastavica\n* 'bez iskustva, puno para' — nerealno obećanje\n* nema nijedan konkretan podatak\n* kontakt samo inbox — izbegavanje javnog kontakta\n* potencijalna prevara",
+  "action": "Odbaciti bez kontaktiranja autora. Ne objavljivati.",
+  "safeVersion": "not needed",
+  "questionToAuthor": "not needed",
+  "serbianVersion": "not needed",
+  "adminNote": "Klasičan pattern sumnjivog oglasa. Autor namerno izbegava konkretne informacije. Ne komunicirati — samo odbaciti."
+}

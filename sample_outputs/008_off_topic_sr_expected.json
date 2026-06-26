@@ -1,0 +1,14 @@
+{
+  "verdict": "REJECT",
+  "postType": "spam",
+  "language": "Serbian",
+  "riskLevel": "low",
+  "reason": "Oglas za prodaju iPhone-a nije povezan sa sezonskim radom u Srbiji. Ova grupa je namenjena isključivo sezonskim poslovima, iskustvima radnika i povezanim pitanjima.",
+  "missingInfo": "none",
+  "problemsFound": "* nije povezano sa sezonskim radom\n* prodaja ličnih predmeta nije dozvoljena u grupi",
+  "action": "Odbaciti. Poslati autoru obaveštenje da grupa nije namenjena prodaji predmeta.",
+  "safeVersion": "not needed",
+  "questionToAuthor": "not needed",
+  "serbianVersion": "not needed",
+  "adminNote": "Off-topic — prodaja telefona. Standardno odbijanje."
+}

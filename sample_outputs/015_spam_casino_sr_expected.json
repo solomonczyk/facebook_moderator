@@ -1,0 +1,14 @@
+{
+  "verdict": "REJECT",
+  "postType": "spam",
+  "language": "Serbian",
+  "riskLevel": "high",
+  "reason": "Reklama za online kazino nije povezana sa sezonskim radom u Srbiji. Kockanje je zabranjena tema u grupi. Sadrži link ka kazino sajtu. Klasičan spam.",
+  "missingInfo": "none",
+  "problemsFound": "* reklama za kazino / kockanje\n* nije povezano sa sezonskim radom\n* sadrži eksterni link\n* preterana upotreba emodžija\n* promocija kockanja — protivno pravilima grupe",
+  "action": "Odbaciti bez kontaktiranja autora. Ako se ponavlja, banovati autora.",
+  "safeVersion": "not needed",
+  "questionToAuthor": "not needed",
+  "serbianVersion": "not needed",
+  "adminNote": "Spam — kazino reklama. Ne komunicirati sa autorom. Ako se ponovi — ban."
+}

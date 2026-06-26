@@ -1,0 +1,240 @@
+{
+  "main": {
+    "id": "bb7b722a13ad0717",
+    "type": "split",
+    "children": [
+      {
+        "id": "584f6e5d904f8bf5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c864c76ff0404962",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "outreach/target-groups/beraci-malina-zapadna-srbija.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "beraci-malina-zapadna-srbija"
+            }
+          },
+          {
+            "id": "c25d00db652e3199",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "vacancies/2026-06-26-berba-sljiva-centralna-srbija.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2026-06-26-berba-sljiva-centralna-srbija"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "ec14739af9357b51",
+    "type": "split",
+    "children": [
+      {
+        "id": "db81709b74d08cd4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "feeafbd1298087e2",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "08e9419ff64659ac",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "d3f9483e5330cd0d",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "14553c5d4a962c20",
+    "type": "split",
+    "children": [
+      {
+        "id": "64a3c4d8a828baa8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ae3b2d78dbffb3a2",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "reports/2026-06-26-operator-actions.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for 2026-06-26-operator-actions"
+            }
+          },
+          {
+            "id": "5eab663ef0c9289b",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "reports/2026-06-26-operator-actions.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from 2026-06-26-operator-actions"
+            }
+          },
+          {
+            "id": "bd55912ececea56c",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "a2dcddf7b6450383",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "69d1f1a55f85d257",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "reports/2026-06-26-operator-actions.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 2026-06-26-operator-actions"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "feeafbd1298087e2",
+  "lastOpenFiles": [
+    "reports/live-market-feed/2026-06-27-live-market-feed.md.tmp.6540.be8e8a226f45",
+    "reports/live-market-feed/2026-06-27-live-market-feed.md.tmp.6540.a9a1c2ac5bcd",
+    "reports/live-market-feed/2026-06-27-live-market-feed.md.tmp.6540.08bb18644418",
+    "reports/live-market-feed/backlog/2026-06-26-facebook-leads-backlog.md.tmp.6540.f69ef3eab488",
+    "reports/live-market-feed/backlog/2026-06-26-facebook-leads-backlog.md.tmp.6540.3bb30854510d",
+    "reports/live-market-feed/backlog/2026-06-26-facebook-leads-backlog.md.tmp.6540.66a025dac9fb",
+    "vacancies/facebook/2026-06-26-fb-009-radnice-dnevnica-6000.md",
+    "vacancies/facebook/2026-06-26-fb-009-radnice-dnevnica-6000.md.tmp.6540.d683f97c4f11",
+    "vacancies/facebook/2026-06-26-fb-008-visoka-arilje.md",
+    "vacancies/facebook/2026-06-26-fb-008-visoka-arilje.md.tmp.6540.c0779e1aadb2",
+    "reports/live-market-feed/backlog/2026-06-26-facebook-leads-backlog.md.tmp.6540.46d0d3626bd6",
+    "reports/live-market-feed/2026-06-27-live-market-feed.md.tmp.6540.81f674afbe1e",
+    "reports/live-market-feed/backlog/2026-06-26-facebook-leads-backlog.md.tmp.6540.4943a88640a2",
+    "tests/task-003h-facebook-leads-backlog-checklist.md",
+    "vacancies/facebook/2026-06-26-fb-003-velibor-arilje.md",
+    "reports/live-market-feed/2026-06-27-live-market-feed.md",
+    "workers/2026-06-26-w-002-potreban-posao.md",
+    "workers/2026-06-26-w-001-imam-radnike.md",
+    "vacancies/facebook/2026-06-26-fb-005-140din-kg.md",
+    "vacancies/facebook/2026-06-26-fb-004-zena-arilje.md",
+    "vacancies/facebook/2026-06-26-fb-002-bajina-basta.md",
+    "vacancies/facebook/2026-06-26-fb-001-mocioci-ivanjica.md",
+    "reports/live-market-feed/backlog/2026-06-26-facebook-leads-backlog.md",
+    "outreach/facebook-groups/2026-06-26-facebook-groups-map-fixed.md",
+    "outreach/facebook-groups/2026-06-26-facebook-groups-map.md",
+    "vacancies/2026-06-26-branje-malina-arilje-0603041690.md",
+    "vacancies/2026-06-26-branje-malina-arilje-063691727.md",
+    "reports/live-market-feed/2026-06-26-live-market-feed.md",
+    "vacancies/2026-06-26-berba-malina-arilje.md",
+    "vacancies/2026-06-26-berba-sljiva-centralna-srbija.md",
+    "vacancies/2026-06-26-berba-jabuka-krusevac.md",
+    "vacancies/2026-06-26-berba-borovnica-srem.md",
+    "vacancies/2026-06-26-berba-jagoda-vojvodina.md",
+    "vacancies/_template-vacancy.md",
+    "outreach/target-groups/poslovi-srem.md",
+    "outreach/target-groups/magyarok-szerbiaban.md"
+  ]
+}

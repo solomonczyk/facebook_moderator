@@ -1,0 +1,43 @@
+{
+  "task": "sezonski_rad_ops_001_obsidian_only",
+  "project": "Sezonski rad Srbija | Poslovi i iskustva radnika",
+  "version": "0.1.0",
+  "delivery_date": "2026-06-26",
+  "source_of_truth": "obsidian",
+  "notion_used": false,
+  "google_sheets_used_as_crm": false,
+  "duplicate_storage_created": false,
+  "facebook_auto_actions_enabled": false,
+  "facebook_scraping_enabled": false,
+  "manual_operator_required": true,
+  "vault_created": true,
+  "dashboard_created": true,
+  "daily_workflow_created": true,
+  "vacancy_template_created": true,
+  "worker_template_created": true,
+  "review_template_created": true,
+  "outreach_tracker_created": true,
+  "post_queue_created": true,
+  "moderation_queue_created": true,
+  "multilingual_templates_created": true,
+  "languages_supported": [
+    "serbian",
+    "russian",
+    "ukrainian",
+    "hungarian",
+    "romanian"
+  ],
+  "fake_vacancies_forbidden": true,
+  "fake_reviews_forbidden": true,
+  "manual_publication_gate": true,
+  "production_accepted": false,
+  "known_limitations": [
+    "Obsidian vault is a manual system — operator must create files, update statuses, and fill KPIs by hand",
+    "Dataview queries require Obsidian with Dataview plugin installed",
+    "No automation for Facebook actions — all posts, messages, approvals are manual",
+    "Multilingual templates are ready but translations should be reviewed by native speakers before use",
+    "Sample records are illustrative — real data must be collected by the operator",
+    "Validation is manual — run through test-cases.md checklist",
+    "No CI/CD for the vault — it is a folder of markdown files"
+  ]
+}

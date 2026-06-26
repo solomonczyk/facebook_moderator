@@ -1,0 +1,14 @@
+{
+  "verdict": "NEEDS_CLARIFICATION",
+  "postType": "vacancy",
+  "language": "Serbian",
+  "riskLevel": "medium",
+  "reason": "Oglas za građevinske radnike u Novom Sadu, ali nedostaje većina obaveznih informacija: plata, način isplate, radno vreme, smeštaj, hrana, prevoz, prijava radnika, datum početka.",
+  "missingInfo": "* tačna plata\n* način isplate\n* radno vreme\n* kada posao počinje\n* koliko radnika je potrebno\n* da li ima smeštaja\n* da li ima hrane\n* da li je radnik prijavljen",
+  "problemsFound": "* nedostaje većina obaveznih polja za vakansiju\n* nije naveden tip građevinskih radova",
+  "action": "Tražiti od autora da dopuni oglas sa svim obaveznim informacijama pre odobravanja.",
+  "safeVersion": "not needed",
+  "questionToAuthor": "Molimo vas da dopunite oglas: navedite tačnu platu, radno vreme, da li ima smeštaja i hrane, kada posao počinje i da li su radnici prijavljeni.",
+  "serbianVersion": "not needed",
+  "adminNote": "Ne odobravati dok se ne dopune osnovni uslovi. Oglas je suviše štur."
+}

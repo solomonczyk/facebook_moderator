@@ -1,0 +1,14 @@
+{
+  "verdict": "APPROVE_WITH_EDITS",
+  "postType": "worker_review",
+  "language": "Serbian",
+  "riskLevel": "high",
+  "reason": "Post sadrži lično iskustvo o neisplaćenoj plati što je korisno za grupu, ali sadrži uvrede ('govnar', 'stoka') i apsolutne optužbe ('lopov', 'prevaranti') koje moraju biti preformulisane u bezbedan, faktički stil. Takođe generalizuje na sve radnike ('svi su tamo prevaranti').",
+  "missingInfo": "* period rada\n* tip posla\n* šta je tačno dogovoreno\n* kolika je plata bila dogovorena",
+  "problemsFound": "* uvrede ('govnar', 'stoka')\n* apsolutne optužbe bez pravnog osnova ('lopov', 'prevaranti')\n* generalizacija na sve radnike ('svi su tamo prevaranti')\n* poziv na bojkot bez dovoljno konkretnih činjenica",
+  "action": "Ponuditi autoru bezbednu verziju teksta. Ako autor ne prihvati izmene, ne odobravati objavu.",
+  "safeVersion": "Radio sam kod poslodavca u Leskovcu. Prema mom ličnom iskustvu, nije mi isplatio poslednju platu. Ja ne bih preporučio ovo mesto bez dodatne provere uslova.",
+  "questionToAuthor": "not needed",
+  "serbianVersion": "not needed",
+  "adminNote": "Ponuditi safe_version autoru. Objasniti da grupa ne može objavljivati uvrede i apsolutne optužbe zbog pravnog rizika. Ako odbije — ne objavljivati."
+}

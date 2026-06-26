@@ -1,0 +1,14 @@
+{
+  "verdict": "APPROVE",
+  "postType": "job_request",
+  "language": "Russian",
+  "riskLevel": "low",
+  "reason": "Radnik iz Rusije traži sezonski posao u Srbiji. Pitanje je jasno, konkretno, bez uvreda. Specificirao je tip posla (građevina, poljoprivreda) i vreme dostupnosti. Potrebno je pripremiti srpsku verziju.",
+  "missingInfo": "none",
+  "problemsFound": "none",
+  "action": "Objaviti sa srpskom verzijom ispod originalnog teksta.",
+  "safeVersion": "not needed",
+  "questionToAuthor": "not needed",
+  "serbianVersion": "Zdravo, ja sam iz Rusije. Tražim sezonski posao u Srbiji — građevina ili poljoprivreda. Da li neko ima kontakte poslodavaca? Mogu da počnem za nedelju dana.",
+  "adminNote": "Ruski tekst — objaviti dvojezično (original + srpska verzija). Standardni upit za posao, bez problema."
+}

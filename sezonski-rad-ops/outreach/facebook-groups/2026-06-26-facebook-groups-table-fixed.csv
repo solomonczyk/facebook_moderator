@@ -1,0 +1,31 @@
+group_id,group_name,priority,url_confirmed,group_found,rules_visible,rules_checked,posting_with_link_allowed,other_group_promotion_allowed,admin_approval_required,recommended_action,likely_action,operator_risk,risk_reason
+P1-01,Beraci malina zapadna Srbija,priority_1,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Niche raspberry picker group — these groups exist for workers and employers to connect. Confirmed by Euronews June 2026.
+P1-02,Sezonski poslovi Srbija,priority_1,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,General seasonal job group. Complementary not competing. Multiple variants may exist.
+P1-03,Sezonski rad Srbija BiH Crna Gora,priority_1,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Regional group — cross-promotion between similar groups is common in Balkans.
+P1-04,Poslovi sa smestajem Srbija,priority_1,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Perfect fit — seasonal work almost always includes accommodation.
+P1-05,Poslovi Srem,priority_1,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Local group — confirmed by Alo.rs as active seasonal work region.
+P1-06,Poljoprivredni poslovi Srbija,priority_1,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Agricultural focus — direct topic match.
+P1-07,Poslovi Subotica i okolina,priority_1,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Local group — bilingual opportunity Serbian+Hungarian.
+P1-08,Berba voca i povrca radnici poslodavci,priority_1,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Name suggests open community for both workers and employers.
+P1-09,Plastenici posao Srbija,priority_1,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Niche greenhouse group. Check activity level before posting.
+P1-10,Hladnjace posao Srbija,priority_1,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Very niche — Serbia has 100+ cold storages hiring seasonal workers.
+P1-11,Poslovi Arilje Ivanjica Cacak,priority_1,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,ask_admin_first,medium,Local small-town groups — admins may be protective. Message admin first.
+P1-12,Poslovi Vojvodina,priority_1,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Large agricultural region — complementary topic.
+P2-01,Poslovi Srbija,priority_2,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,comment_only,high,Very large 20k-50k+ — strict anti-spam almost certain. Do not post. Comment only when relevant.
+P2-02,Poslovi Novi Sad,priority_2,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,ask_admin_first,medium,Large city group — may restrict promotion. Ask admin if unclear.
+P2-03,Poslovi Beograd,priority_2,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,comment_only,high,Largest city group 30k+ — almost certainly anti-promotion. Comment only.
+P2-04,Hitno potreban radnik Srbija,priority_2,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Urgent job seekers — practical audience. Helpful resources likely accepted.
+P2-05,Dnevnice Srbija,priority_2,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Daily-wage workers — seasonal work is typically daily-paid. Perfect match.
+P2-06,Fizicki poslovi Srbija,priority_2,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Manual labor — seasonal agriculture and construction are physical work.
+P2-07,Oglasi za posao Srbija,priority_2,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,ask_admin_first,medium,May be employer-focused — could see us as competition. Ask admin.
+P2-08,Poslovi Nis,priority_2,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Southern Serbia — different geography. Local groups tend to be open.
+P3-01,Rabota v Serbii dlya russkikh,priority_3,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,ask_admin_first,medium,Large expat community group — protective. Soft approach needed. Message admin in Russian.
+P3-02,Ukrajinci u Srbiji,priority_3,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,ask_admin_first,medium,Ukrainian community — protective. Community-support angle only.
+P3-03,Magyarok Szerbiaban,priority_3,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Hungarian minority — smaller focused community. Bilingual post likely welcome.
+P3-04,Stranci u Srbiji Foreigners in Serbia,priority_3,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,comment_only,medium,Mixed expat audience — not all looking for work. Comment when relevant.
+P3-05,Studentski poslovi Srbija,priority_3,false,unverified,unverified,false,unknown,unknown,unknown,verify_manually,post_directly,low,Students = summer seasonal workers. Post before summer break.
+DNP-01,Poslovi Hrvatska Slovenija,do_not_post,false,unverified,unverified,false,unknown,unknown,unknown,skip,skip,high,Wrong country — only regional groups that include Serbia.
+DNP-02,MLM Biznis grupe,do_not_post,false,unverified,unverified,false,unknown,unknown,unknown,skip,skip,high,Spam-filled — avoid entirely. Damages group reputation.
+DNP-03,Inactive groups 30 plus days,do_not_post,false,condition,unverified,false,unknown,unknown,unknown,skip,skip,low,No recent activity — not worth operator time. Check when browsing.
+DNP-04,Private strict admission groups,do_not_post,false,condition,unverified,false,unknown,unknown,unknown,skip,skip,medium,Can't join — skip. Exception if highly relevant and operator admitted.
+DNP-05,Spam-filled unmoderated groups,do_not_post,false,condition,unverified,false,unknown,unknown,unknown,skip,skip,high,Over 50 percent spam — posting associates us with spam.

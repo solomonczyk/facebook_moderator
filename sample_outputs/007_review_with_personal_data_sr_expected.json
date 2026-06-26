@@ -1,0 +1,14 @@
+{
+  "verdict": "APPROVE_WITH_EDITS",
+  "postType": "worker_review",
+  "language": "Serbian",
+  "riskLevel": "high",
+  "reason": "Post sadrži tuđi broj telefona objavljen bez saglasnosti i poziv na uznemiravanje ('zovite ga i recite mu da je prevarant'), što je ozbiljno kršenje pravila o ličnim podacima. Takođe sadrži uvredu ('prevarant'). Tekst se može objaviti tek nakon uklanjanja broja telefona i uvreda.",
+  "missingInfo": "* tip posla\n* period rada\n* konkretni razlozi zašto je 'loš poslodavac'",
+  "problemsFound": "* objavljen tuđi broj telefona bez saglasnosti\n* poziv na uznemiravanje ('zovite ga')\n* uvreda ('prevarant')\n* nedovoljno konkretnih informacija o iskustvu",
+  "action": "Ukloniti tuđi broj telefona i uvrede. Ponuditi autoru bezbednu verziju. Ako autor insistira na objavljivanju broja — REJECT.",
+  "safeVersion": "Radio sam sa poslodavcem iz Subotice. Prema mom ličnom iskustvu, nisam zadovoljan uslovima rada. Detalje mogu podeliti na upit.",
+  "questionToAuthor": "not needed",
+  "serbianVersion": "not needed",
+  "adminNote": "HITNO: sadrži tuđi broj telefona — ne objavljivati ni u kom slučaju bez uklanjanja. Objavljivanje tuđeg telefona sa pozivom na uznemiravanje može imati pravne posledice po grupu."
+}

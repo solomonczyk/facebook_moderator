@@ -1,0 +1,14 @@
+{
+  "verdict": "APPROVE",
+  "postType": "worker_review",
+  "language": "Russian",
+  "riskLevel": "low",
+  "reason": "Pozitivno lično iskustvo radnika sa gradilišta u Beogradu. Konkretne informacije: lokacija, period, plata, smeštaj, hrana, preporuka. Bez uvreda. Potrebno je pripremiti srpsku verziju.",
+  "missingInfo": "* naziv firme / poslodavca\n* tip građevinskih radova",
+  "problemsFound": "none",
+  "action": "Objaviti sa srpskom verzijom ispod originalnog teksta.",
+  "safeVersion": "not needed",
+  "questionToAuthor": "not needed",
+  "serbianVersion": "Radio sam na građevini u Beogradu dva meseca. Plata je isplaćivana na vreme, smeštaj je bio u redu, hrana o svom trošku. Poslodavac korektan. Mogu da preporučim.",
+  "adminNote": "Ruski tekst — objaviti dvojezično. Pozitivno iskustvo, dobar sadržaj za grupu."
+}

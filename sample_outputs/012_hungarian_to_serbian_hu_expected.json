@@ -1,0 +1,14 @@
+{
+  "verdict": "APPROVE",
+  "postType": "job_request",
+  "language": "Hungarian",
+  "riskLevel": "low",
+  "reason": "Radnik iz Mađarske traži sezonski posao u poljoprivredi u Srbiji. Ima iskustvo, može odmah da počne. Pitanje je jasno, konkretno, bez uvreda. Potrebna je srpska verzija.",
+  "missingInfo": "none",
+  "problemsFound": "none",
+  "action": "Objaviti sa srpskom verzijom ispod originalnog teksta.",
+  "safeVersion": "not needed",
+  "questionToAuthor": "not needed",
+  "serbianVersion": "Zdravo! Iz Mađarske sam. Tražim posao u Srbiji u poljoprivredi. Imam iskustvo. Mogu da počnem odmah. Da li neko ima kontakt? Hvala.",
+  "adminNote": "Mađarski tekst — objaviti dvojezično. Standardni upit za posao."
+}

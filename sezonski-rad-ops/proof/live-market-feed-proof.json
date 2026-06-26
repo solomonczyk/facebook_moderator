@@ -1,0 +1,35 @@
+{
+  "task": "task_002e_live_market_feed_md_package",
+  "date": "2026-06-26",
+  "output_file": "reports/live-market-feed/2026-06-26-live-market-feed.md",
+  "total_leads_collected": 6,
+  "good_leads": 1,
+  "low_info_leads": 1,
+  "contact_only_leads": 1,
+  "needs_clarification": 3,
+  "suspicious": 0,
+  "rejected": 0,
+  "public_digest_candidates": 3,
+  "facebook_auto_actions_enabled": false,
+  "facebook_scraping_enabled": false,
+  "fake_vacancies_created": false,
+  "verified_by_operator": false,
+  "disclaimer_included": true,
+  "suspicious_excluded_from_public_digest": true,
+  "reject_excluded_from_public_digest": true,
+  "production_accepted": false,
+  "sources_used": [
+    "021.rs public classifieds",
+    "Euronews.rs",
+    "Alo.rs",
+    "Blic.rs",
+    "Kurir.rs"
+  ],
+  "known_limitations": [
+    "Facebook group posts are not indexed by web search engines — operator must provide screenshots or copied text from FB groups",
+    "Leads from news articles (004-006) have no direct employer contacts — market context only",
+    "Digest contains only 3 leads today — fewer than ideal 5-10 target",
+    "Public digest candidates verified by source URL only — not by calling employers",
+    "No Facebook groups were directly accessed"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "task": "TASK-003G-SOURCE-AGNOSTIC-DAILY-SEASONAL-JOB-COLLECTOR",
+  "date": "2026-06-26",
+  "status": "completed",
+  "verdict": "READY_FOR_CHATGPT_DIGEST_REVIEW",
+  "total_leads_collected": 9,
+  "public_digest_candidates": 3,
+  "good_leads": 1,
+  "low_info_leads": 1,
+  "contact_only_leads": 1,
+  "market_context_items": 3,
+  "needs_clarification": 2,
+  "suspicious": 0,
+  "rejected": 1,
+  "fresh_today": 0,
+  "fresh_1_3_days": 2,
+  "fresh_4_7_days": 1,
+  "stale_over_7_days": 1,
+  "unknown_date": 5,
+  "target_minimum_met": true,
+  "target_ideal_met": false,
+  "direct_contacts_found": 3,
+  "sources_checked_count": 5,
+  "keyword_searches_count": 14,
+  "regional_searches_count": 5,
+  "facebook_auto_actions_enabled": false,
+  "facebook_scraping_enabled": false,
+  "fake_vacancies_created": false,
+  "operator_verification_required": true,
+  "production_accepted": false,
+  "target_ideal_blocker": "Seasonal job ads in Serbia are predominantly on Facebook groups (not web-indexed). Only 021.rs consistently yields fresh ads with contacts via web search. Operator must supplement with manual Facebook group monitoring to reach 5-10 daily candidates.",
+  "best_source_today": "021.rs",
+  "artifacts_created": {
+    "daily_feed_md": true,
+    "proof_json": true
+  },
+  "git": {
+    "committed": false,
+    "commit_hash": null,
+    "working_tree_clean": false
+  }
+}

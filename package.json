@@ -1,0 +1,32 @@
+{
+  "name": "facebook-admin-copilot",
+  "version": "0.1.0",
+  "description": "AI Admin Copilot for Facebook group 'Sezonski rad Srbija | Poslovi i iskustva radnika' — operator-in-the-loop moderation assistant",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "build": "tsc",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint src/ tests/ scripts/",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:live": "vitest run --testPathPattern live.test.ts",
+    "test:watch": "vitest",
+    "proof": "tsx scripts/validate-proof.ts",
+    "validate-schema": "tsx scripts/validate-schema.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.37.0",
+    "chalk": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.0.0"
+  }
+}
