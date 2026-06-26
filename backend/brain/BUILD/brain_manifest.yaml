@@ -1,0 +1,29 @@
+brain:
+  version: 1.0.0
+
+  constitution:
+    - CANON/00_AGENT_CONSTITUTION.md
+
+  policies:
+    - CANON/01_OPERATOR_CHARTER.md
+    - CANON/02_GROUP_POLICY.md
+    - CANON/03_SAFETY_MODEL.md
+
+  knowledge:
+    - KNOWLEDGE/Classification.md
+    - KNOWLEDGE/Risk.md
+    - KNOWLEDGE/Extraction.md
+    - KNOWLEDGE/Digest.md
+    - KNOWLEDGE/Languages.md
+    - KNOWLEDGE/SerbianSeasonalWork.md
+    - KNOWLEDGE/EdgeCases.md
+
+  prompts:
+    - PROMPTS/FewShot.md
+    - PROMPTS/NegativeExamples.md
+    - PROMPTS/JsonContract.md
+
+output:
+  system_prompt: PROMPTS/SystemPrompt.md
+  release_dir: BUILD/releases
+  latest_json: BUILD/releases/latest.json
