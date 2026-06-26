@@ -47,7 +47,7 @@ WORKER_LOOKING_PATTERNS = [
 WORKER_GROUP_PATTERNS = [
     r'imam\s+(?:\d+\s+)?(?:ljudi|radnika|ljude)', r'imam\s+grupu',
     r'(?:grupa|grupu|grupovova)\s+(?:od\s+)?\d+\s+(?:ljudi|radnika)',
-    r'(?:moja\s+)?ekipa', r'moja\s+grupa', r'(?:nas|ima\s+nas)\s+\d+',
+    r'(?:moja\s+)?ekipa', r'moja\s+grupa', r'(?:nas|ima\s+nas)\s+(?:je\s+)?\d+',
     r'\d+\s+(?:ljudi|radnika|članova)', r'sa\s+(?:svojim\s+)?prevozom?\s+\d+\s+(?:ljudi|radnika)',
 ]
 EMPLOYER_JOB_PATTERNS = [
@@ -58,13 +58,12 @@ EMPLOYER_JOB_PATTERNS = [
     r'potrebna\s+\d+\s+radnik', r'potrebno\s+\d+\s+radnik',
     r'trebaju\s+(?:mi\s+)?radnici', r'treba\s+nam\s+ekipa',
     r'zapošljavamo?', r'firma\s+traži', r'hitno\s+(?:potreb|traž)',
-    # Job type signals (when combined with contact/location → employer)
+    # Job type signals — only when combined with contact or other employer signals
     r'za\s+berbu\s+(?:malina|višanja|jabuka|trešanja|borovnica|kupina|šljiva)',
     r'za\s+branje\s+(?:malina|višanja|jabuka|trešanja|borovnica)',
     r'radnike?\s+za\s+(?:berbu|branje|pakovanje|sortiranje)',
     r'radnice?\s+za\s+(?:berbu|branje|pakovanje|sortiranje)',
-    r'(?:berba|branje|pakovanje|sortiranje)\s+(?:malina|voća|povrća|jabuka)',
-    r'plastenik', r'hladnjač', r'na\s+farmi\s+traž',
+    r'na\s+farmi\s+traž',
 ]
 EXPERIENCE_PATTERNS = [
     r'radio\s+sam', r'radila\s+sam', r'moje\s+iskustvo', r'lično\s+sam',
@@ -88,7 +87,17 @@ def classify(raw_text: str, source_group: str = "") -> ClassificationResult:
     text = raw_text.lower().strip()
     result = ClassificationResult()
 
-    # 0. SUSPICIOUS — check before spam for document/payment red flags
+    # 1. SPAM — always check first
+    for pattern in SPAM_PATTERNS:
+        if re.search(pattern, text):
+            result.classification = ContentClass.SPAM
+            result.confidence = 0.95
+            result.risk_level = "high"
+            result.recommended_action = "reject"
+            result.suggested_reply = "Ova objava ne može biti odobrena jer ne pripada temama grupe."
+            return result
+
+    # 2. SUSPICIOUS — check after spam
     suspicious_patterns = [
         r'uplata\s+unapred', r'depozit', r'JMBG', r'slika\s+pasoša',
         r'slika\s+lične\s+karte', r'dokumenta\s+unapred',
@@ -105,17 +114,7 @@ def classify(raw_text: str, source_group: str = "") -> ClassificationResult:
             result.suggested_reply = "Ova objava zahteva dodatnu proveru pre objave."
             return result
 
-    # 1. SPAM — always check first
-    for pattern in SPAM_PATTERNS:
-        if re.search(pattern, text):
-            result.classification = ContentClass.SPAM
-            result.confidence = 0.95
-            result.risk_level = "high"
-            result.recommended_action = "reject"
-            result.suggested_reply = "Ova objava ne može biti odobrena jer ne pripada temama grupe."
-            return result
-
-    # 2. EMPLOYER — check BEFORE worker patterns
+    # 3. EMPLOYER — check BEFORE worker patterns
     for pattern in EMPLOYER_JOB_PATTERNS:
         if re.search(pattern, text):
             result.classification = ContentClass.EMPLOYER_JOB_POST

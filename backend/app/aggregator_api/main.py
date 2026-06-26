@@ -89,11 +89,19 @@ def on_startup():
         except Exception as e:
             logger.warning(f"Analyst agent init skipped: {e}")
 
-        # Initialize Runtime Manager Agent (007A)
+        # Initialize Runtime Manager Agent (007A/007B)
         try:
             from ..agents.facebook_runtime_manager import FacebookGroupRuntimeManagerAgent
-            app.state.runtime_manager = FacebookGroupRuntimeManagerAgent()
-            logger.info(f"Runtime Manager Agent initialized (LLM: {app.state.runtime_manager.llm_available})")
+            from ..llm.config import LLMConfig
+            llm_config = LLMConfig()
+            llm_config.load_from_env()
+            app.state.runtime_manager = FacebookGroupRuntimeManagerAgent(config=llm_config)
+            status = app.state.runtime_manager.get_status()
+            logger.info(
+                f"Runtime Manager initialized: provider={status['provider']}, "
+                f"model={status['model']}, available={status['available']}, "
+                f"primary={status['llm_primary']}"
+            )
         except Exception as e:
             logger.warning(f"Runtime Manager init skipped: {e}")
 
