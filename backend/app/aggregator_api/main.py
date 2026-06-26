@@ -43,7 +43,7 @@ except ImportError:
 def on_startup():
     init_db()
 
-    # Start Telegram approval bot if configured
+    # Create shared runtime agent instance for all API routers + Telegram bot
     try:
         from ..runtime_agent.agent_core import RuntimeAgent
         from ..telegram_bot.bot import start_bot, set_runtime_agent
@@ -52,6 +52,16 @@ def on_startup():
         agent = RuntimeAgent(db)
         set_runtime_agent(agent)
         app.state.runtime_agent = agent
+        logger.info("Shared RuntimeAgent initialized")
+
+        # Also share via intake service
+        try:
+            from ..runtime_intake.intake_service import IntakeService
+            from ..runtime_intake.config import IntakeConfig
+            app.state.intake_service = IntakeService(db)
+            logger.info("Shared IntakeService initialized")
+        except Exception:
+            pass
 
         bot = start_bot()
         if bot:
@@ -60,7 +70,7 @@ def on_startup():
         else:
             logger.info("Telegram bot not started (token/chat_id not configured)")
     except Exception as e:
-        logger.warning(f"Telegram bot init skipped: {e}")
+        logger.warning(f"Startup init skipped: {e}")
 
 
 @app.on_event("shutdown")

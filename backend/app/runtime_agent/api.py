@@ -18,6 +18,14 @@ _agent: RuntimeAgent | None = None
 
 def get_agent(db: Session = Depends(get_db)) -> RuntimeAgent:
     global _agent
+    # Use shared agent from app.state if available
+    from fastapi import Request
+    try:
+        from ..aggregator_api.main import app as main_app
+        if hasattr(main_app.state, 'runtime_agent') and main_app.state.runtime_agent is not None:
+            return main_app.state.runtime_agent
+    except Exception:
+        pass
     if _agent is None or _agent.tools.db != db:
         _agent = RuntimeAgent(db)
     return _agent
