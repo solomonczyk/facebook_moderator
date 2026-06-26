@@ -22,7 +22,12 @@ class WorkerService:
             self._agent = RuntimeAgent(self._db)
         return self._agent
 
+    def sync_config(self) -> None:
+        """Propagate config changes to the watcher."""
+        self.watcher.config = self.config
+
     def start(self) -> tuple[bool, str]:
+        self.sync_config()
         return self.watcher.start()
 
     def stop(self) -> None:
