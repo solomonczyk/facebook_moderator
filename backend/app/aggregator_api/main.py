@@ -1,13 +1,17 @@
 """FastAPI application entry point for the Sezonski Rad aggregator."""
 
+import logging
 from fastapi import FastAPI
 from .api import router as aggregator_router
-from .database import init_db
+from .database import init_db, SessionLocal
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("sezonski.main")
 
 app = FastAPI(
     title="Sezonski rad Srbija — Aggregator API",
     description="Source-agnostic seasonal work lead aggregator, runtime agent, and intake layer.",
-    version="0.2.0",
+    version="0.2.1",
 )
 
 # Core aggregator API (004B)
@@ -38,6 +42,34 @@ except ImportError:
 @app.on_event("startup")
 def on_startup():
     init_db()
+
+    # Start Telegram approval bot if configured
+    try:
+        from ..runtime_agent.agent_core import RuntimeAgent
+        from ..telegram_bot.bot import start_bot, set_runtime_agent
+
+        db = SessionLocal()
+        agent = RuntimeAgent(db)
+        set_runtime_agent(agent)
+        app.state.runtime_agent = agent
+
+        bot = start_bot()
+        if bot:
+            app.state.telegram_bot = bot
+            logger.info("Telegram bot started in polling mode")
+        else:
+            logger.info("Telegram bot not started (token/chat_id not configured)")
+    except Exception as e:
+        logger.warning(f"Telegram bot init skipped: {e}")
+
+
+@app.on_event("shutdown")
+def on_shutdown():
+    try:
+        from ..telegram_bot.bot import stop_bot
+        stop_bot()
+    except ImportError:
+        pass
 
 
 if __name__ == "__main__":
