@@ -1,5 +1,6 @@
 """FastAPI application entry point for the Sezonski Rad aggregator."""
 
+import os
 import logging
 from fastapi import FastAPI
 from .api import router as aggregator_router
@@ -38,6 +39,13 @@ try:
 except ImportError:
     pass
 
+# Analyst agent API (006B)
+try:
+    from ..analyst_agent.api import router as analyst_router
+    app.include_router(analyst_router)
+except ImportError:
+    pass
+
 
 @app.on_event("startup")
 def on_startup():
@@ -61,6 +69,18 @@ def on_startup():
             logger.info("Shared IntakeService initialized")
         except Exception:
             pass
+
+        # Initialize analyst agent
+        try:
+            from ..analyst_agent.analyst_core import AnalystAgent
+            from ..analyst_agent.config import AnalystConfig
+            analyst_config = AnalystConfig()
+            analyst_config.analyst_enabled = os.getenv("ANALYST_ENABLED", "false").lower() == "true"
+            analyst_config.autonomous_mode_enabled = os.getenv("ANALYST_AUTONOMOUS_ENABLED", "false").lower() == "true"
+            app.state.analyst_agent = AnalystAgent(config=analyst_config, runtime_agent=agent)
+            logger.info(f"Analyst agent initialized (enabled={analyst_config.analyst_enabled}, autonomous={analyst_config.autonomous_mode_enabled})")
+        except Exception as e:
+            logger.warning(f"Analyst agent init skipped: {e}")
 
         bot = start_bot()
         if bot:
