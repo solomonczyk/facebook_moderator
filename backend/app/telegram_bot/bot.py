@@ -307,10 +307,15 @@ def start_bot():
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CallbackQueryHandler(handle_callback))
 
-    import threading
+    import threading, asyncio
     def run_polling():
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
         logger.info("Telegram bot polling started")
-        app.run_polling(drop_pending_updates=True)
+        loop.run_until_complete(app.initialize())
+        loop.run_until_complete(app.updater.start_polling(drop_pending_updates=True))
+        loop.run_until_complete(app.start())
+        loop.run_forever()
 
     thread = threading.Thread(target=run_polling, daemon=True, name="telegram-bot")
     thread.start()
