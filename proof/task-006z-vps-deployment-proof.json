@@ -1,0 +1,63 @@
+{
+  "task": "TASK-006Z-PATCH-VPS-PORT-CONFLICT-PROTECTION",
+  "status": "completed",
+  "verdict": "DEPLOYED_AND_RUNNING",
+  "date": "2026-06-26",
+  "server": "152.53.227.37",
+  "hostname": "v2202508292476370494",
+  "existing_services_inventory_completed": true,
+  "occupied_ports_checked": true,
+  "selected_port": 8010,
+  "selected_port_was_free": true,
+  "host_binding": "127.0.0.1",
+  "existing_services_stopped": false,
+  "existing_nginx_configs_modified": false,
+  "existing_projects_modified": false,
+  "ufw_reset": false,
+  "raw_backend_publicly_exposed": false,
+  "existing_services": {
+    "docker_containers": {
+      "tp_frontend": "Up 6 days (healthy)",
+      "tp_backend": "Up 8 days (healthy)",
+      "pq_frontend": "Up 11 days (healthy)",
+      "pq_backend": "Up 11 days (healthy)",
+      "tp_caddy": "Up 11 days (healthy)",
+      "tp_postgres": "Up 13 days (healthy)"
+    },
+    "system_services": ["ssh", "cron", "docker", "containerd"],
+    "occupied_ports": [22, 80, 443],
+    "projects_in_opt": ["containerd", "python-quest", "trainer-platform", "facebook_moderator"]
+  },
+  "deployment": {
+    "project_dir": "/opt/facebook_moderator",
+    "service_name": "sezonski-runtime",
+    "user": "sezonski",
+    "port": 8010,
+    "host": "127.0.0.1",
+    "python_version": "3.11.2",
+    "systemd_enabled": true,
+    "auto_start_on_boot": true
+  },
+  "health_endpoints": {
+    "/api/aggregator/health": {"status": "ok"},
+    "/api/runtime-agent/status": "all_dangerous_gates_false",
+    "/api/runtime-intake/status": "safe_modes_enabled_guarded_disabled",
+    "/api/account-worker/status": "stopped_selenium_unavailable"
+  },
+  "dangerous_gates": {
+    "facebook_account_worker_enabled": false,
+    "facebook_auto_post_enabled": false,
+    "facebook_auto_comment_enabled": false,
+    "facebook_auto_message_enabled": false,
+    "captcha_bypass_enabled": false,
+    "stealth_browser_enabled": false,
+    "fake_account_enabled": false,
+    "production_accepted": false
+  },
+  "production_accepted": false,
+  "git": {
+    "branch": "master",
+    "commit": "dcc2bd7",
+    "pushed": true
+  }
+}
