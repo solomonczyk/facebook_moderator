@@ -9,6 +9,10 @@ from datetime import datetime
 
 logger = logging.getLogger("sezonski.telegram")
 
+# Suppress httpx URL logging — prevents token leakage in journal
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
+
 # Optional import — bot is active only when token is configured
 try:
     from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
