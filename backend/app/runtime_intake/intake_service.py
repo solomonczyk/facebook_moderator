@@ -9,9 +9,9 @@ from .intake_models import IntakeResponse
 
 
 class IntakeService:
-    def __init__(self, db: Session, config: IntakeConfig | None = None):
+    def __init__(self, db: Session, config: IntakeConfig | None = None, agent: RuntimeAgent | None = None):
         self.config = config or IntakeConfig()
-        self._agent: RuntimeAgent | None = None
+        self._agent = agent
         self._db = db
 
     @property
@@ -19,6 +19,9 @@ class IntakeService:
         if self._agent is None:
             self._agent = RuntimeAgent(self._db)
         return self._agent
+
+    def set_agent(self, agent: RuntimeAgent) -> None:
+        self._agent = agent
 
     def process_event(self, event: RuntimeEvent) -> IntakeResponse:
         if not self.config.manual_paste_enabled:

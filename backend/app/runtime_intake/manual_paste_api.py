@@ -23,6 +23,13 @@ _intake_service: IntakeService | None = None
 
 def get_intake(db: Session = Depends(get_db)) -> IntakeService:
     global _intake_service
+    # Use shared service from app.state if available
+    try:
+        from ..aggregator_api.main import app as main_app
+        if hasattr(main_app.state, 'intake_service') and main_app.state.intake_service is not None:
+            return main_app.state.intake_service
+    except Exception:
+        pass
     if _intake_service is None:
         _intake_service = IntakeService(db)
     return _intake_service

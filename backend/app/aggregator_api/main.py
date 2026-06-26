@@ -57,8 +57,7 @@ def on_startup():
         # Also share via intake service
         try:
             from ..runtime_intake.intake_service import IntakeService
-            from ..runtime_intake.config import IntakeConfig
-            app.state.intake_service = IntakeService(db)
+            app.state.intake_service = IntakeService(db, agent=agent)
             logger.info("Shared IntakeService initialized")
         except Exception:
             pass
