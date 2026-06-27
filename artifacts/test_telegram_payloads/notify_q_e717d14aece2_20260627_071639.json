@@ -1,0 +1,42 @@
+{
+  "item_id": "q_e717d14aece2",
+  "chat_id": "TEST_MODE",
+  "text": "⚠️ *HIGH RISK ITEM* ⚠️\n🔍 *New Queue Item*\n\n*Action:* Request Operator Review\n*Classification:* `employer_warning`\n*Risk:* 🔴 HIGH\n*Confidence:* 85%\n*Source:* facebook_public_screenshot\n\n*Reason:* E2E: employer_warning, risk=high, action=escalate_to_operator\n\n*Suggested text:*\nČuvajte se! Poslodavac iz Surčina ne isplaćuje dogovoreno. Radio sam mesec dana, dobio pola plate!\n\nID: `q_e717d14aece2...`",
+  "parse_mode": "Markdown",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "✅ Approve",
+          "callback_data": "approve:q_e717d14aece2"
+        },
+        {
+          "text": "❌ Reject",
+          "callback_data": "reject:q_e717d14aece2"
+        }
+      ],
+      [
+        {
+          "text": "✏️ Edit",
+          "callback_data": "edit:q_e717d14aece2"
+        },
+        {
+          "text": "❓ Request Info",
+          "callback_data": "needs_info:q_e717d14aece2"
+        }
+      ],
+      [
+        {
+          "text": "⚠️ Escalate",
+          "callback_data": "escalate:q_e717d14aece2"
+        },
+        {
+          "text": "🚫 Spam",
+          "callback_data": "mark_spam:q_e717d14aece2"
+        }
+      ]
+    ]
+  },
+  "test_mode": true,
+  "saved_at": "2026-06-27T07:16:39.024780"
+}

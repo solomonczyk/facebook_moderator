@@ -1,0 +1,104 @@
+{
+  "groups_checked": [
+    {
+      "group_name": "Sezonski poslovi Srbija",
+      "url": "https://www.facebook.com/groups/1688328218110932",
+      "relevance_score": 0.95,
+      "access_status": "public (dry-run)"
+    },
+    {
+      "group_name": "Sezonski rad Srbija | Poslovi i iskustva radnika",
+      "url": "https://www.facebook.com/groups/992369183697618",
+      "relevance_score": 1.0,
+      "access_status": "public (dry-run)"
+    },
+    {
+      "group_name": "Berba malina — sezonski poslovi",
+      "url": "https://www.facebook.com/groups/berba.malina.poslovi",
+      "relevance_score": 0.9,
+      "access_status": "public (dry-run)"
+    },
+    {
+      "group_name": "Sezonski poslovi u poljoprivredi",
+      "url": "https://www.facebook.com/groups/sezonski.poslovi.poljoprivreda",
+      "relevance_score": 0.88,
+      "access_status": "public (dry-run)"
+    },
+    {
+      "group_name": "Poslovi u Srbiji — sezonski rad",
+      "url": "https://www.facebook.com/groups/poslovi.srbija.sezonski",
+      "relevance_score": 0.85,
+      "access_status": "public (dry-run)"
+    }
+  ],
+  "public_accessible": 5,
+  "login_blocked": 0,
+  "candidates_total": 7,
+  "duplicates_skipped": 1,
+  "queue_items_created": 6,
+  "telegram_payloads": 9,
+  "transitions_verified": 6,
+  "queue_results": [
+    {
+      "candidate_id": "pub_ed849369785c",
+      "item_id": "q_d85d291c2faf",
+      "classification": "job_offer",
+      "risk_level": "low",
+      "action": "create_group_post",
+      "queue_action_type": "publish_own_group_post",
+      "group_name": "Sezonski rad Srbija | Poslovi i iskustva radnika",
+      "source_url": "https://www.facebook.com/groups/992369183697618"
+    },
+    {
+      "candidate_id": "pub_28b17be33076",
+      "item_id": "q_5dd9a8a6db08",
+      "classification": "worker_search",
+      "risk_level": "medium",
+      "action": "create_group_post",
+      "queue_action_type": "publish_own_group_post",
+      "group_name": "Sezonski poslovi Srbija",
+      "source_url": "https://www.facebook.com/groups/1688328218110932"
+    },
+    {
+      "candidate_id": "pub_b5978098b9f8",
+      "item_id": "q_d0002f4198c5",
+      "classification": "job_offer",
+      "risk_level": "medium",
+      "action": "request_more_info",
+      "queue_action_type": "ask_for_missing_info",
+      "group_name": "Sezonski poslovi Srbija",
+      "source_url": "https://www.facebook.com/groups/1688328218110932"
+    },
+    {
+      "candidate_id": "pub_62866f10e375",
+      "item_id": "q_1a63ac9174e3",
+      "classification": "suspicious",
+      "risk_level": "high",
+      "action": "escalate_to_operator",
+      "queue_action_type": "request_operator_review",
+      "group_name": "Sezonski poslovi u poljoprivredi",
+      "source_url": "https://www.facebook.com/groups/sezonski.poslovi.poljoprivreda"
+    },
+    {
+      "candidate_id": "pub_4377d0475a8b",
+      "item_id": "q_e717d14aece2",
+      "classification": "employer_warning",
+      "risk_level": "high",
+      "action": "escalate_to_operator",
+      "queue_action_type": "request_operator_review",
+      "group_name": "Poslovi u Srbiji — sezonski rad",
+      "source_url": "https://www.facebook.com/groups/poslovi.srbija.sezonski"
+    },
+    {
+      "candidate_id": "pub_a08829c81947",
+      "item_id": "q_c5d4c8cc674a",
+      "classification": "spam",
+      "risk_level": "high",
+      "action": "reject_as_spam",
+      "queue_action_type": "request_operator_review",
+      "group_name": "Berba malina — sezonski poslovi",
+      "source_url": "https://www.facebook.com/groups/berba.malina.poslovi"
+    }
+  ],
+  "audit_count": 6
+}

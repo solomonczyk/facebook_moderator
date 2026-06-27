@@ -1,0 +1,42 @@
+{
+  "item_id": "q_d0002f4198c5",
+  "chat_id": "TEST_MODE",
+  "text": "❓ *New Queue Item*\n\n*Action:* Ask For Missing Info\n*Classification:* `job_offer`\n*Risk:* 🟡 MEDIUM\n*Confidence:* 85%\n*Source:* facebook_public_screenshot\n\n*Reason:* E2E: job_offer, risk=medium, action=request_more_info\n\n*Suggested text:*\nPotrebni radnici za plastenik Subotica. Smeštaj obezbeđen. Javite se inbox za više info.\n\nID: `q_d0002f4198c5...`",
+  "parse_mode": "Markdown",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "✅ Approve",
+          "callback_data": "approve:q_d0002f4198c5"
+        },
+        {
+          "text": "❌ Reject",
+          "callback_data": "reject:q_d0002f4198c5"
+        }
+      ],
+      [
+        {
+          "text": "✏️ Edit",
+          "callback_data": "edit:q_d0002f4198c5"
+        },
+        {
+          "text": "❓ Request Info",
+          "callback_data": "needs_info:q_d0002f4198c5"
+        }
+      ],
+      [
+        {
+          "text": "⚠️ Escalate",
+          "callback_data": "escalate:q_d0002f4198c5"
+        },
+        {
+          "text": "🚫 Spam",
+          "callback_data": "mark_spam:q_d0002f4198c5"
+        }
+      ]
+    ]
+  },
+  "test_mode": true,
+  "saved_at": "2026-06-27T07:16:39.022780"
+}

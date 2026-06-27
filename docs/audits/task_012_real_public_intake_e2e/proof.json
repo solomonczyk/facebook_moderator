@@ -1,0 +1,37 @@
+{
+  "task_id": "012",
+  "task_name": "Real Public Intake Dry-Run + Telegram Approval E2E",
+  "verdict": "ACCEPTED",
+  "branch": "master",
+  "commit": "854e95c",
+  "git_clean": true,
+  "runtime_changed": true,
+  "canon_changed": false,
+  "production_accepted": false,
+  "facebook_login_executed": false,
+  "facebook_publish_executed": false,
+  "facebook_comment_executed": false,
+  "facebook_message_executed": false,
+  "telegram_test_mode": true,
+  "telegram_real_send_executed": false,
+  "groups_checked": 5,
+  "public_groups_accessible": 5,
+  "login_required_or_blocked": 0,
+  "screenshots_created": 0,
+  "candidates_extracted": 7,
+  "candidates_sent_to_intake": 6,
+  "queue_items_created": 6,
+  "telegram_payloads_created": 9,
+  "operator_transitions_verified": 6,
+  "operator_approval_required_for_all": true,
+  "blockers": [],
+  "tests_run": [
+    {"command": "PYTHONIOENCODING=utf-8 PYTHONPATH=backend python -m app.facebook_public_intake.e2e_demo --dry-run --max-groups 5", "result": "pass", "notes": "Full E2E: 5 groups, 7 candidates, 6 queue items, 6 Telegram notifications, 6 operator transitions"}
+  ],
+  "artifacts": [
+    "docs/audits/task_012_real_public_intake_e2e/README.md",
+    "docs/audits/task_012_real_public_intake_e2e/proof.json",
+    "artifacts/e2e_result.json",
+    "artifacts/test_telegram_payloads/*.json"
+  ]
+}
