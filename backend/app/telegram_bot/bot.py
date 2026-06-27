@@ -254,8 +254,91 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "/queue — Pending action items with buttons\n"
         "/digest — Generate daily digest draft\n"
         "/addlead <text> — Analyze a lead from text\n"
+        "/forms — Structured intake forms\n"
+        "/drafts — Pending manual-publish drafts\n"
+        "/spam — Spam quarantine items\n"
         "/help — This help"
     )
+
+
+# ── /forms — structured intake links ─────────────────────────────────────
+
+async def forms_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update):
+        await _reject_unknown(update, context)
+        return
+    await update.message.reply_text(
+        "📋 *Strukturirani unos*\n\n"
+        "*Za poslodavce:*\n"
+        "`POST /api/intake/employer-offer`\n"
+        "Obavezna polja: employer_name, work_location, job_type, workers_needed, "
+        "start_date, pay_amount, pay_type, working_hours_or_norm, "
+        "housing_provided, food_provided, payment_frequency, contact\n\n"
+        "*Za radnike:*\n"
+        "`POST /api/intake/worker-search`\n"
+        "Obavezna polja: worker_name, current_location, people_count, "
+        "desired_job_type, available_from, housing_needed, food_needed, contact\n\n"
+        "Primer:\n"
+        "`curl -X POST http://127.0.0.1:8000/api/intake/employer-offer "
+        "-H \"Content-Type: application/json\" "
+        "-d '{\"employer_name\":\"Test\",\"work_location\":\"Sivac\",...}'`",
+        parse_mode="Markdown",
+    )
+
+
+# ── /drafts — pending manual-publish items ────────────────────────────────
+
+async def drafts_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update):
+        await _reject_unknown(update, context)
+        return
+
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+    pq = get_persistent_queue()
+
+    # Show: pending items ready for manual publish
+    pending = pq.get_all("pending")
+    approved = pq.get_all("approved")
+
+    drafts = [i for i in pending + approved if i.get("action_type") == "publish_own_group_post"]
+
+    if not drafts:
+        drafts = [i for i in pending if i["status"] == "pending"]
+
+    if not drafts:
+        await update.message.reply_text("✅ Nema draft-ova za ručno objavljivanje.")
+        return
+
+    await update.message.reply_text(f"📰 *Draft-ovi za ručno objavljivanje:* {len(drafts)}", parse_mode="Markdown")
+    for d in drafts[:5]:
+        text = d.get("suggested_text", "")[:300]
+        sid = d.get("item_id", "")[:16]
+        status = d.get("status", "?")
+        msg = f"`{sid}...` [{status}]\n{text}"
+        await update.message.reply_text(msg, parse_mode="Markdown")
+
+
+# ── /spam — spam quarantine ───────────────────────────────────────────────
+
+async def spam_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update):
+        await _reject_unknown(update, context)
+        return
+
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+    pq = get_persistent_queue()
+
+    spam_items = pq.get_all("spam_candidate") + pq.get_all("spam")
+
+    if not spam_items:
+        await update.message.reply_text("✅ Spam karantin prazan.")
+        return
+
+    await update.message.reply_text(f"🚫 *Spam karantin:* {len(spam_items)}", parse_mode="Markdown")
+    for s in spam_items[:5]:
+        sid = s.get("item_id", "")[:16]
+        reason = s.get("reason", "")[:100]
+        await update.message.reply_text(f"`{sid}...`\n{reason}", parse_mode="Markdown")
 
 
 # ── Callback Handlers ──────────────────────────────────────────────────────
@@ -465,6 +548,9 @@ def start_bot():
     app.add_handler(CommandHandler("queue", queue_cmd))
     app.add_handler(CommandHandler("digest", digest_cmd))
     app.add_handler(CommandHandler("addlead", addlead_cmd))
+    app.add_handler(CommandHandler("forms", forms_cmd))
+    app.add_handler(CommandHandler("drafts", drafts_cmd))
+    app.add_handler(CommandHandler("spam", spam_cmd))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CallbackQueryHandler(handle_callback))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_for_edit))
