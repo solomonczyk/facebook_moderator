@@ -1,0 +1,59 @@
+{
+  "demo_cases": [
+    {
+      "id": "demo_001",
+      "name": "Нормальная вакансия (ягоды, Срем)",
+      "source": "facebook_manual",
+      "text": "Tražimo 10 radnika za berbu borovnica u Sremu. Smeštaj obezbeđen, hrana 3 obroka dnevno. Dnevnica 5000 RSD. Početak 1. jula. Kontakt 064-123-4567.",
+      "author_name": "Marko Poslodavac",
+      "language": "sr",
+      "expected_classification": "job_offer",
+      "expected_risk": "low",
+      "expected_action": "create_group_post"
+    },
+    {
+      "id": "demo_002",
+      "name": "Поиск работы семейной парой",
+      "source": "facebook_manual",
+      "text": "Tražim posao za mene i ženu. Oboje imamo iskustvo u berbi malina i višanja. Treba nam smeštaj. Iz Ivanjice smo. Kontakt 065-111-222.",
+      "author_name": "Petar Radnik",
+      "language": "sr",
+      "expected_classification": "worker_search",
+      "expected_risk": "low",
+      "expected_action": "create_group_post"
+    },
+    {
+      "id": "demo_003",
+      "name": "Неполная вакансия без оплаты",
+      "source": "facebook_manual",
+      "text": "Potrebni radnici za plastenik u okolini Subotice. Smeštaj obezbeđen. Javite se inbox.",
+      "author_name": "Firma Voće",
+      "language": "sr",
+      "expected_classification": "job_offer",
+      "expected_risk": "medium",
+      "expected_action": "request_more_info"
+    },
+    {
+      "id": "demo_004",
+      "name": "Жалоба / предупреждение о работадателе",
+      "source": "facebook_manual",
+      "text": "Čuvajte se poslodavca iz Surčina! Ne isplaćuje dogovorenu dnevnicu, radio sam 3 nedelje i dobio samo pola plate!",
+      "author_name": "Anonimni Radnik",
+      "language": "sr",
+      "expected_classification": "employer_warning",
+      "expected_risk": "high",
+      "expected_action": "escalate_to_operator"
+    },
+    {
+      "id": "demo_005",
+      "name": "Спам / казино",
+      "source": "facebook_manual",
+      "text": "ONLINE KAZINO! Dobijate 500e bonusa! Registrujte se odmah na www.casino-bonus.rs i osvojite jackpot! Brza zarada!",
+      "author_name": "Spam Bot",
+      "language": "sr",
+      "expected_classification": "spam",
+      "expected_risk": "high",
+      "expected_action": "reject_as_spam"
+    }
+  ]
+}

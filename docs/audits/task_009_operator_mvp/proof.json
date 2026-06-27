@@ -1,0 +1,36 @@
+{
+  "task_id": "009",
+  "task_name": "One-Day Autonomous Group Operator MVP",
+  "verdict": "ACCEPTED",
+  "branch": "master",
+  "commit": "d562455",
+  "git_clean": true,
+  "runtime_changed": true,
+  "canon_changed": false,
+  "external_side_effects": false,
+  "facebook_publish_executed": false,
+  "telegram_real_send_executed": false,
+  "production_accepted": false,
+  "operator_approval_required_for_publish": true,
+  "demo_cases_total": 5,
+  "demo_cases_passed": 5,
+  "blockers": [],
+  "implemented_endpoints": [
+    "POST /api/intake/manual",
+    "GET /api/intake/status",
+    "GET /api/runtime-agent/queue",
+    "POST /api/runtime-agent/queue/{id}/approve",
+    "POST /api/runtime-agent/queue/{id}/reject",
+    "POST /api/runtime-agent/queue/{id}/edit",
+    "POST /api/runtime-agent/queue/{id}/mark-executed"
+  ],
+  "tests_run": [
+    {"command": "PYTHONIOENCODING=utf-8 PYTHONPATH=backend python backend/app/operator_mvp/demo_runner.py", "result": "pass", "notes": "All 5 demo cases passed"}
+  ],
+  "artifacts": [
+    "docs/audits/task_009_operator_mvp/README.md",
+    "docs/audits/task_009_operator_mvp/demo_inputs.json",
+    "docs/audits/task_009_operator_mvp/demo_outputs.json",
+    "docs/audits/task_009_operator_mvp/proof.json"
+  ]
+}

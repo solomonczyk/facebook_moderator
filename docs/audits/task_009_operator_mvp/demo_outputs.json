@@ -1,0 +1,126 @@
+{
+  "demo_cases_total": 5,
+  "demo_cases_passed": 5,
+  "results": [
+    {
+      "id": "demo_001",
+      "name": "Нормальная вакансия (ягоды, Срем)",
+      "classification": "job_offer",
+      "risk_level": "low",
+      "action": "create_group_post",
+      "fields": {
+        "location": "Srem",
+        "contact": "064-123-4567",
+        "pay": "dnevnica 5000 rsd",
+        "accommodation": "da",
+        "food": "da"
+      },
+      "red_flags": [],
+      "missing_fields": [
+        "vrsta posla",
+        "radno vreme",
+        "datum početka",
+        "poslodavac"
+      ],
+      "passed": true
+    },
+    {
+      "id": "demo_002",
+      "name": "Поиск работы семейной парой",
+      "classification": "worker_search",
+      "risk_level": "low",
+      "action": "create_group_post",
+      "fields": {
+        "location": "Ivanjice",
+        "contact": "065-111-222",
+        "accommodation": "da"
+      },
+      "red_flags": [],
+      "missing_fields": [
+        "plata / dnevnica",
+        "vrsta posla",
+        "hrana",
+        "radno vreme",
+        "datum početka",
+        "poslodavac"
+      ],
+      "passed": true
+    },
+    {
+      "id": "demo_003",
+      "name": "Неполная вакансия без оплаты",
+      "classification": "job_offer",
+      "risk_level": "medium",
+      "action": "request_more_info",
+      "fields": {
+        "location": "Subotice",
+        "job_type": "plastenik",
+        "accommodation": "da"
+      },
+      "red_flags": [
+        "unclear payment",
+        "suspicious contact"
+      ],
+      "missing_fields": [
+        "plata / dnevnica",
+        "kontakt",
+        "hrana",
+        "radno vreme",
+        "datum početka",
+        "poslodavac"
+      ],
+      "passed": true
+    },
+    {
+      "id": "demo_004",
+      "name": "Жалоба / предупреждение о работадателе",
+      "classification": "employer_warning",
+      "risk_level": "high",
+      "action": "escalate_to_operator",
+      "fields": {
+        "location": "Surčin, Surčina"
+      },
+      "red_flags": [
+        "suspicious contact"
+      ],
+      "missing_fields": [
+        "plata / dnevnica",
+        "kontakt",
+        "vrsta posla",
+        "smeštaj",
+        "hrana",
+        "radno vreme",
+        "datum početka",
+        "poslodavac"
+      ],
+      "passed": true
+    },
+    {
+      "id": "demo_005",
+      "name": "Спам / казино",
+      "classification": "spam",
+      "risk_level": "high",
+      "action": "reject_as_spam",
+      "fields": {
+        "pay": "500e"
+      },
+      "red_flags": [
+        "casino",
+        "brza zarada",
+        "no location",
+        "suspicious contact"
+      ],
+      "missing_fields": [
+        "lokacija",
+        "kontakt",
+        "vrsta posla",
+        "smeštaj",
+        "hrana",
+        "radno vreme",
+        "datum početka",
+        "poslodavac"
+      ],
+      "passed": true
+    }
+  ]
+}

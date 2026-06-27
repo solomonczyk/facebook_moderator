@@ -53,6 +53,14 @@ try:
 except ImportError:
     pass
 
+# Operator MVP unified intake (009)
+try:
+    from ..operator_mvp.mvp_api import router as mvp_router
+    app.include_router(mvp_router)
+    logger.info("Operator MVP intake router registered")
+except ImportError:
+    pass
+
 
 @app.on_event("startup")
 def on_startup():
