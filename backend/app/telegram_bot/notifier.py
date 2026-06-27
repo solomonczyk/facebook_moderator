@@ -82,24 +82,24 @@ def build_notification_message(item: dict) -> tuple[str, dict]:
     risk_emoji = {"low": "🟢", "medium": "🟡", "high": "🔴"}.get(risk_level, "⚪")
 
     msg = (
-        f"{action_emoji} *New Queue Item*\n\n"
-        f"*Action:* {action_type.replace('_', ' ').title()}\n"
-        f"*Classification:* `{classification}`\n"
-        f"*Risk:* {risk_emoji} {risk_level.upper()}\n"
-        f"*Confidence:* {confidence:.0%}\n"
-        f"*Source:* {source}\n"
+        f"{action_emoji} <b>New Queue Item</b>\n\n"
+        f"<b>Action:</b> {action_type.replace('_', ' ').title()}\n"
+        f"<b>Classification:</b> <code>{classification}</code>\n"
+        f"<b>Risk:</b> {risk_emoji} {risk_level.upper()}\n"
+        f"<b>Confidence:</b> {confidence:.0%}\n"
+        f"<b>Source:</b> {source}\n"
     )
 
     if reason:
-        msg += f"\n*Reason:* {reason[:200]}\n"
+        msg += f"\n<b>Reason:</b> {reason[:200]}\n"
 
     if missing:
-        msg += f"\n*Missing:* {', '.join(missing[:5])}\n"
+        msg += f"\n<b>Missing:</b> {', '.join(missing[:5])}\n"
 
     if suggested_text:
-        msg += f"\n*Suggested text:*\n{suggested_text[:300]}\n"
+        msg += f"\n<b>Suggested text:</b>\n{suggested_text[:300]}\n"
 
-    msg += f"\nID: `{item_id[:16]}...`"
+    msg += f"\nID: <code>{item_id[:16]}...</code>"
 
     # Build inline keyboard
     keyboard = {
@@ -121,7 +121,7 @@ def build_notification_message(item: dict) -> tuple[str, dict]:
 
     # Safety: high risk items should have big warning
     if risk_level == "high":
-        msg = "⚠️ *HIGH RISK ITEM* ⚠️\n" + msg
+        msg = "⚠️ <b>HIGH RISK ITEM</b> ⚠️\n" + msg
 
     return msg, keyboard
 
@@ -160,7 +160,7 @@ def _save_test_payload(item_id: str, msg: str, keyboard: dict) -> bool:
         "item_id": item_id,
         "chat_id": get_chat_id() or "TEST_MODE",
         "text": msg,
-        "parse_mode": "Markdown",
+        "parse_mode": "HTML",
         "reply_markup": keyboard,
         "test_mode": True,
         "saved_at": datetime.utcnow().isoformat(),
@@ -185,7 +185,7 @@ def _send_real(msg: str, keyboard: dict) -> bool:
         payload = {
             "chat_id": chat_id,
             "text": msg,
-            "parse_mode": "Markdown",
+            "parse_mode": "HTML",
             "reply_markup": json.dumps(keyboard),
         }
 
