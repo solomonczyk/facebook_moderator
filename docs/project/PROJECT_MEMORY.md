@@ -13,10 +13,10 @@ This document is the single source of truth for current project state. A new AI 
 
 ## AI START HERE
 
-**Current goal:** Операторский контур готов. TASK 009–023 завершены. Telegram бот на русском, Google Forms bridge, image-post генерация, pack-публикация. Facebook — manual.
+**Current goal:** Операторский контур готов. TASK 009–024A завершены. Telegram бот на русском, Google Forms bridge, image-post генерация, growth pack, pack-публикация. Facebook — manual.
 
 **Current runtime:**
-- Branch: `master`, commit: `82cfd25`
+- Branch: `master`, commit: `ca21f2b`
 - VPS: `/opt/facebook_moderator`. DeepSeek-V4-Pro active.
 - **Telegram REAL:** активен. Токен: `8599****68FQ`. Чат: `5396****6361`.
 - `.env`: `/opt/facebook_moderator/backend/.env` (найден, загружен).
@@ -31,16 +31,17 @@ This document is the single source of truth for current project state. A new AI 
 
 **Current priorities:**
 1. Ежедневный вечерний workflow: `/postpack` → скопировать в FB вручную
-2. `/imagepost` — картинки для FB
-3. `/done_pack` — отметить опубликованным
+2. `/imagepost` / `/imagepack` — картинки для FB
+3. `/growthpack` — привлечение участников
+4. `/done_pack` — отметить опубликованным
 
 **Current blockers:** Нет.
 
 **Where to continue:**
-1. Read this file fully.
-2. Сервер: `ssh` → `cd /opt/facebook_moderator` → `git pull`
-3. Daily run: `PYTHONPATH=backend python3 -m app.daily_pilot`
-4. Real Telegram: `PYTHONPATH=backend python3 -m app.daily_pilot --real`
+1. Read this file fully — это единственный источник контекста.
+2. Сервер: `ssh root@152.53.227.37` → `cd /opt/facebook_moderator` → `git pull`
+3. Telegram бот: работает polling, отвечает на /start и все команды.
+4. Telegram test mode: `TELEGRAM_TEST_MODE=false` (реальный режим).
 5. Brain rebuild: `PYTHONPATH=backend python3 backend/brain/BUILD/brain_builder.py`
 
 ---
@@ -103,7 +104,7 @@ Facebook Group → Runtime Intake → Runtime Agent → Analyst Agent
 | Field | Value |
 |-------|-------|
 | Current branch | `master` |
-| Current commit | `42372f4` |
+| Current commit | `ca21f2b` |
 | DeepSeek status | Active (provider: deepseek, model: DeepSeek-V4-Pro) |
 | LLM primary | deepseek |
 | Regex-only mode | false |
@@ -378,19 +379,27 @@ Last 10 major updates. Full history: [CHANGELOG.md](CHANGELOG.md)
 - All dangerous gates DISABLED. `production_accepted=false`.
 - Brain v1.0.0, Memory Engine v1.0.0, PROJECT_CANON v1.0.0.
 
-**What's done (TASK 009–016C):**
+**What's done (TASK 009–024A):**
 - Operator MVP: intake → classify → extract → risk → queue
 - Public Facebook intake: 7 seed groups, dedup, screenshot capture (Selenium)
-- Telegram: notifications with inline buttons (HTML parse_mode), edit flow, escalate
+- Telegram: notifications with inline buttons, edit, escalate, Russian UI
 - Daily digest builder: filter approved items → Serbian post → queue → Telegram
 - E2E pipeline: public intake → queue → Telegram → operator → digest
-- Server .env fix: shared `env_loader.py` (dotenv, token masking)
-- Real Telegram confirmed: message received, callback works, daily pilot runs
+- Google Forms bridge: employer/worker forms with token auth, consent handling
+- Persistent queue: SQLite-backed, survives restarts (ПОСТОЯННАЯ)
+- Pack system: /postpack, /done_pack, /cancel_pack, /publish_ready
+- Image posts: /imagepost, /imagepack (Pillow, 1080×1080 PNG)
+- Growth pack: /growthpack, /admin_pitch, /promo_comment
+- Real Telegram: сообщения получены, кнопки работают, /start отвечает
+- Обновление: `git pull`, перезапуск: `systemctl restart sezonski-runtime.service`
 
-**What's next:**
-- TASK 017 — Production Operating Mode Guardrails
-- Operator runs: `PYTHONPATH=backend python3 -m app.daily_pilot --real`
-- Manual Facebook digest posting
+**Key constraints:**
+- Сервер: `ssh root@152.53.227.37`, проект: `/opt/facebook_moderator`
+- Telegram токен: `8599****68FQ`, чат: `5396****6361` (`6596*` в `.env`)
+- `production_accepted=false`, все Facebook gates DISABLED
+- Serbian для публичных текстов, Russian для интерфейса оператора
+- JSON contract только — без markdown от LLM
+- Push в GitHub разрешён (оператор подтвердил)
 
 **Key constraints:**
 - Never enable Facebook automation gates.
