@@ -284,9 +284,40 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         return
 
     item = agent.queue.get(item_id)
+    _pq_store = None
+
     if not item:
-        await query.edit_message_text(f"Queue item not found: {item_id}")
-        return
+        # Fallback: persistent SQLite queue (survives restarts)
+        try:
+            from ..runtime_agent.persistent_queue import get_persistent_queue
+            _pq_store = get_persistent_queue()
+            item_p = _pq_store.get(item_id)
+            if not item_p:
+                await query.edit_message_text(f"Queue item not found: {item_id}")
+                return
+            # Wrap persistent dict into object-like interface
+            class _PQWrapper:
+                def __init__(self, d): self.__dict__.update(d)
+                approve = lambda s, op: _pq_store.update_status(item_id, "approved", op)
+                reject = lambda s, r, op: _pq_store.update_status(item_id, "rejected", op, r)
+                mark_spam = lambda s, r, op: _pq_store.update_status(item_id, "spam", op, r)
+                mark_needs_info = lambda s, r, op: _pq_store.update_status(item_id, "needs_info", op, r)
+                mark_executed = lambda s, op: _pq_store.update_status(item_id, "executed_manually", op)
+                mark_closed = lambda s, op: _pq_store.update_status(item_id, "closed", op)
+                mark_duplicate = lambda s, op: _pq_store.update_status(item_id, "duplicate", op)
+                def edit(self, new_text, op):
+                    _pq_store.update_text(item_id, new_text, op)
+                @property
+                def suggested_text(self): return item_p.get("suggested_text", "")
+                @property
+                def operator_approval_required(self): return item_p.get("operator_approval_required", True)
+            item = _PQWrapper(item_p)
+            item.item_id = item_id
+            item.status = type('S', (), {'value': item_p['status']})()
+            item.to_dict = lambda: item_p
+        except Exception:
+            await query.edit_message_text(f"Queue item not found: {item_id}")
+            return
 
     operator = update.effective_user.username or str(update.effective_chat.id)
 
