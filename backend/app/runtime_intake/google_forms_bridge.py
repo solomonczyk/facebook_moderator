@@ -225,6 +225,15 @@ def _map_fields(raw: dict, field_map: dict) -> dict:
     return mapped
 
 
+# ── Helpers ──────────────────────────────────────────────────────────────────
+
+def _strval(v) -> str:
+    """Safely convert any value to string for consent checks."""
+    if v is None: return ""
+    if isinstance(v, bool): return "da" if v else "ne"
+    return str(v)
+
+
 # ── Endpoints ────────────────────────────────────────────────────────────────
 
 @router.post("/employer-offer", response_model=BridgeResponse)
@@ -247,12 +256,7 @@ async def google_forms_employer(payload: GoogleFormsPayload, request: Request):
     # Map fields
     mapped = _map_fields(raw, EMPLOYER_FIELD_MAP)
 
-    # Consent check — handle str, bool, int, None
-    def _strval(v) -> str:
-        if v is None: return ""
-        if isinstance(v, bool): return "da" if v else "ne"
-        return str(v)
-
+    # Consent check
     pub_consent = _strval(raw.get("publication_consent", raw.get("Da li dozvoljavate objavu", "")))
     phone_consent_val = _strval(raw.get("phone_consent", raw.get("Da li dozvoljavate objavu kontakt telefona", "")))
 
