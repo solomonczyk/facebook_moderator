@@ -121,7 +121,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "/queue — Очередь на утверждение\n"
         "/drafts — Черновики для FB\n"
         "/spam — Спам-карантин\n"
-        "/digest — Собрать дайджест\n\n"
+        "/digest — Собрать дайджест\n"
+        "/postpack — Вечерний пакет публикации\n"
+        "/publish_ready — Безопасные черновики\n\n"
         "Мобильный режим:\n"
         "/today — Что сегодня\n"
         "/evening — Что вечером\n"
@@ -265,6 +267,8 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "/status — Состояние и ворота\n"
         "/queue — Очередь + кнопки\n"
         "/digest — Дайджест\n"
+        "/postpack — Вечерний пакет\n"
+        "/publish_ready — Безопасные черновики\n"
         "/forms — API структурированного ввода\n"
         "/drafts — Черновики для публикации\n"
         "/spam — Спам-карантин\n"
@@ -382,10 +386,16 @@ async def reply_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         reply = "Hvala na informaciji. Administrator će pregledati i preduzeti odgovarajuće korake."
     elif any(w in t for w in ["tražim posao", "treba mi posao"]):
         intent, risk = "traži posao", "low"
-        reply = "Hvala! Popunite formu za radnike: https://forms.gle/UvbaekC86m8EE5X87 — administrator proverava podatke pre objave."
+        reply = "Hvala! Popunite formu za radnike — administrator proverava podatke pre objave:\nhttps://forms.gle/UvbaekC86m8EE5X87\n\nU formi navedite: ime, lokaciju, koji posao, koliko osoba, od kad ste dostupni, smeštaj i kontakt."
     elif any(w in t for w in ["tražimo", "potrebni", "zapošljavamo", "berba"]):
         intent, risk = "ponuda posla", "low"
-        reply = "Hvala na objavi! Da bismo je objavili, popunite formu: https://forms.gle/KovE1kMFxMF7nq8w5"
+        reply = "Hvala na objavi! Popunite formu za poslodavce — administrator proverava pre objave:\nhttps://forms.gle/KovE1kMFxMF7nq8w5\n\nU formi: ime firme, mesto rada, vrsta posla, broj radnika, plata, radno vreme, smeštaj, hrana, kontakt."
+    elif "smeštaj" in t and ("?" in t or "da li" in t):
+        intent, risk = "pitanje o smeštaju", "low"
+        reply = "Poštovanje, poslodavac treba da navede da li je smeštaj obezbeđen. Ako nije navedeno — pitajte direktno poslodavca. Grupa ne garantuje uslove smeštaja."
+    elif ("dnevnica" in t or "plata" in t or "plaća" in t) and ("?" in t or "koliko" in t or "da li" in t):
+        intent, risk = "pitanje o plati", "low"
+        reply = "Poštovanje, plata/dnevnica treba da bude navedena u oglasu. Ako nije — pitajte poslodavca direktno pre nego što prihvatite posao."
     elif "?" in t or "pitanje" in t or "da li" in t:
         intent, risk = "pitanje", "low"
         reply = "Hvala na pitanju. Administrator će odgovoriti uskoro."
@@ -671,6 +681,116 @@ async def digest_next_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
 # ── /fb_help — mobile mode help ───────────────────────────────────────────
 
+# ── /postpack — one evening publishing bundle ─────────────────────────────
+
+async def postpack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+    pq = get_persistent_queue()
+    all_items = pq.get_all()
+
+    # Classify items
+    offers = [i for i in all_items if i["status"] in ("pending", "approved")
+              and i.get("action_type") == "publish_own_group_post"
+              and "high" not in str(i.get("raw_json", {}).get("risk", ""))]
+    worker_items = [i for i in all_items if i["status"] in ("pending",)
+                    and i.get("classification") == "worker_search"]
+    questions = [i for i in all_items if "question" in str(i.get("raw_json", {}).get("source_type", ""))
+                 and i["status"] == "pending"]
+    high_risk = [i for i in all_items if i.get("status") in ("risk_review",) or
+                 "high" in str(i.get("raw_json", {}).get("risk", ""))]
+    spam_items = [i for i in all_items if i["status"] in ("spam", "spam_candidate")]
+
+    date_str = __import__("datetime").datetime.utcnow().strftime("%d.%m.%Y")
+    lines = [f"📌 Пакет для публикации — {date_str}", ""]
+    lines.append("━━━━━━━━━━━━━━━━━━━━━")
+    lines.append("")
+
+    # Digest section
+    lines.append("📰 ГОТОВЫЕ ПОСТЫ ДЛЯ FB (скопировать и опубликовать)")
+    lines.append("")
+
+    if offers:
+        for o in offers[:3]:
+            text = o.get("suggested_text", "") or o.get("raw_json", {}).get("original", "")
+            if text:
+                lines.append(text[:800])
+                lines.append("")
+                lines.append("---")
+                lines.append("")
+    else:
+        lines.append("Нет готовых постов на сегодня.")
+        lines.append("")
+
+    # Worker section
+    if worker_items:
+        lines.append(f"👷 ПОИСК РАБОТЫ ({len(worker_items)}):")
+        for w in worker_items[:2]:
+            raw = w.get("raw_json", {}) or {}
+            orig = raw.get("original", w.get("suggested_text", ""))[:200]
+            lines.append(f"  • {orig}")
+        lines.append("")
+        lines.append("Форма для работников:")
+        lines.append("https://forms.gle/UvbaekC86m8EE5X87")
+        lines.append("")
+
+    # Questions
+    if questions:
+        lines.append(f"❓ ВОПРОСЫ ({len(questions)}):")
+        for q in questions[:3]:
+            raw = q.get("raw_json", {}) or {}
+            orig = raw.get("original", q.get("suggested_text", ""))[:150]
+            lines.append(f"  • {orig}")
+        lines.append("")
+
+    # Excluded
+    if high_risk:
+        lines.append(f"🔴 ИСКЛЮЧЕНО (риск): {len(high_risk)} — проверьте /spam")
+    if spam_items:
+        lines.append(f"⚫ ИСКЛЮЧЕНО (спам): {len(spam_items)}")
+    lines.append("")
+
+    # Action footer
+    lines.append("━━━━━━━━━━━━━━━━━━━━━")
+    lines.append("")
+    lines.append("ДЕЙСТВИЕ: Скопируйте текст выше и опубликуйте в FB вручную.")
+    lines.append("Форма для работодателей: https://forms.gle/KovE1kMFxMF7nq8w5")
+    lines.append("Форма для работников: https://forms.gle/UvbaekC86m8EE5X87")
+    lines.append("")
+    lines.append("После публикации: /queue → Approve → Mark executed")
+    lines.append("")
+
+    await update.message.reply_text("\n".join(lines))
+
+
+# ── /publish_ready — safe drafts only ─────────────────────────────────────
+
+async def publish_ready_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+    pq = get_persistent_queue()
+    all_items = pq.get_all()
+
+    safe = [i for i in all_items if i["status"] in ("pending", "approved")
+            and i.get("action_type") == "publish_own_group_post"
+            and "high" not in str(i.get("raw_json", {}).get("risk", ""))
+            and i.get("status") not in ("spam_candidate", "spam")]
+
+    if not safe:
+        await update.message.reply_text("✅ Нет безопасных черновиков для публикации.")
+        return
+
+    await update.message.reply_text(f"📰 Черновики, готовые к публикации: {len(safe)}")
+    for s in safe[:5]:
+        text = s.get("suggested_text", "")[:400]
+        sid = s.get("item_id", "")[:12]
+        await update.message.reply_text(
+            f"Черновик `{sid}...`\n{text}",
+        )
+
+
 async def fb_help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not _is_operator(update): await _reject_unknown(update, context); return
     await update.message.reply_text(
@@ -952,6 +1072,53 @@ async def handle_text_for_edit(update: Update, context: ContextTypes.DEFAULT_TYP
     )
 
 
+# ── Scheduled Reminders ────────────────────────────────────────────────────
+
+async def _schedule_reminders(app):
+    """Check time periodically and send morning/evening reminders."""
+    try:
+        import asyncio
+        chat_id = os.getenv("TELEGRAM_OPERATOR_CHAT_ID", "")
+        if not chat_id:
+            return
+        from ..runtime_agent.persistent_queue import get_persistent_queue
+        while True:
+            await asyncio.sleep(300)  # Check every 5 minutes
+            now = __import__("datetime").datetime.utcnow()
+            hour = now.hour
+            minute = now.minute
+            # Morning reminder at 7:00-7:05 UTC (9:00-9:05 CEST)
+            if hour == 7 and 0 <= minute <= 5:
+                pq = get_persistent_queue()
+                count = pq.get_pending_count()
+                try:
+                    await app.bot.send_message(
+                        chat_id=chat_id,
+                        text=f"🌅 Доброе утро!\n"
+                             f"В очереди: {count} элементов.\n"
+                             f"/today — сводка\n"
+                             f"/postpack — вечером\n"
+                    )
+                    await asyncio.sleep(3600)  # Don't repeat for an hour
+                except Exception:
+                    pass
+            # Evening reminder at 18:00-18:05 UTC (20:00-20:05 CEST)
+            if hour == 18 and 0 <= minute <= 5:
+                try:
+                    await app.bot.send_message(
+                        chat_id=chat_id,
+                        text=f"🌙 Вечерний обход\n"
+                             f"/postpack — пакет для публикации\n"
+                             f"/evening — что проверить\n"
+                             f"/today — сводка за день\n"
+                    )
+                    await asyncio.sleep(3600)
+                except Exception:
+                    pass
+    except Exception:
+        pass
+
+
 # ── Bot Runner ──────────────────────────────────────────────────────────────
 
 _bot_app: Application | None = None
@@ -998,6 +1165,8 @@ def start_bot():
     app.add_handler(CommandHandler("links", links_cmd))
     app.add_handler(CommandHandler("evening", evening_cmd))
     app.add_handler(CommandHandler("digest_next", digest_next_cmd))
+    app.add_handler(CommandHandler("postpack", postpack_cmd))
+    app.add_handler(CommandHandler("publish_ready", publish_ready_cmd))
     app.add_handler(CommandHandler("fb_help", fb_help_cmd))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CallbackQueryHandler(handle_callback))
@@ -1011,6 +1180,8 @@ def start_bot():
         loop.run_until_complete(app.initialize())
         loop.run_until_complete(app.updater.start_polling(drop_pending_updates=True))
         loop.run_until_complete(app.start())
+        # Start scheduled reminders
+        asyncio.run_coroutine_threadsafe(_schedule_reminders(app), loop)
         loop.run_forever()
 
     thread = threading.Thread(target=run_polling, daemon=True, name="telegram-bot")
