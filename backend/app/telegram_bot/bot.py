@@ -115,11 +115,25 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return
     await update.message.reply_text(
         "🤖 *Sezonski Runtime Agent*\n\n"
-        "Mobile approval bot ready.\n\n"
-        "Commands:\n"
-        "/status — Runtime health\n"
-        "/queue — Pending action items\n"
-        "/digest — Generate daily digest draft\n"
+        "Mobile operator bot ready.\n\n"
+        "*Main:*\n"
+        "/status — Health & gates\n"
+        "/queue — Pending items\n"
+        "/drafts — Publish drafts\n"
+        "/spam — Spam quarantine\n"
+        "/digest — Daily digest\n\n"
+        "*Mobile:*\n"
+        "/today — Daily overview\n"
+        "/evening — Evening priority list\n"
+        "/links — Employer/worker forms\n"
+        "/reply — Smart reply drafter\n"
+        "/capture — External group post\n"
+        "/digest_next — Tomorrow digest\n\n"
+        "*Manual intake:*\n"
+        "/fb_post — Capture FB post\n"
+        "/fb_comment — Capture comment\n"
+        "/addlead — Quick lead analysis\n\n"
+        "/help — All commands"
         "/help — This message",
         parse_mode="Markdown",
     )
@@ -250,14 +264,22 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await _reject_unknown(update, context)
         return
     await update.message.reply_text(
-        "/status — Runtime health & gates\n"
-        "/queue — Pending action items with buttons\n"
-        "/digest — Generate daily digest draft\n"
-        "/addlead <text> — Analyze a lead from text\n"
-        "/forms — Structured intake forms\n"
-        "/drafts — Pending manual-publish drafts\n"
-        "/spam — Spam quarantine items\n"
-        "/help — This help"
+        "/status — Health & gates\n"
+        "/queue — Pending items + buttons\n"
+        "/digest — Daily digest draft\n"
+        "/forms — Intake API reference\n"
+        "/drafts — Publish drafts\n"
+        "/spam — Spam quarantine\n"
+        "/links — Employer/worker forms (copy-paste)\n"
+        "/today — Daily overview\n"
+        "/evening — Evening priority list\n"
+        "/capture — External group post\n"
+        "/digest_next — Tomorrow digest\n"
+        "/reply <text> — Smart reply\n"
+        "/fb_post <text> — Capture FB post\n"
+        "/fb_comment <text> — Capture comment\n"
+        "/addlead <text> — Quick lead analysis\n"
+        "/help — All commands"
     )
 
 
