@@ -1,6 +1,6 @@
 # PROJECT_MEMORY — Canonical Source of Truth
 
-> Last updated: 2026-06-27
+> Last updated: 2026-06-27 10:30 UTC
 > Project: Sezonski rad Srbija | Poslovi i iskustva radnika
 
 This document is the single source of truth for current project state. A new AI session begins here.
@@ -13,13 +13,15 @@ This document is the single source of truth for current project state. A new AI 
 
 ## AI START HERE
 
-**Current goal:** TASK 008C — PROJECT_CANON Foundation v1.0. Create permanent architecture rules layer, extract roadmap and changelog from PROJECT_MEMORY, add AI START HERE section.
+**Current goal:** Операторский контур готов. TASK 009–016C завершены. Telegram реальный подключён. Daily pilot работает. Facebook публикация — manual.
 
 **Current runtime:**
-- Branch: `master`, commit: `33681e7`
-- VPS operational. DeepSeek-V4-Pro active. Telegram polling active.
+- Branch: `master`, commit: `178838b`
+- VPS: `/opt/facebook_moderator`. DeepSeek-V4-Pro active.
+- **Telegram REAL:** активен. Токен: `8599****68FQ`. Чат: `5396****6361`.
+- `.env`: `/opt/facebook_moderator/backend/.env` (найден, загружен).
 - All dangerous gates DISABLED. Operator approval REQUIRED.
-- Not pushed.
+- **Pushed:** да (GitHub: solomonczyk/facebook_moderator).
 
 **Current versions:**
 - Brain: 1.0.0
@@ -28,20 +30,18 @@ This document is the single source of truth for current project state. A new AI 
 - Runtime API: 0.2.1
 
 **Current priorities:**
-1. TASK 008C — PROJECT_CANON (in progress)
-2. TASK 008D — Brain version migration
-3. TASK 009B — Memory Engine integration
-4. Integration tests for brain pipeline
+1. TASK 017 — Production Operating Mode Guardrails
+2. Операторский daily workflow: `python3 -m app.daily_pilot --real`
+3. Ручная публикация дайджеста в Facebook группу
 
-**Current blockers:** None.
+**Current blockers:** Нет.
 
 **Where to continue:**
 1. Read this file fully.
-2. Check [PROJECT_CANON/](PROJECT_CANON/) for permanent rules.
-3. Check `backend/brain/PROMPTS/SystemPrompt.md` for current LLM system prompt.
-4. Check `git log --oneline -5` for recent changes.
-5. Run `python backend/brain/BUILD/brain_builder.py` if brain sources changed.
-6. Complete the active task above. Update this file when done.
+2. Сервер: `ssh` → `cd /opt/facebook_moderator` → `git pull`
+3. Daily run: `PYTHONPATH=backend python3 -m app.daily_pilot`
+4. Real Telegram: `PYTHONPATH=backend python3 -m app.daily_pilot --real`
+5. Brain rebuild: `PYTHONPATH=backend python3 backend/brain/BUILD/brain_builder.py`
 
 ---
 
@@ -103,22 +103,22 @@ Facebook Group → Runtime Intake → Runtime Agent → Analyst Agent
 | Field | Value |
 |-------|-------|
 | Current branch | `master` |
-| Current commit | `33681e7` |
+| Current commit | `178838b` |
 | DeepSeek status | Active (provider: deepseek, model: DeepSeek-V4-Pro) |
 | LLM primary | deepseek |
 | Regex-only mode | false |
 | Fallback active | false |
-| Telegram status | Active (polling mode, inline keyboard) |
+| Telegram status | **REAL** (token configured, test_mode=false, messages received) |
 | Queue status | Active |
 | Audit status | Active |
-| Digest status | Active (template ready, manual approval) |
+| Digest status | Active (daily_pilot produces 666-char digest) |
 | All safety gates | DISABLED |
 | Facebook automation | ALL DISABLED |
 | Autonomous mode | DISABLED |
 | Production accepted | false |
 | Operator approval | REQUIRED |
 | Draft only | true |
-| Pushed | No |
+| Pushed | Yes (GitHub: solomonczyk/facebook_moderator) |
 
 ---
 
@@ -179,7 +179,7 @@ Full decisions: [PROJECT_CANON/ADR.md](PROJECT_CANON/ADR.md). Summary:
 
 | Task | Status | Description |
 |------|--------|-------------|
-| TASK 008C | 🔵 In progress | PROJECT_CANON Foundation v1.0 |
+| TASK 017 | Pending | Production Operating Mode Guardrails |
 
 ---
 
@@ -190,11 +190,19 @@ Full decisions: [PROJECT_CANON/ADR.md](PROJECT_CANON/ADR.md). Summary:
 | 006C | `4100a6c` | Stabilize runtime analyst |
 | 007A | `ace0a69` | FB Group Runtime Manager Agent V1 |
 | 007B | `dbc5747` | DeepSeek Runtime Brain V1 |
-| 007B-FIX | `ca3b53f` | Activate DeepSeek brain on VPS |
-| 008A | `8455200` | Brain v1.0 Canon Package (expanded FewShot, 120 examples) |
-| 008B-BUILD | `9b4f42a` | Brain Build System & Release Pipeline |
-| 009A | `732d42a` | Runtime Memory Engine v1.0 |
-| 008B | `33681e7` | PROJECT_MEMORY Canon System v1.0 |
+| 008A | `8455200` | Brain v1.0 Canon Package (120 examples, 1626-line prompt) |
+| 008B | `33681e7` | PROJECT_MEMORY Canon System |
+| 008C | `9cd8e09` | PROJECT_CANON Foundation |
+| 009 | `2c0f4e2` | Operator MVP — intake/classify/queue |
+| 010 | `55d8433` | Controlled Public Facebook Intake |
+| 011 | `488553a` | Telegram Operator Approval Flow |
+| 012 | `082bb57` | E2E: Public Intake + Telegram Approval |
+| 013 | `1e6fcce` | Daily Digest Builder |
+| 014 | `50d0c86` | Operator Runbook + Final Smoke |
+| 015 | `b07e900` | Real Telegram Enablement |
+| 016 | `6d32297` | Daily Workflow Pilot |
+| 016B | `472340b` | Server .env Activation Fix |
+| 016C | `178838b` | **Real Telegram Pilot Confirmed** ✅ |
 
 Full history: [CHANGELOG.md](CHANGELOG.md)
 
@@ -219,7 +227,7 @@ See [ROADMAP.md](ROADMAP.md) for full roadmap.
 
 | Priority | Next items |
 |----------|------------|
-| P0 | TASK 008C — PROJECT_CANON Foundation |
+| P0 | TASK 017 — Production Guardrails |
 | P1 | TASK 008D — Brain version migration, TASK 009B — Memory integration, integration tests |
 | P2 | Deploy pipeline, health checks, multi-operator, digest auto-gen |
 | P3 | Brain v1.1, Cyrillic support, more languages, dashboard |
@@ -231,11 +239,11 @@ See [ROADMAP.md](ROADMAP.md) for full roadmap.
 | Field | Value |
 |-------|-------|
 | Branch | `master` |
-| Latest commit | `33681e7` |
-| Latest message | feat: TASK 008B — PROJECT_MEMORY Canon System v1.0 |
+| Latest commit | `178838b` |
+| Latest message | fix: switch Telegram parse_mode from Markdown to HTML |
 | Git clean | Yes (except Obsidian workspace config) |
-| Pushed | No |
-| Last check | 2026-06-27 |
+| Pushed | Yes (GitHub: solomonczyk/facebook_moderator) |
+| Last check | 2026-06-27 10:30 UTC |
 
 ---
 
@@ -328,16 +336,16 @@ See [PROJECT_CANON/ARCHITECTURE.md](PROJECT_CANON/ARCHITECTURE.md) for diagram.
 
 Last 10 major updates. Full history: [CHANGELOG.md](CHANGELOG.md)
 
-1. **2026-06-27** — TASK 008C: PROJECT_CANON Foundation v1.0 (in progress)
-2. **2026-06-27** — TASK 008B: PROJECT_MEMORY Canon System v1.0
-3. **2026-06-27** — TASK 008A-FINAL: Brain v1.0 expanded (120 examples, 1626-line SystemPrompt)
-4. **2026-06-26** — TASK 009A: Runtime Memory Engine v1.0
-5. **2026-06-26** — TASK 008B-BUILD: Brain Build System & Release Pipeline
-6. **2026-06-25** — TASK 007B-FIX: Activate DeepSeek brain on VPS
-7. **2026-06-25** — TASK 007B: DeepSeek Runtime Brain V1
-8. **2026-06-25** — TASK 007A: FB Group Runtime Manager Agent V1
-9. **2026-06-25** — TASK 006C: Stabilize runtime analyst
-10. **2026-06-24** — Telegram mobile approval bot + security gates
+1. **2026-06-27** — TASK 016C: Real Telegram Pilot Confirmed ✅ (server .env loaded, message received, callback worked)
+2. **2026-06-27** — TASK 016B: Server .env Activation Fix (env_loader module)
+3. **2026-06-27** — TASK 016: Real Daily Workflow Pilot (7-step pipeline)
+4. **2026-06-27** — TASK 015: Real Telegram Enablement (setup_check, send_test, queue_test)
+5. **2026-06-27** — TASK 014: Operator Runbook + Final Smoke (DAILY_WORKFLOW.md)
+6. **2026-06-27** — TASK 013: Daily Digest Builder (filter + format + queue + Telegram)
+7. **2026-06-27** — TASK 012: E2E: Public Intake → Telegram Approval
+8. **2026-06-27** — TASK 011: Telegram Operator Approval Flow (notifier, edit, escalate)
+9. **2026-06-27** — TASK 010: Controlled Public Facebook Intake (7 seed groups, dedup)
+10. **2026-06-27** — TASK 009: Operator MVP — intake/classify/queue pipeline
 
 ---
 
@@ -348,38 +356,32 @@ Last 10 major updates. Full history: [CHANGELOG.md](CHANGELOG.md)
 **Project:** Facebook Group Admin Copilot for "Sezonski rad Srbija" — AI moderation assistant. Operator-in-the-loop. Never autonomous.
 
 **Current state (2026-06-27):**
-- Branch `master`, commit `33681e7`. Not pushed.
-- VPS operational. Python FastAPI backend. DeepSeek-V4-Pro primary LLM.
-- Telegram bot active (polling). All dangerous gates DISABLED.
-- Brain v1.0.0 in `backend/brain/`. Memory Engine v1.0.0 in `backend/memory/`.
-- PROJECT_CANON v1.0.0 in `docs/project/PROJECT_CANON/` — permanent rules.
-- PROJECT_MEMORY in `docs/project/PROJECT_MEMORY.md` — current state (this file).
+- Branch `master`, commit `178838b`. **Pushed** to GitHub.
+- VPS: `/opt/facebook_moderator`. DeepSeek-V4-Pro primary LLM.
+- **Telegram REAL active.** Токен + чат ID загружены из `/opt/facebook_moderator/backend/.env`.
+- Daily pilot: `python3 -m app.daily_pilot --real` → messages + buttons в Telegram.
+- All dangerous gates DISABLED. `production_accepted=false`.
+- Brain v1.0.0, Memory Engine v1.0.0, PROJECT_CANON v1.0.0.
 
-**What's done:**
-- Brain canon package (CANON, KNOWLEDGE, PROMPTS 120 examples, TESTS)
-- LLM provider layer (DeepSeek active, model-independent)
-- Runtime agent (queue, scheduler, policy engine)
-- Analyst agent pipeline (classify → extract → risk → digest)
-- Telegram approval bot (inline keyboard, polling)
-- Runtime intake (manual paste + browser extension adapter)
-- Account worker (own-group watcher, read-only Selenium)
-- Aggregator API (FastAPI + SQLite)
-- Memory Engine (employer/worker/knowledge with indexes)
-- PROJECT_CANON (architecture, ADR, workflow, standards, versioning)
+**What's done (TASK 009–016C):**
+- Operator MVP: intake → classify → extract → risk → queue
+- Public Facebook intake: 7 seed groups, dedup, screenshot capture (Selenium)
+- Telegram: notifications with inline buttons (HTML parse_mode), edit flow, escalate
+- Daily digest builder: filter approved items → Serbian post → queue → Telegram
+- E2E pipeline: public intake → queue → Telegram → operator → digest
+- Server .env fix: shared `env_loader.py` (dotenv, token masking)
+- Real Telegram confirmed: message received, callback works, daily pilot runs
 
 **What's next:**
-- TASK 008C: PROJECT_CANON (this task — in progress)
-- TASK 008D: Brain version migration system
-- TASK 009B: Memory Engine integration with analyst
-- Integration tests for brain pipeline
-- Production deploy pipeline
+- TASK 017 — Production Operating Mode Guardrails
+- Operator runs: `PYTHONPATH=backend python3 -m app.daily_pilot --real`
+- Manual Facebook digest posting
 
 **Key constraints:**
-- Never push without explicit request.
 - Never enable Facebook automation gates.
 - Never store or read API keys.
-- Brain docs are model-independent.
 - Serbian for public text, Russian for operator summary.
 - JSON contract only — no markdown output from LLM.
+- Push to GitHub permitted (operator confirmed).
 
-**To continue:** Read this file. Check [PROJECT_CANON/](PROJECT_CANON/). Check `backend/brain/PROMPTS/SystemPrompt.md` for LLM prompt. Check `git log` for recent changes. Run brain builder if brain sources changed.
+**To continue:** Read this file. Сервер: `cd /opt/facebook_moderator && git pull`. Daily: `PYTHONPATH=backend python3 -m app.daily_pilot`.
