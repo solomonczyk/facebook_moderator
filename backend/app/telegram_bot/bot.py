@@ -126,7 +126,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "/publish_ready — Безопасные черновики\n"
         "/done <id> — Отметить опубликованным\n"
         "/skip <id> — Пропустить\n"
-        "/risk <id> — Отметить риск\n\n"
+        "/risk <id> — Отметить риск\n"
+        "/imagepost <текст> — Создать картинку для FB\n"
+        "/imagepack — Картинки из черновиков\n\n"
         "Мобильный режим:\n"
         "/today — Что сегодня\n"
         "/evening — Что вечером\n"
@@ -284,6 +286,8 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "/done <id> — Опубликовано\n"
         "/skip <id> — Пропустить\n"
         "/risk <id> — Риск\n"
+        "/imagepost <текст> — Картинка\n"
+        "/imagepack — Картинки из черновиков\n"
         "/fb_post <текст> — Захват FB поста\n"
         "/fb_comment <текст> — Захват комментария\n"
         "/addlead <текст> — Быстрый анализ\n"
@@ -834,6 +838,70 @@ async def risk_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not _is_operator(update): await _reject_unknown(update, context); return
     await _mark_item_status(update, "risk", "risk_review")
 
+# ── /imagepost — generate image from text ────────────────────────────────
+
+async def imagepost_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+    text = (update.message.text or "").removeprefix("/imagepost").strip()
+    if not text:
+        await update.message.reply_text("Использование: /imagepost <текст для картинки>")
+        return
+
+    from ..image_poster import generate_image_post
+    png = generate_image_post(text)
+    if not png:
+        await update.message.reply_text("❌ Не удалось создать изображение (Pillow не установлен?)")
+        return
+
+    import io
+    from telegram import InputFile
+    await update.message.reply_photo(
+        photo=InputFile(io.BytesIO(png), filename="post.png"),
+        caption=f"{text[:300]}\n\nNapomena: Grupa nije poslodavac i ne garantuje uslove.",
+    )
+
+
+# ── /imagepack — image cards from safe drafts ────────────────────────────
+
+async def imagepack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+    pq = get_persistent_queue()
+    all_items = pq.get_all()
+
+    safe = [i for i in all_items if i["status"] in ("pending", "approved")
+            and i.get("action_type") == "publish_own_group_post"
+            and i.get("risk_level", "low") != "high"
+            and i["status"] not in ("spam_candidate", "spam")]
+
+    if not safe:
+        await update.message.reply_text("✅ Нет безопасных черновиков для изображений.")
+        return
+
+    from ..image_poster import generate_image_post
+    sent = 0
+    for item in safe[:3]:
+        text = item.get("suggested_text") or item.get("raw_json", {}).get("original", "")
+        if not text:
+            continue
+        png = generate_image_post(text[:400])
+        if not png:
+            continue
+
+        import io
+        from telegram import InputFile
+        caption = text[:200]
+        caption += "\n\nNapomena: Grupa nije poslodavac i ne garantuje uslove."
+        await update.message.reply_photo(
+            photo=InputFile(io.BytesIO(png), filename=f"post_{item.get('item_id', 'x')[:8]}.png"),
+            caption=caption,
+        )
+        sent += 1
+
+    await update.message.reply_text(f"✅ Отправлено {sent} изображений. Опубликуйте в FB вручную.")
+
+
 async def fb_help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not _is_operator(update): await _reject_unknown(update, context); return
     await update.message.reply_text(
@@ -1214,6 +1282,8 @@ def start_bot():
     app.add_handler(CommandHandler("done", done_cmd))
     app.add_handler(CommandHandler("skip", skip_cmd))
     app.add_handler(CommandHandler("risk", risk_cmd))
+    app.add_handler(CommandHandler("imagepost", imagepost_cmd))
+    app.add_handler(CommandHandler("imagepack", imagepack_cmd))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CallbackQueryHandler(handle_callback))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_or_edit))
