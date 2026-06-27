@@ -103,7 +103,7 @@ Facebook Group → Runtime Intake → Runtime Agent → Analyst Agent
 | Field | Value |
 |-------|-------|
 | Current branch | `master` |
-| Current commit | `82cfd25` |
+| Current commit | `42372f4` |
 | DeepSeek status | Active (provider: deepseek, model: DeepSeek-V4-Pro) |
 | LLM primary | deepseek |
 | Regex-only mode | false |
@@ -213,6 +213,9 @@ Full decisions: [PROJECT_CANON/ADR.md](PROJECT_CANON/ADR.md). Summary:
 | 022B | `ba45d19` | Align Workflow With Real UI ✅ |
 | 022E | `82cfd25` | Real Operator Safety Fix (test exclusion, packs) ✅ |
 | 023 | `5aca410` | Simple Image Posts via Pillow ✅ |
+| 023A | `810bffa` | Fix /imagepack Real Draft Input ✅ |
+| 024 | `de57779` | Semi-Automatic Group Growth Pack ✅ |
+| 024A | `42372f4` | Growth commands in /start ✅ |
 
 Full history: [CHANGELOG.md](CHANGELOG.md)
 
@@ -346,10 +349,10 @@ See [PROJECT_CANON/ARCHITECTURE.md](PROJECT_CANON/ARCHITECTURE.md) for diagram.
 
 Last 10 major updates. Full history: [CHANGELOG.md](CHANGELOG.md)
 
-1. **2026-06-27** — TASK 023: Image Posts (Pillow PNG generator) ✅
-2. **2026-06-27** — TASK 022E: Real Operator Safety Fix (test exclusion, pack system) ✅
-3. **2026-06-27** — TASK 022B: Align Workflow With Real UI (/done, /skip, /risk) ✅
-4. **2026-06-27** — TASK 022: Russian Operator UI + Minimal Publishing Pipeline ✅
+1. **2026-06-27** — TASK 024A: Growth commands in /start ✅
+2. **2026-06-27** — TASK 024: Group Growth Pack (growthpack, admin_pitch, promo_comment) ✅
+3. **2026-06-27** — TASK 023A: Fix /imagepack (5-field text extraction) ✅
+4. **2026-06-27** — TASK 023: Image Posts (Pillow PNG generator) ✅
 3. **2026-06-27** — TASK 016: Real Daily Workflow Pilot (7-step pipeline)
 4. **2026-06-27** — TASK 015: Real Telegram Enablement (setup_check, send_test, queue_test)
 5. **2026-06-27** — TASK 014: Operator Runbook + Final Smoke (DAILY_WORKFLOW.md)
