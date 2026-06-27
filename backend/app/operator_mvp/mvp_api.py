@@ -213,11 +213,17 @@ def _classify_rule_based(text: str) -> tuple[str, dict]:
     # Warning/complaint signals
     warning_signals = ["čuvajte se", "ne preporučujem", "ne plaća", "prevarant",
                        "lopov", "ne idite tamo", "upozorenje"]
+    # Suspicious/unsafe signals (document requests, foreign job red flags)
+    suspicious_signals = ["pasoš", "jmbg", "lična karta", "inostranstvo",
+                          "pošaljite sliku", "dokumenta unapred", "uplata unapred",
+                          "depozit", "agencija za zapošljavanje"]
 
     # Determine classification — check worker/group before employer to avoid
     # false positives (e.g. "tražim posao" mentioning "berba" should be worker_search)
     if any(s in text_lower for s in spam_signals):
         classification = "spam"
+    elif any(s in text_lower for s in suspicious_signals):
+        classification = "suspicious"
     elif any(s in text_lower for s in warning_signals):
         classification = "employer_warning"
     elif any(s in text_lower for s in worker_signals):

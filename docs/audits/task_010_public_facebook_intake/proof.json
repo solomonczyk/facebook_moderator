@@ -1,0 +1,37 @@
+{
+  "task_id": "010",
+  "task_name": "Controlled Public Facebook Intake",
+  "verdict": "ACCEPTED",
+  "branch": "master",
+  "commit": "09a1e73",
+  "git_clean": true,
+  "runtime_changed": true,
+  "canon_changed": false,
+  "production_accepted": false,
+  "facebook_login_executed": false,
+  "facebook_publish_executed": false,
+  "facebook_comment_executed": false,
+  "facebook_message_executed": false,
+  "external_side_effects": false,
+  "groups_checked": 5,
+  "public_groups_found": 5,
+  "login_required_groups": 0,
+  "screenshots_created": 0,
+  "ocr_candidates_found": 7,
+  "candidates_sent_to_intake": 6,
+  "queue_items_created": 0,
+  "duplicates_skipped": 1,
+  "operator_approval_required_for_all": true,
+  "blockers": [],
+  "tests_run": [
+    {"command": "PYTHONIOENCODING=utf-8 PYTHONPATH=backend python backend/app/facebook_public_intake/demo_public_intake.py", "result": "pass", "notes": "6/6 candidates correctly classified, 1 dup skipped, all safety checks pass"},
+    {"command": "PYTHONIOENCODING=utf-8 PYTHONPATH=backend python -m app.facebook_public_intake --dry-run --max-groups 5", "result": "pass", "notes": "Dry-run pipeline complete, 5 groups, 0 side effects"}
+  ],
+  "artifacts": [
+    "docs/audits/task_010_public_facebook_intake/README.md",
+    "docs/audits/task_010_public_facebook_intake/demo_groups.json",
+    "docs/audits/task_010_public_facebook_intake/demo_candidates.json",
+    "docs/audits/task_010_public_facebook_intake/proof.json",
+    "artifacts/demo_pipeline_result.json"
+  ]
+}

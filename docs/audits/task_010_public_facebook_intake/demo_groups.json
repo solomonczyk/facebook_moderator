@@ -1,0 +1,69 @@
+{
+  "total_seed_groups": 7,
+  "search_terms_count": 8,
+  "groups": [
+    {
+      "group_name": "Sezonski poslovi Srbija",
+      "url": "https://www.facebook.com/groups/1688328218110932",
+      "source": "curated_seed_list",
+      "access_status": "unknown",
+      "relevance_score": 0.95,
+      "last_checked_at": null,
+      "notes": "General seasonal work group for Serbia"
+    },
+    {
+      "group_name": "Sezonski rad Srbija | Poslovi i iskustva radnika",
+      "url": "https://www.facebook.com/groups/992369183697618",
+      "source": "curated_seed_list",
+      "access_status": "unknown",
+      "relevance_score": 1.0,
+      "last_checked_at": null,
+      "notes": "Our own group — highest relevance"
+    },
+    {
+      "group_name": "Berba malina — sezonski poslovi",
+      "url": "https://www.facebook.com/groups/berba.malina.poslovi",
+      "source": "curated_seed_list",
+      "access_status": "unknown",
+      "relevance_score": 0.9,
+      "last_checked_at": null,
+      "notes": "Raspberry harvest focused group"
+    },
+    {
+      "group_name": "Sezonski poslovi u poljoprivredi",
+      "url": "https://www.facebook.com/groups/sezonski.poslovi.poljoprivreda",
+      "source": "curated_seed_list",
+      "access_status": "unknown",
+      "relevance_score": 0.88,
+      "last_checked_at": null,
+      "notes": "Agricultural seasonal work"
+    },
+    {
+      "group_name": "Poslovi u Srbiji — sezonski rad",
+      "url": "https://www.facebook.com/groups/poslovi.srbija.sezonski",
+      "source": "curated_seed_list",
+      "access_status": "unknown",
+      "relevance_score": 0.85,
+      "last_checked_at": null,
+      "notes": "General jobs including seasonal"
+    },
+    {
+      "group_name": "Branje voća i povrća — sezonski posao",
+      "url": "https://www.facebook.com/groups/branje.voca.povrca",
+      "source": "curated_seed_list",
+      "access_status": "unknown",
+      "relevance_score": 0.87,
+      "last_checked_at": null,
+      "notes": "Fruit and vegetable picking"
+    },
+    {
+      "group_name": "Radnici za berbu — Srbija",
+      "url": "https://www.facebook.com/groups/radnici.berba.srbija",
+      "source": "curated_seed_list",
+      "access_status": "unknown",
+      "relevance_score": 0.82,
+      "last_checked_at": null,
+      "notes": "Workers for harvest in Serbia"
+    }
+  ]
+}

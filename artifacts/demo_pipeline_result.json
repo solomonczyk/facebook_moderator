@@ -1,0 +1,84 @@
+{
+  "run_id": "run_20260627_065506",
+  "started_at": "2026-06-27T06:55:06.672668",
+  "finished_at": "2026-06-27T06:55:06.673667",
+  "dry_run": true,
+  "groups_checked": 5,
+  "public_groups_found": 5,
+  "login_required_groups": 0,
+  "blocked_groups": 0,
+  "screenshots_created": 0,
+  "ocr_candidates_found": 0,
+  "candidates_sent_to_intake": 0,
+  "queue_items_created": 0,
+  "duplicates_skipped": 0,
+  "groups_detail": [
+    {
+      "group_name": "Sezonski poslovi Srbija",
+      "url": "https://www.facebook.com/groups/1688328218110932",
+      "source": "curated_seed_list",
+      "access_status": "public",
+      "relevance_score": 0.95,
+      "last_checked_at": null,
+      "notes": "General seasonal work group for Serbia",
+      "screenshots": [
+        "[DRY RUN — would capture]"
+      ],
+      "candidates_found": "[DRY RUN — would extract]"
+    },
+    {
+      "group_name": "Sezonski rad Srbija | Poslovi i iskustva radnika",
+      "url": "https://www.facebook.com/groups/992369183697618",
+      "source": "curated_seed_list",
+      "access_status": "public",
+      "relevance_score": 1.0,
+      "last_checked_at": null,
+      "notes": "Our own group — highest relevance",
+      "screenshots": [
+        "[DRY RUN — would capture]"
+      ],
+      "candidates_found": "[DRY RUN — would extract]"
+    },
+    {
+      "group_name": "Berba malina — sezonski poslovi",
+      "url": "https://www.facebook.com/groups/berba.malina.poslovi",
+      "source": "curated_seed_list",
+      "access_status": "public",
+      "relevance_score": 0.9,
+      "last_checked_at": null,
+      "notes": "Raspberry harvest focused group",
+      "screenshots": [
+        "[DRY RUN — would capture]"
+      ],
+      "candidates_found": "[DRY RUN — would extract]"
+    },
+    {
+      "group_name": "Sezonski poslovi u poljoprivredi",
+      "url": "https://www.facebook.com/groups/sezonski.poslovi.poljoprivreda",
+      "source": "curated_seed_list",
+      "access_status": "public",
+      "relevance_score": 0.88,
+      "last_checked_at": null,
+      "notes": "Agricultural seasonal work",
+      "screenshots": [
+        "[DRY RUN — would capture]"
+      ],
+      "candidates_found": "[DRY RUN — would extract]"
+    },
+    {
+      "group_name": "Poslovi u Srbiji — sezonski rad",
+      "url": "https://www.facebook.com/groups/poslovi.srbija.sezonski",
+      "source": "curated_seed_list",
+      "access_status": "public",
+      "relevance_score": 0.85,
+      "last_checked_at": null,
+      "notes": "General jobs including seasonal",
+      "screenshots": [
+        "[DRY RUN — would capture]"
+      ],
+      "candidates_found": "[DRY RUN — would extract]"
+    }
+  ],
+  "candidates": [],
+  "errors": []
+}
