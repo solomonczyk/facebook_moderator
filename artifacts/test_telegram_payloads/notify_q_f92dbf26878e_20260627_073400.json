@@ -1,0 +1,42 @@
+{
+  "item_id": "q_f92dbf26878e",
+  "chat_id": "TEST_MODE",
+  "text": "⚠️ *HIGH RISK ITEM* ⚠️\n🔍 *New Queue Item*\n\n*Action:* Request Operator Review\n*Classification:* `suspicious`\n*Risk:* 🔴 HIGH\n*Confidence:* 85%\n*Source:* daily_pilot\n\n*Reason:* class=suspicious risk=high\n\n*Suggested text:*\nPosao u inostranstvu! Pošaljite pasoš i JMBG. Plata 3000e. Javite se agentu.\n\nID: `q_f92dbf26878e...`",
+  "parse_mode": "Markdown",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "✅ Approve",
+          "callback_data": "approve:q_f92dbf26878e"
+        },
+        {
+          "text": "❌ Reject",
+          "callback_data": "reject:q_f92dbf26878e"
+        }
+      ],
+      [
+        {
+          "text": "✏️ Edit",
+          "callback_data": "edit:q_f92dbf26878e"
+        },
+        {
+          "text": "❓ Request Info",
+          "callback_data": "needs_info:q_f92dbf26878e"
+        }
+      ],
+      [
+        {
+          "text": "⚠️ Escalate",
+          "callback_data": "escalate:q_f92dbf26878e"
+        },
+        {
+          "text": "🚫 Spam",
+          "callback_data": "mark_spam:q_f92dbf26878e"
+        }
+      ]
+    ]
+  },
+  "test_mode": true,
+  "saved_at": "2026-06-27T07:34:00.458265"
+}

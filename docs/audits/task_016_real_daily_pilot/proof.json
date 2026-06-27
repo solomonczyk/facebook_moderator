@@ -1,0 +1,47 @@
+{
+  "task_id": "016",
+  "task_name": "Real Daily Workflow Pilot",
+  "verdict": "ACCEPTED WITH BLOCKERS",
+  "branch": "master",
+  "commit": "dbd3196",
+  "git_clean": true,
+  "runtime_changed": true,
+  "canon_changed": false,
+  "production_accepted": false,
+  "telegram_test_mode": true,
+  "telegram_real_send_executed": false,
+  "telegram_messages_sent_count": 0,
+  "operator_confirmed_message_received": false,
+  "telegram_callback_verified": false,
+  "queue_status_changed_by_callback": false,
+  "public_intake_executed": true,
+  "groups_checked": 5,
+  "candidates_extracted": 5,
+  "queue_items_created": 5,
+  "operator_actions_count": 5,
+  "digest_created": true,
+  "digest_items_included": 2,
+  "digest_approved_by_operator": false,
+  "facebook_publish_executed": false,
+  "facebook_comment_executed": false,
+  "facebook_message_executed": false,
+  "manual_facebook_publish_required": true,
+  "secrets_committed": false,
+  "env_tracked": false,
+  "token_masked_in_artifacts": true,
+  "blockers": [
+    "TELEGRAM_BOT_TOKEN not configured",
+    "TELEGRAM_OPERATOR_CHAT_ID not configured",
+    "Real callback verification pending operator Telegram button press"
+  ],
+  "tests_run": [
+    {"command": "PYTHONIOENCODING=utf-8 PYTHONPATH=backend python -m app.daily_pilot", "result": "pass", "notes": "Full 7-step pipeline: 5 groups, 5 queue items, digest 2 items, 666 chars"}
+  ],
+  "artifacts": [
+    "docs/audits/task_016_real_daily_pilot/README.md",
+    "docs/audits/task_016_real_daily_pilot/setup_check_sanitized.json",
+    "docs/audits/task_016_real_daily_pilot/public_intake_results.json",
+    "docs/audits/task_016_real_daily_pilot/final_digest_text.txt",
+    "docs/audits/task_016_real_daily_pilot/proof.json"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "item_id": "q_23c3001f3ae5",
+  "chat_id": "TEST_MODE",
+  "text": "❓ *New Queue Item*\n\n*Action:* Ask For Missing Info\n*Classification:* `job_offer`\n*Risk:* 🟡 MEDIUM\n*Confidence:* 85%\n*Source:* daily_pilot\n\n*Reason:* class=job_offer risk=medium\n\n*Suggested text:*\nPotrebni radnici za plastenik Subotica. Smeštaj obezbeđen. Javite se inbox.\n\nID: `q_23c3001f3ae5...`",
+  "parse_mode": "Markdown",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "✅ Approve",
+          "callback_data": "approve:q_23c3001f3ae5"
+        },
+        {
+          "text": "❌ Reject",
+          "callback_data": "reject:q_23c3001f3ae5"
+        }
+      ],
+      [
+        {
+          "text": "✏️ Edit",
+          "callback_data": "edit:q_23c3001f3ae5"
+        },
+        {
+          "text": "❓ Request Info",
+          "callback_data": "needs_info:q_23c3001f3ae5"
+        }
+      ],
+      [
+        {
+          "text": "⚠️ Escalate",
+          "callback_data": "escalate:q_23c3001f3ae5"
+        },
+        {
+          "text": "🚫 Spam",
+          "callback_data": "mark_spam:q_23c3001f3ae5"
+        }
+      ]
+    ]
+  },
+  "test_mode": true,
+  "saved_at": "2026-06-27T07:33:39.657754"
+}

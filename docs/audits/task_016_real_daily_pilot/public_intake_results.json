@@ -1,0 +1,29 @@
+{
+  "setup": {
+    "bot_token_configured": false,
+    "bot_token_masked": "[NOT SET]",
+    "operator_chat_id_configured": false,
+    "operator_chat_id_masked": "[NOT SET]",
+    "test_mode": true,
+    "can_real_send": false,
+    "allowed_chat_ids": "(none — operator only)",
+    "production_accepted": false,
+    "checked_at": "2026-06-27T07:33:59.596644",
+    "warnings": [
+      "TELEGRAM_BOT_TOKEN not configured — real send impossible",
+      "TELEGRAM_OPERATOR_CHAT_ID not configured — real send impossible",
+      "TELEGRAM_TEST_MODE=true — all sends go to disk, not Telegram"
+    ]
+  },
+  "groups": 5,
+  "candidates": 5,
+  "queue_items": 5,
+  "digest_included": 2,
+  "digest_excluded": 0,
+  "digest_fallback": false,
+  "forbidden_words": 0,
+  "real_send": false,
+  "telegram_messages_sent": 0,
+  "production_accepted": false,
+  "facebook_publish": false
+}
