@@ -341,6 +341,338 @@ async def spam_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text(f"`{sid}...`\n{reason}", parse_mode="Markdown")
 
 
+# ── /reply — smart reply drafter ──────────────────────────────────────────
+
+async def reply_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update):
+        await _reject_unknown(update, context)
+        return
+
+    text = update.message.text or ""
+    msg_text = text.removeprefix("/reply").strip()
+    if not msg_text:
+        await update.message.reply_text("Upotreba: /reply <tekst poruke>\n\nBot analizira poruku i predlaže odgovor.")
+        return
+
+    # Quick classification
+    t = msg_text.lower()
+    if any(w in t for w in ["kazino", "casino", "crypto", "forex", "kladionica", "brza zarada"]):
+        intent, risk, reply = "spam", "high", "Ova objava je uklonjena jer krši pravila grupe. Dozvoljen sadržaj: sezonski rad u Srbiji."
+    elif any(w in t for w in ["čuvajte se", "ne plaća", "prevarant", "lopov"]):
+        intent, risk = "upozorenje", "high"
+        reply = "Hvala na informaciji. Administrator će pregledati i preduzeti odgovarajuće korake."
+    elif any(w in t for w in ["tražim posao", "treba mi posao"]):
+        intent, risk = "traži posao", "low"
+        reply = "Hvala! Popunite formu za radnike: https://forms.gle/UvbaekC86m8EE5X87 — administrator proverava podatke pre objave."
+    elif any(w in t for w in ["tražimo", "potrebni", "zapošljavamo", "berba"]):
+        intent, risk = "ponuda posla", "low"
+        reply = "Hvala na objavi! Da bismo je objavili, popunite formu: https://forms.gle/KovE1kMFxMF7nq8w5"
+    elif "?" in t or "pitanje" in t or "da li" in t:
+        intent, risk = "pitanje", "low"
+        reply = "Hvala na pitanju. Administrator će odgovoriti uskoro."
+    else:
+        intent, risk = "nepoznato", "medium"
+        reply = "Hvala. Administrator će pregledati poruku."
+
+    # Store as queue item
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+    import uuid
+    item_id = f"q_{uuid.uuid4().hex[:12]}"
+    pq = get_persistent_queue()
+    pq.add({
+        "item_id": item_id, "action_type": "request_operator_review",
+        "status": "pending", "suggested_text": reply,
+        "reason": f"/reply: {intent}, risk={risk}",
+        "operator_approval_required": True,
+        "raw_json": {"intent": intent, "risk": risk, "original": msg_text[:200]},
+        "created_at": __import__("datetime").datetime.utcnow().isoformat(),
+    })
+
+    await update.message.reply_text(
+        f"📋 Analiza poruke\n\n"
+        f"Tip: {intent}\n"
+        f"Rizik: {risk}\n\n"
+        f"Predlog odgovora:\n{reply}\n\n"
+        f"Sledeći korak: kopirajte odgovor i pošaljite ručno u Facebook.",
+    )
+
+
+# ── /fb_post — capture Facebook post ─────────────────────────────────────
+
+async def fb_post_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update):
+        await _reject_unknown(update, context)
+        return
+    text = update.message.text or ""
+    post = text.removeprefix("/fb_post").strip()
+    if not post:
+        await update.message.reply_text("Upotreba: /fb_post <tekst kopiran sa Facebook-a>")
+        return
+    await _capture_text(update, post, "fb_post_manual")
+
+
+# ── /fb_comment — capture Facebook comment ────────────────────────────────
+
+async def fb_comment_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update):
+        await _reject_unknown(update, context)
+        return
+    text = update.message.text or ""
+    comment = text.removeprefix("/fb_comment").strip()
+    if not comment:
+        await update.message.reply_text("Upotreba: /fb_comment Author: ime\nPost: tekst\nComment: tekst")
+        return
+    await _capture_text(update, comment, "fb_comment_manual")
+
+
+# ── /capture — external group capture ─────────────────────────────────────
+
+async def capture_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update):
+        await _reject_unknown(update, context)
+        return
+    text = update.message.text or ""
+    content = text.removeprefix("/capture").strip()
+    if not content:
+        await update.message.reply_text("Upotreba: /capture\nGroup: <ime grupe>\nAuthor: <ime>\nText: <tekst>")
+        return
+    await _capture_text(update, content, "external_group_capture")
+
+
+# ── /fb_question, /fb_review, /fb_member aliases ─────────────────────────
+
+async def fb_question_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+    q = (update.message.text or "").removeprefix("/fb_question").strip()
+    if not q: await update.message.reply_text("Upotreba: /fb_question <tekst pitanja>"); return
+    await _capture_text(update, q, "fb_question_manual")
+
+async def fb_review_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+    r = (update.message.text or "").removeprefix("/fb_review").strip()
+    if not r: await update.message.reply_text("Upotreba: /fb_review <tekst iskustva>"); return
+    await _capture_text(update, r, "fb_review_manual")
+
+async def fb_member_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+    m = (update.message.text or "").removeprefix("/fb_member").strip()
+    if not m: await update.message.reply_text("Upotreba: /fb_member Name: ime\nNote: opis"); return
+    await _capture_text(update, m, "fb_member_manual")
+
+
+async def _capture_text(update, text: str, source_type: str):
+    """Shared capture: classify, persist, return draft reply."""
+    import uuid, re
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+    from ..operator_mvp.mvp_api import _classify_rule_based, _classify_risk, _determine_action
+
+    cls, fields = _classify_rule_based(text)
+    risk, flags = _classify_risk(text.lower(), cls, fields)
+    action = _determine_action(cls, risk, bool(fields.get("contact")), bool(fields.get("location")))
+
+    # Build Serbian reply
+    if cls == "spam":
+        reply = "Ova objava je uklonjena jer krši pravila grupe."
+    elif cls == "employer_warning":
+        reply = "Hvala na informaciji. Administrator će pregledati."
+    elif cls == "job_offer" and risk == "low":
+        reply = "Hvala! Popunite formu za poslodavce: https://forms.gle/KovE1kMFxMF7nq8w5"
+    elif cls == "worker_search":
+        reply = "Hvala! Popunite formu za radnike: https://forms.gle/UvbaekC86m8EE5X87"
+    elif action == "request_more_info":
+        reply = "Hvala. Da bismo objavu pripremili, molimo vas da navedete više informacija."
+    else:
+        reply = "Hvala. Administrator će pregledati i odgovoriti."
+
+    item_id = f"q_{uuid.uuid4().hex[:12]}"
+    pq = get_persistent_queue()
+    pq.add({
+        "item_id": item_id, "action_type": "request_operator_review",
+        "status": "pending", "suggested_text": reply,
+        "reason": f"{source_type}: {cls}, risk={risk}",
+        "operator_approval_required": True,
+        "raw_json": {"source_type": source_type, "classification": cls,
+                     "risk": risk, "original": text[:500]},
+        "created_at": __import__("datetime").datetime.utcnow().isoformat(),
+    })
+
+    await update.message.reply_text(
+        f"📋 {source_type}\n"
+        f"Klasifikacija: {cls}\n"
+        f"Rizik: {risk} | Akcija: {action}\n\n"
+        f"Predlog odgovora:\n{reply}\n\n"
+        f"✅ Sačuvano. Objavite ručno u Facebook.",
+    )
+
+
+# ── /today — daily operator checklist ─────────────────────────────────────
+
+async def today_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+    pq = get_persistent_queue()
+    all_items = pq.get_all()
+
+    new = [i for i in all_items if i["status"] in ("pending", "approved")]
+    questions = [i for i in new if "question" in str(i.get("raw_json", {}).get("source_type", ""))]
+    spam = [i for i in all_items if i["status"] in ("spam", "spam_candidate")]
+
+    msg = "📅 *Današnji pregled*\n\n"
+    msg += f"📰 Novi draft-ovi: {len(new)}\n"
+    msg += f"❓ Pitanja: {len(questions)}\n"
+    msg += f"🚫 Spam/rizik: {len(spam)}\n\n"
+
+    msg += "*Za uraditi danas:*\n"
+    msg += "1. Pregledaj /drafts\n"
+    msg += "2. Odgovori na pitanja\n"
+    msg += "3. Proveri /spam\n"
+    msg += "4. Pokreni /digest\n"
+    msg += "5. Objavi ručno u FB grupu\n\n"
+
+    msg += "Forme:\n"
+    msg += "Poslodavci: https://forms.gle/KovE1kMFxMF7nq8w5\n"
+    msg += "Radnici: https://forms.gle/UvbaekC86m8EE5X87"
+
+    await update.message.reply_text(msg, parse_mode="Markdown")
+
+
+# ── /links — form links + Serbian copy-paste ──────────────────────────────
+
+async def links_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+
+    await update.message.reply_text(
+        "📋 *Linkovi*\n\n"
+        "*Za poslodavce:*\n"
+        "https://forms.gle/KovE1kMFxMF7nq8w5\n\n"
+        "✂️ Kopiraj za FB:\n"
+        "Ako tražite sezonske radnike, popunite ovu formu. "
+        "Administrator proverava podatke pre objave:\n"
+        "https://forms.gle/KovE1kMFxMF7nq8w5\n\n"
+        "*Za radnike:*\n"
+        "https://forms.gle/UvbaekC86m8EE5X87\n\n"
+        "✂️ Kopiraj za FB:\n"
+        "Ako tražite sezonski posao, popunite ovu formu. "
+        "Administrator proverava podatke pre objave:\n"
+        "https://forms.gle/UvbaekC86m8EE5X87",
+        parse_mode="Markdown",
+    )
+
+
+# ── /evening — end-of-day actionable items ────────────────────────────────
+
+async def evening_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+    pq = get_persistent_queue()
+    all_items = pq.get_all()
+
+    # Group by priority
+    high = [i for i in all_items if i.get("status") in ("risk_review",) or
+            "high" in str(i.get("raw_json", {}).get("risk", ""))]
+    questions = [i for i in all_items if "question" in str(i.get("raw_json", {}).get("source_type", ""))
+                 and i["status"] == "pending"]
+    offers = [i for i in all_items if i["status"] == "pending"
+              and i.get("action_type") == "publish_own_group_post"]
+    spam = [i for i in all_items if i["status"] in ("spam", "spam_candidate")]
+
+    msg = "🌙 *Večernji pregled*\n\n"
+
+    if high:
+        msg += f"🔴 *Prioritet 1 — Rizik:* {len(high)}\n"
+        for h in high[:3]:
+            msg += f"  `{h['item_id'][:12]}...` {h.get('reason', '')[:80]}\n"
+    if questions:
+        msg += f"\n🟡 *Pitanja:* {len(questions)}\n"
+    if offers:
+        msg += f"\n🟢 *Ponude:* {len(offers)}\n"
+    if spam:
+        msg += f"\n⚫ *Spam:* {len(spam)}\n"
+
+    if not any([high, questions, offers, spam]):
+        msg += "✅ Nema stavki za večeras."
+
+    msg += "\n✂️ Svi odgovori su spremni u /drafts. Kopiraj i objavi ručno."
+
+    await update.message.reply_text(msg, parse_mode="Markdown")
+
+
+# ── /digest_next — next-day digest from external captures ─────────────────
+
+async def digest_next_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+    pq = get_persistent_queue()
+    all_items = pq.get_all()
+
+    # Collect external captures
+    captures = [i for i in all_items
+                if "external_group_capture" in str(i.get("raw_json", {}).get("source_type", ""))
+                or "fb_post_manual" in str(i.get("raw_json", {}).get("source_type", ""))]
+    captures = [c for c in captures if c["status"] not in ("spam", "spam_candidate", "rejected")]
+
+    if not captures:
+        await update.message.reply_text("Nema captures za digest. Koristite /capture za dodavanje.")
+        return
+
+    date_str = __import__("datetime").datetime.utcnow().strftime("%d.%m.%Y")
+    lines = [f"📌 Pregled sezonskih poslova — {date_str}", "",
+             "Oglasi prikupljeni iz javnih izvora. Proverite uslove direktno.", ""]
+
+    for i, c in enumerate(captures[:10], 1):
+        raw = c.get("raw_json", {}) or {}
+        original = raw.get("original", c.get("suggested_text", ""))[:150]
+        lines.append(f"{i}. {original}")
+        lines.append("")
+
+    lines.append("---")
+    lines.append("Napomena: Grupa nije poslodavac i ne garantuje uslove.")
+    lines.append("Objava pripremljena za ručnu proveru, nije automatski objavljena.")
+
+    digest = "\n".join(lines)
+
+    # Save as queue item
+    import uuid
+    pq.add({
+        "item_id": f"q_{uuid.uuid4().hex[:12]}",
+        "action_type": "create_digest_post",
+        "status": "pending", "suggested_text": digest,
+        "reason": "digest_next from external captures",
+        "operator_approval_required": True,
+        "created_at": __import__("datetime").datetime.utcnow().isoformat(),
+    })
+
+    await update.message.reply_text(
+        f"📌 *Digest za sutra*\n\n{digest[:1000]}"
+        f"\n\n✅ {len(captures)} stavki. Objavite ručno u FB.",
+        parse_mode="Markdown",
+    )
+
+
+# ── /fb_help — mobile mode help ───────────────────────────────────────────
+
+async def fb_help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+    await update.message.reply_text(
+        "📱 *Mobilni režim — komande*\n\n"
+        "/fb_post <tekst> — kopirani FB post\n"
+        "/fb_comment <tekst> — kopirani FB komentar\n"
+        "/fb_question <tekst> — pitanje\n"
+        "/fb_review <tekst> — iskustvo/recenzija\n"
+        "/fb_member <tekst> — profil člana\n"
+        "/capture <tekst> — post iz druge grupe\n"
+        "/reply <tekst> — analiza i predlog odgovora\n"
+        "/today — današnji pregled\n"
+        "/links — forme (copy-paste)\n"
+        "/evening — večernji pregled\n"
+        "/digest_next — digest za sutra",
+        parse_mode="Markdown",
+    )
+
+
 # ── Callback Handlers ──────────────────────────────────────────────────────
 
 async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -551,6 +883,18 @@ def start_bot():
     app.add_handler(CommandHandler("forms", forms_cmd))
     app.add_handler(CommandHandler("drafts", drafts_cmd))
     app.add_handler(CommandHandler("spam", spam_cmd))
+    app.add_handler(CommandHandler("reply", reply_cmd))
+    app.add_handler(CommandHandler("fb_post", fb_post_cmd))
+    app.add_handler(CommandHandler("fb_comment", fb_comment_cmd))
+    app.add_handler(CommandHandler("fb_question", fb_question_cmd))
+    app.add_handler(CommandHandler("fb_review", fb_review_cmd))
+    app.add_handler(CommandHandler("fb_member", fb_member_cmd))
+    app.add_handler(CommandHandler("capture", capture_cmd))
+    app.add_handler(CommandHandler("today", today_cmd))
+    app.add_handler(CommandHandler("links", links_cmd))
+    app.add_handler(CommandHandler("evening", evening_cmd))
+    app.add_handler(CommandHandler("digest_next", digest_next_cmd))
+    app.add_handler(CommandHandler("fb_help", fb_help_cmd))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CallbackQueryHandler(handle_callback))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_for_edit))

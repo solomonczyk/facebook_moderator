@@ -1,0 +1,27 @@
+{
+  "task": "TASK 020",
+  "verdict": "ACCEPTED",
+  "base_commit": "ef5d9ba",
+  "final_commit": "028d411",
+  "pushed": true,
+  "git_clean": true,
+  "production_accepted": false,
+  "facebook_auto_publish_enabled": false,
+  "facebook_ui_automation_enabled": false,
+  "bridge_endpoints": {
+    "employer": "/api/intake/google-forms/employer-offer",
+    "worker": "/api/intake/google-forms/worker-search"
+  },
+  "security": {
+    "token_required": true,
+    "token_logged": false,
+    "secrets_committed": false
+  },
+  "forms": {
+    "employer_form_url": "https://forms.gle/KovE1kMFxMF7nq8w5",
+    "worker_form_url": "https://forms.gle/UvbaekC86m8EE5X87"
+  },
+  "tests_passed": true,
+  "tests_count": 20,
+  "operator_final_authority": true
+}
