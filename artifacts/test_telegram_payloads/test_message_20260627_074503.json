@@ -1,0 +1,8 @@
+{
+  "chat_id": "[NOT SET]",
+  "text": "FB Moderator: Telegram operator channel connected. Test message only. Operator approval flow ready.",
+  "parse_mode": "Markdown",
+  "test_mode": true,
+  "dry_run": true,
+  "saved_at": "2026-06-27T07:45:03.139359"
+}

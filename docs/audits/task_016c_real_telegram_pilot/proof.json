@@ -1,0 +1,36 @@
+{
+  "task_id": "016C",
+  "task_name": "Real Telegram Pilot Confirmation",
+  "verdict": "ACCEPTED WITH BLOCKERS",
+  "branch": "master",
+  "commit": "118392b",
+  "git_clean": true,
+  "infrastructure_ready": true,
+  "env_loader_fix_deployed": true,
+  "setup_check_works": true,
+  "dry_run_tests_pass": true,
+  "real_send_pending": true,
+  "blocker": "Operator must run --real commands on server with .env configured",
+  "telegram_real_send_executed": false,
+  "telegram_messages_sent_count": 0,
+  "operator_confirmed_message_received": false,
+  "telegram_callback_verified": false,
+  "queue_status_changed_by_callback": false,
+  "facebook_publish_executed": false,
+  "production_accepted": false,
+  "secrets_committed": false,
+  "env_tracked": false,
+  "token_masked_in_artifacts": true,
+  "tests_run": [
+    {"command": "PYTHONPATH=backend python -m app.telegram_setup_check", "result": "pass", "notes": "Local: .env not found, graceful. Server: will find .env with tokens."},
+    {"command": "PYTHONPATH=backend python -m app.telegram_send_test", "result": "pass", "notes": "Dry-run payload saved. --real pending operator."},
+    {"command": "PYTHONPATH=backend python -m app.telegram_queue_test", "result": "pass", "notes": "Test mode notification works. Buttons described for operator."}
+  ],
+  "artifacts": [
+    "docs/audits/task_016c_real_telegram_pilot/README.md",
+    "docs/audits/task_016c_real_telegram_pilot/telegram_setup_check.json",
+    "docs/audits/task_016c_real_telegram_pilot/telegram_send_test_result.json",
+    "docs/audits/task_016c_real_telegram_pilot/telegram_queue_test_result.json",
+    "docs/audits/task_016c_real_telegram_pilot/proof.json"
+  ]
+}
