@@ -1,0 +1,42 @@
+{
+  "item_id": "q_ba77c56dd0bb",
+  "chat_id": "TEST_MODE",
+  "text": "📰 *New Queue Item*\n\n*Action:* Publish Own Group Post\n*Classification:* `job_offer`\n*Risk:* 🟢 LOW\n*Confidence:* 92%\n*Source:* telegram_queue_test\n\n*Reason:* Telegram queue test — safe demo item\n\n*Missing:* work hours\n\n*Suggested text:*\nTest queue item: Tražimo 3 radnika za berbu malina, Arilje. Smeštaj i hrana obezbeđeni. Dnevnica 5000 RSD. Kontakt 064-123-4567.\n\nID: `q_ba77c56dd0bb...`",
+  "parse_mode": "Markdown",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "✅ Approve",
+          "callback_data": "approve:q_ba77c56dd0bb"
+        },
+        {
+          "text": "❌ Reject",
+          "callback_data": "reject:q_ba77c56dd0bb"
+        }
+      ],
+      [
+        {
+          "text": "✏️ Edit",
+          "callback_data": "edit:q_ba77c56dd0bb"
+        },
+        {
+          "text": "❓ Request Info",
+          "callback_data": "needs_info:q_ba77c56dd0bb"
+        }
+      ],
+      [
+        {
+          "text": "⚠️ Escalate",
+          "callback_data": "escalate:q_ba77c56dd0bb"
+        },
+        {
+          "text": "🚫 Spam",
+          "callback_data": "mark_spam:q_ba77c56dd0bb"
+        }
+      ]
+    ]
+  },
+  "test_mode": true,
+  "saved_at": "2026-06-27T07:28:56.842447"
+}

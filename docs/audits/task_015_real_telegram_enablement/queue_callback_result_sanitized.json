@@ -1,0 +1,11 @@
+{
+  "sent": true,
+  "real": false,
+  "test_mode": "true",
+  "item_id": "q_ba77c56dd0bb",
+  "action_type": "publish_own_group_post",
+  "classification": "job_offer",
+  "risk_level": "low",
+  "operator_approval_required": true,
+  "sent_at": "2026-06-27T07:28:56.843475"
+}

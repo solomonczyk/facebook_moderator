@@ -1,0 +1,6 @@
+{
+  "sent": false,
+  "dry_run": true,
+  "payload_path": "artifacts/test_telegram_payloads\\test_message_20260627_072856.json",
+  "message": "FB Moderator: Telegram operator channel connected...."
+}

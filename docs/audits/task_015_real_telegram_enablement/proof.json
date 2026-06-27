@@ -1,0 +1,41 @@
+{
+  "task_id": "015",
+  "task_name": "Real Telegram Operator Chat Enablement",
+  "verdict": "ACCEPTED WITH BLOCKERS",
+  "branch": "master",
+  "commit": "e694ebb",
+  "git_clean": true,
+  "runtime_changed": true,
+  "canon_changed": false,
+  "production_accepted": false,
+  "telegram_test_mode": true,
+  "telegram_real_send_executed": false,
+  "telegram_messages_sent_count": 0,
+  "telegram_public_group_send_executed": false,
+  "operator_chat_only": true,
+  "telegram_callback_verified": false,
+  "queue_status_changed_by_callback": false,
+  "facebook_publish_executed": false,
+  "facebook_comment_executed": false,
+  "facebook_message_executed": false,
+  "secrets_committed": false,
+  "env_tracked": false,
+  "token_masked_in_artifacts": true,
+  "blockers": [
+    "TELEGRAM_BOT_TOKEN not configured — operator must set in .env",
+    "TELEGRAM_OPERATOR_CHAT_ID not configured — operator must set in .env",
+    "Real callback verification requires operator to press buttons in Telegram"
+  ],
+  "tests_run": [
+    {"command": "PYTHONPATH=backend python -m app.telegram_setup_check", "result": "pass", "notes": "Setup check works, tokens masked"},
+    {"command": "PYTHONPATH=backend python -m app.telegram_send_test", "result": "pass", "notes": "Dry run payload saved, --real flag respected"},
+    {"command": "PYTHONPATH=backend python -m app.telegram_queue_test", "result": "pass", "notes": "Queue notification test works, button description included"}
+  ],
+  "artifacts": [
+    "docs/audits/task_015_real_telegram_enablement/README.md",
+    "docs/audits/task_015_real_telegram_enablement/setup_check_sanitized.json",
+    "docs/audits/task_015_real_telegram_enablement/real_send_result_sanitized.json",
+    "docs/audits/task_015_real_telegram_enablement/queue_callback_result_sanitized.json",
+    "docs/audits/task_015_real_telegram_enablement/proof.json"
+  ]
+}
