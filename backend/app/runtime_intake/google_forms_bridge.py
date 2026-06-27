@@ -247,9 +247,14 @@ async def google_forms_employer(payload: GoogleFormsPayload, request: Request):
     # Map fields
     mapped = _map_fields(raw, EMPLOYER_FIELD_MAP)
 
-    # Consent check
-    pub_consent = raw.get("publication_consent", raw.get("Da li dozvoljavate objavu", ""))
-    phone_consent_val = raw.get("phone_consent", raw.get("Da li dozvoljavate objavu kontakt telefona", ""))
+    # Consent check — handle str, bool, int, None
+    def _strval(v) -> str:
+        if v is None: return ""
+        if isinstance(v, bool): return "da" if v else "ne"
+        return str(v)
+
+    pub_consent = _strval(raw.get("publication_consent", raw.get("Da li dozvoljavate objavu", "")))
+    phone_consent_val = _strval(raw.get("phone_consent", raw.get("Da li dozvoljavate objavu kontakt telefona", "")))
 
     from .structured_intake import EmployerOfferIntake, process_employer_offer
 
@@ -286,9 +291,13 @@ async def google_forms_employer(payload: GoogleFormsPayload, request: Request):
     result["raw_json"]["external_submission_id"] = sub_id
     result["raw_json"]["source_form"] = "google_forms_employer"
 
-    _add_to_queue_and_notify(request, result)
+    try:
+        _add_to_queue_and_notify(request, result)
+    except Exception as e:
+        logger.warning(f"Queue/notify failed (item created anyway): {e}")
     _mark_seen(sub_id)
 
+    consent_blocked = pub_consent.lower() in ("ne", "no", "нет", "false", "0")
     return BridgeResponse(
         lead_id=result["lead_id"],
         item_id=result["item_id"],
@@ -297,7 +306,7 @@ async def google_forms_employer(payload: GoogleFormsPayload, request: Request):
         classification=result["classification"],
         risk_level=result["risk_level"],
         missing_fields=result["missing_info"],
-        consent_blocked=(pub_consent and pub_consent.lower() in ("ne", "no", "нет")),
+        consent_blocked=consent_blocked,
         message="Employer offer received",
     )
 
@@ -319,8 +328,8 @@ async def google_forms_worker(payload: GoogleFormsPayload, request: Request):
 
     mapped = _map_fields(raw, WORKER_FIELD_MAP)
 
-    pub_consent = raw.get("publication_consent", raw.get("Da li dozvoljavate objavu", ""))
-    phone_consent_val = raw.get("phone_consent", raw.get("Da li dozvoljavate objavu kontakt telefona", ""))
+    pub_consent = _strval(raw.get("publication_consent", raw.get("Da li dozvoljavate objavu", "")))
+    phone_consent_val = _strval(raw.get("phone_consent", raw.get("Da li dozvoljavate objavu kontakt telefona", "")))
 
     from .structured_intake import WorkerSearchIntake, process_worker_search
 
@@ -353,9 +362,13 @@ async def google_forms_worker(payload: GoogleFormsPayload, request: Request):
     result["raw_json"]["external_submission_id"] = sub_id
     result["raw_json"]["source_form"] = "google_forms_worker"
 
-    _add_to_queue_and_notify(request, result)
+    try:
+        _add_to_queue_and_notify(request, result)
+    except Exception as e:
+        logger.warning(f"Queue/notify failed (item created anyway): {e}")
     _mark_seen(sub_id)
 
+    consent_blocked = pub_consent.lower() in ("ne", "no", "нет", "false", "0")
     return BridgeResponse(
         lead_id=result["lead_id"],
         item_id=result["item_id"],
@@ -364,7 +377,7 @@ async def google_forms_worker(payload: GoogleFormsPayload, request: Request):
         classification=result["classification"],
         risk_level=result["risk_level"],
         missing_fields=result["missing_info"],
-        consent_blocked=(pub_consent and pub_consent.lower() in ("ne", "no", "нет")),
+        consent_blocked=consent_blocked,
         message="Worker search received",
     )
 
