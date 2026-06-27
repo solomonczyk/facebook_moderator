@@ -1,0 +1,20 @@
+{
+  "task": "TASK 017B — Persist Queue Items at Creation Time",
+  "verdict": "ACCEPTED",
+  "commit": "0eee5c3",
+  "pushed": true,
+  "git_clean": true,
+  "queue_persistent": true,
+  "persist_at_creation": true,
+  "db_path": "/opt/facebook_moderator/backend/persistent_queue.db",
+  "server_verified": true,
+  "db_rows_after_daily_pilot": 6,
+  "db_rows_verified": ["q_c37f7f6044a1 (digest)", "q_7fc99f3c3d02 (spam)", "q_cb8ce6973adf (escalate)", "q_98b266303620 (needs_info)", "q_f3798468cec0 (worker_search)", "q_4862c45cb1d5 (job_offer)"],
+  "status_transitions_tested": ["approved", "rejected", "needs_info", "spam"],
+  "restart_survival_tested": true,
+  "telegram_real_send_executed": true,
+  "facebook_auto_publish": false,
+  "production_accepted": false,
+  "tests_passed": true,
+  "tests_count": 32
+}

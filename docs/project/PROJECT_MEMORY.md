@@ -16,7 +16,7 @@ This document is the single source of truth for current project state. A new AI 
 **Current goal:** Операторский контур готов. TASK 009–016C завершены. Telegram реальный подключён. Daily pilot работает. Facebook публикация — manual.
 
 **Current runtime:**
-- Branch: `master`, commit: `178838b`
+- Branch: `master`, commit: `0eee5c3`
 - VPS: `/opt/facebook_moderator`. DeepSeek-V4-Pro active.
 - **Telegram REAL:** активен. Токен: `8599****68FQ`. Чат: `5396****6361`.
 - `.env`: `/opt/facebook_moderator/backend/.env` (найден, загружен).
@@ -30,9 +30,9 @@ This document is the single source of truth for current project state. A new AI 
 - Runtime API: 0.2.1
 
 **Current priorities:**
-1. TASK 017 — Production Operating Mode Guardrails
-2. Операторский daily workflow: `python3 -m app.daily_pilot --real`
-3. Ручная публикация дайджеста в Facebook группу
+1. Операторский daily workflow: `python3 -m app.daily_pilot --real`
+2. Ручная публикация дайджеста в Facebook группу
+3. TASK 018 — Production readiness / systemd service
 
 **Current blockers:** Нет.
 
@@ -103,7 +103,7 @@ Facebook Group → Runtime Intake → Runtime Agent → Analyst Agent
 | Field | Value |
 |-------|-------|
 | Current branch | `master` |
-| Current commit | `178838b` |
+| Current commit | `0eee5c3` |
 | DeepSeek status | Active (provider: deepseek, model: DeepSeek-V4-Pro) |
 | LLM primary | deepseek |
 | Regex-only mode | false |
@@ -179,7 +179,7 @@ Full decisions: [PROJECT_CANON/ADR.md](PROJECT_CANON/ADR.md). Summary:
 
 | Task | Status | Description |
 |------|--------|-------------|
-| TASK 017 | Pending | Production Operating Mode Guardrails |
+| — | — | No active tasks — операторский контур готов |
 
 ---
 
@@ -203,6 +203,8 @@ Full decisions: [PROJECT_CANON/ADR.md](PROJECT_CANON/ADR.md). Summary:
 | 016 | `6d32297` | Daily Workflow Pilot |
 | 016B | `472340b` | Server .env Activation Fix |
 | 016C | `178838b` | **Real Telegram Pilot Confirmed** ✅ |
+| 017 | `1877742` | Persistent Queue for Telegram Callbacks |
+| 017B | `0eee5c3` | Persist Queue Items at Creation Time ✅ |
 
 Full history: [CHANGELOG.md](CHANGELOG.md)
 
@@ -239,7 +241,7 @@ See [ROADMAP.md](ROADMAP.md) for full roadmap.
 | Field | Value |
 |-------|-------|
 | Branch | `master` |
-| Latest commit | `178838b` |
+| Latest commit | `0eee5c3` |
 | Latest message | fix: switch Telegram parse_mode from Markdown to HTML |
 | Git clean | Yes (except Obsidian workspace config) |
 | Pushed | Yes (GitHub: solomonczyk/facebook_moderator) |
@@ -336,8 +338,9 @@ See [PROJECT_CANON/ARCHITECTURE.md](PROJECT_CANON/ARCHITECTURE.md) for diagram.
 
 Last 10 major updates. Full history: [CHANGELOG.md](CHANGELOG.md)
 
-1. **2026-06-27** — TASK 016C: Real Telegram Pilot Confirmed ✅ (server .env loaded, message received, callback worked)
-2. **2026-06-27** — TASK 016B: Server .env Activation Fix (env_loader module)
+1. **2026-06-27** — TASK 017B: Persist Queue Items at Creation Time ✅ (6 rows in persistent_queue.db)
+2. **2026-06-27** — TASK 017: Persistent Queue for Telegram Callbacks (32 tests, SQLite-backed)
+3. **2026-06-27** — TASK 016C: Real Telegram Pilot Confirmed ✅
 3. **2026-06-27** — TASK 016: Real Daily Workflow Pilot (7-step pipeline)
 4. **2026-06-27** — TASK 015: Real Telegram Enablement (setup_check, send_test, queue_test)
 5. **2026-06-27** — TASK 014: Operator Runbook + Final Smoke (DAILY_WORKFLOW.md)
@@ -356,7 +359,7 @@ Last 10 major updates. Full history: [CHANGELOG.md](CHANGELOG.md)
 **Project:** Facebook Group Admin Copilot for "Sezonski rad Srbija" — AI moderation assistant. Operator-in-the-loop. Never autonomous.
 
 **Current state (2026-06-27):**
-- Branch `master`, commit `178838b`. **Pushed** to GitHub.
+- Branch `master`, commit `0eee5c3`. **Pushed** to GitHub.
 - VPS: `/opt/facebook_moderator`. DeepSeek-V4-Pro primary LLM.
 - **Telegram REAL active.** Токен + чат ID загружены из `/opt/facebook_moderator/backend/.env`.
 - Daily pilot: `python3 -m app.daily_pilot --real` → messages + buttons в Telegram.
