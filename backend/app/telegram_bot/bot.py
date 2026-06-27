@@ -700,48 +700,78 @@ async def postpack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     pq = get_persistent_queue()
     all_items = pq.get_all()
 
-    # Classify items
-    offers = [i for i in all_items if i["status"] in ("pending", "approved")
-              and i.get("action_type") == "publish_own_group_post"
-              and "high" not in str(i.get("raw_json", {}).get("risk", ""))]
+    # Check for existing active pack
+    existing = _get_active_pack()
+    if existing:
+        await update.message.reply_text(
+            f"⚠️ Этот пакет уже подготовлен. Не публикуйте дважды.\n"
+            f"Пакет: {existing['pack_id']} ({len(existing['item_ids'])} элементов)\n"
+            f"/done_pack — отметить всё опубликованным\n"
+            f"/cancel_pack — отменить пакет\n"
+            f"/postpack (повторно) — создать новый пакет"
+        )
+        return
+
+    # Filter: pending/approved, exclude test items, high risk, spam
+    offers = []
+    for i in all_items:
+        if i["status"] not in ("pending", "approved"):
+            continue
+        if i.get("action_type") != "publish_own_group_post":
+            continue
+        if _is_test_item(i):
+            continue
+        if "high" in str(i.get("raw_json", {}).get("risk", "")):
+            continue
+        if i["status"] in ("spam_candidate", "spam"):
+            continue
+        offers.append(i)
+
     worker_items = [i for i in all_items if i["status"] in ("pending",)
-                    and i.get("classification") == "worker_search"]
+                    and i.get("classification") == "worker_search"
+                    and not _is_test_item(i)]
     questions = [i for i in all_items if "question" in str(i.get("raw_json", {}).get("source_type", ""))
-                 and i["status"] == "pending"]
-    high_risk = [i for i in all_items if i.get("status") in ("risk_review",) or
-                 "high" in str(i.get("raw_json", {}).get("risk", ""))]
+                 and i["status"] == "pending" and not _is_test_item(i)]
+    high_risk = [i for i in all_items if (i.get("status") == "risk_review" or
+                 "high" in str(i.get("raw_json", {}).get("risk", "")))]
     spam_items = [i for i in all_items if i["status"] in ("spam", "spam_candidate")]
+
+    # Create pack
+    all_ids = [i["item_id"] for i in offers]
+    pack_id = _create_pack(all_ids) if all_ids else None
 
     date_str = __import__("datetime").datetime.utcnow().strftime("%d.%m.%Y")
     lines = [f"📌 Пакет для публикации — {date_str}", ""]
-    lines.append("━━━━━━━━━━━━━━━━━━━━━")
-    lines.append("")
 
-    # Digest section
-    lines.append("📰 ГОТОВЫЕ ПОСТЫ ДЛЯ FB (скопировать и опубликовать)")
+    if pack_id:
+        lines.append(f"🔖 Пакет: {pack_id}")
+        lines.append("")
+
+    lines.append("━━━━━━━━━━━━━━━━━━━━━")
     lines.append("")
 
     if offers:
         for o in offers[:3]:
+            oid = o.get("item_id", "")[:12]
             text = o.get("suggested_text", "") or o.get("raw_json", {}).get("original", "")
-            if text:
-                lines.append(text[:800])
-                lines.append("")
-                lines.append("---")
-                lines.append("")
+            lines.append(f"[ID: {oid}]")
+            lines.append(text[:800])
+            lines.append("")
     else:
         lines.append("Нет готовых постов на сегодня.")
         lines.append("")
 
     # Worker section
     if worker_items:
-        lines.append(f"👷 ПОИСК РАБОТЫ ({len(worker_items)}):")
+        lines.append("👷 Radnici traže posao")
+        lines.append(f"({len(worker_items)} prijava)")
+        lines.append("")
         for w in worker_items[:2]:
             raw = w.get("raw_json", {}) or {}
             orig = raw.get("original", w.get("suggested_text", ""))[:200]
             lines.append(f"  • {orig}")
         lines.append("")
-        lines.append("Форма для работников:")
+        lines.append("Forma za radnike:")
         lines.append("https://forms.gle/UvbaekC86m8EE5X87")
         lines.append("")
 
@@ -755,24 +785,35 @@ async def postpack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         lines.append("")
 
     # Excluded
+    excluded = []
     if high_risk:
-        lines.append(f"🔴 ИСКЛЮЧЕНО (риск): {len(high_risk)} — проверьте /spam")
+        excluded.append(f"🔴 риск: {len(high_risk)}")
     if spam_items:
-        lines.append(f"⚫ ИСКЛЮЧЕНО (спам): {len(spam_items)}")
+        excluded.append(f"⚫ спам: {len(spam_items)}")
+    if excluded:
+        lines.append(f"ИСКЛЮЧЕНО: {', '.join(excluded)}")
+        lines.append("")
+
+    # Disclaimer once
+    lines.append("")
+    lines.append("Napomena: Grupa nije poslodavac i ne garantuje uslove. "
+                  "Pre odlaska obavezno proverite platu, smeštaj, hranu, "
+                  "radno vreme, prevoz i način isplate direktno.")
     lines.append("")
 
     # Action footer
     lines.append("━━━━━━━━━━━━━━━━━━━━━")
     lines.append("")
     lines.append("ДЕЙСТВИЕ: Скопируйте текст выше и опубликуйте в FB вручную.")
-    lines.append("После публикации ничего отмечать не нужно.")
-    lines.append("Форма для работодателей: https://forms.gle/KovE1kMFxMF7nq8w5")
-    lines.append("Форма для работников: https://forms.gle/UvbaekC86m8EE5X87")
     lines.append("")
-    lines.append("Если хотите отметить статус:")
-    lines.append("/done <item_id> — опубликовано (published_manually)")
+    if pack_id:
+        lines.append(f"/done_pack — отметить {len(all_ids)} элементов опубликованными")
+        lines.append(f"/cancel_pack — отменить пакет")
+        lines.append("")
+    lines.append("Отметить отдельно:")
+    lines.append("/done <item_id> — опубликовано")
     lines.append("/skip <item_id> — пропустить")
-    lines.append("/risk <item_id> — отметить как риск")
+    lines.append("/risk <item_id> — риск")
     lines.append("")
 
     await update.message.reply_text("\n".join(lines))
@@ -790,30 +831,111 @@ async def publish_ready_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     safe = [i for i in all_items if i["status"] in ("pending", "approved")
             and i.get("action_type") == "publish_own_group_post"
             and "high" not in str(i.get("raw_json", {}).get("risk", ""))
-            and i.get("status") not in ("spam_candidate", "spam")]
+            and i["status"] not in ("spam_candidate", "spam")
+            and not _is_test_item(i)]
 
     if not safe:
         await update.message.reply_text("✅ Нет безопасных черновиков для публикации.")
         return
 
-    await update.message.reply_text(f"📰 Черновики, готовые к публикации: {len(safe)}")
+    msg = f"📰 Черновики, готовые к публикации: {len(safe)}\n"
     for s in safe[:5]:
-        text = s.get("suggested_text", "")[:400]
+        text = s.get("suggested_text", "")[:200]
         sid = s.get("item_id", "")[:12]
-        await update.message.reply_text(
-            f"Черновик `{sid}...`\n{text}",
-        )
+        msg += f"\n`{sid}...` — {text[:100]}\n"
+    await update.message.reply_text(msg)
+
+
+# ── Shared: test item detection ──────────────────────────────────────────
+
+def _is_test_item(item: dict) -> bool:
+    """Check if item looks like test/E2E data and should be excluded from publish."""
+    text = str(item.get("suggested_text", "")).lower()
+    raw = str(item.get("raw_json", {}))
+    combined = text + raw
+
+    test_markers = [
+        "e2e test", "e2e ", "test farma", "test doo", "test radnik",
+        "064-999-888", "064-111-222", "065-111-222", "+381600000000",
+        "ne objavljivati", "dummy", "test_",
+        "final test", "final radnik",
+    ]
+    for m in test_markers:
+        if m.lower() in combined:
+            return True
+    return False
+
+
+# ── Pack management (in-memory) ─────────────────────────────────────────
+
+_active_packs: dict[str, dict] = {}
+_LAST_PACK_ID: int = 0
+
+
+def _create_pack(item_ids: list[str]) -> str:
+    global _LAST_PACK_ID
+    _LAST_PACK_ID += 1
+    pack_id = f"pack_{_LAST_PACK_ID}"
+    _active_packs[pack_id] = {
+        "item_ids": item_ids,
+        "created_at": __import__("datetime").datetime.utcnow().isoformat(),
+        "status": "active",
+    }
+    return pack_id
+
+
+def _get_active_pack() -> dict | None:
+    for pid, pack in list(_active_packs.items()):
+        if pack["status"] == "active":
+            return {"pack_id": pid, **pack}
+    return None
+
+
+def _close_pack(pack_id: str):
+    if pack_id in _active_packs:
+        _active_packs[pack_id]["status"] = "closed"
+
+
+def _cancel_pack(pack_id: str):
+    if pack_id in _active_packs:
+        _active_packs[pack_id]["status"] = "cancelled"
+
+
+def _get_recent_item_ids() -> list[str]:
+    """Get recent pending/approved item ids from persistent queue."""
+    try:
+        from ..runtime_agent.persistent_queue import get_persistent_queue
+        pq = get_persistent_queue()
+        all_items = pq.get_all()
+        safe = [i for i in all_items
+                if i["status"] in ("pending", "approved")
+                and not _is_test_item(i)]
+        return [i["item_id"] for i in safe[:5]]
+    except Exception:
+        return []
 
 
 # ── Status marking commands ──────────────────────────────────────────────
 
 async def _mark_item_status(update: Update, action: str, new_status: str):
-    """Generic handler for /done, /skip, /risk, /spam."""
+    """Generic handler for /done, /skip, /risk."""
     text = (update.message.text or "").strip()
     parts = text.split(None, 1)
+
+    # If no item_id given, show recent IDs
     if len(parts) < 2:
-        await update.message.reply_text(f"Использование: /{action} <item_id>")
+        recent = _get_recent_item_ids()
+        if recent:
+            ids_list = "\n".join([f"  /{action} {i}" for i in recent])
+            pack = _get_active_pack()
+            pack_info = f"\nТекущий пакет: {pack['pack_id']}" if pack else ""
+            await update.message.reply_text(
+                f"Укажите ID:\n{ids_list}{pack_info}"
+            )
+        else:
+            await update.message.reply_text(f"Нет активных элементов. Использование: /{action} <item_id>")
         return
+
     item_id = parts[1]
     from ..runtime_agent.persistent_queue import get_persistent_queue
     pq = get_persistent_queue()
@@ -837,6 +959,39 @@ async def skip_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def risk_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not _is_operator(update): await _reject_unknown(update, context); return
     await _mark_item_status(update, "risk", "risk_review")
+
+
+# ── /done_pack — mark all items in active pack as published ──────────────
+
+async def done_pack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+    pack = _get_active_pack()
+    if not pack:
+        await update.message.reply_text("❌ Нет активного пакета.")
+        return
+
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+    pq = get_persistent_queue()
+    operator = update.effective_user.username or str(update.effective_chat.id)
+    count = 0
+    for iid in pack["item_ids"]:
+        pq.update_status(iid, "published_manually", operator, "Pack publish")
+        count += 1
+    _close_pack(pack["pack_id"])
+    await update.message.reply_text(f"✅ Пакет {pack['pack_id']}: {count} элементов отмечено опубликованными.")
+
+
+# ── /cancel_pack — close pack without publishing ─────────────────────────
+
+async def cancel_pack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+    pack = _get_active_pack()
+    if not pack:
+        await update.message.reply_text("❌ Нет активного пакета.")
+        return
+    _cancel_pack(pack["pack_id"])
+    await update.message.reply_text(f"Пакет {pack['pack_id']} отменён. Элементы сохранены.")
+
 
 # ── /imagepost — generate image from text ────────────────────────────────
 
@@ -872,11 +1027,18 @@ async def imagepack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 
     safe = [i for i in all_items if i["status"] in ("pending", "approved")
             and i.get("action_type") == "publish_own_group_post"
-            and i.get("risk_level", "low") != "high"
-            and i["status"] not in ("spam_candidate", "spam")]
+            and "high" not in str(i.get("raw_json", {}).get("risk", ""))
+            and i["status"] not in ("spam_candidate", "spam")
+            and not _is_test_item(i)]
 
     if not safe:
-        await update.message.reply_text("✅ Нет безопасных черновиков для изображений.")
+        await update.message.reply_text(
+            "✅ Нет черновиков для изображений. Причины:\n"
+            "- Все элементы помечены как тестовые\n"
+            "- Или имеют высокий риск\n"
+            "- Или находятся в спаме\n"
+            "Проверьте /postpack для деталей."
+        )
         return
 
     from ..image_poster import generate_image_post
@@ -899,7 +1061,10 @@ async def imagepack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         )
         sent += 1
 
-    await update.message.reply_text(f"✅ Отправлено {sent} изображений. Опубликуйте в FB вручную.")
+    if sent == 0:
+        await update.message.reply_text("❌ Изображения не созданы. Текст слишком короткий или Pillow недоступен.")
+    else:
+        await update.message.reply_text(f"✅ Отправлено {sent} изображений. Опубликуйте в FB вручную.")
 
 
 async def fb_help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -1284,6 +1449,8 @@ def start_bot():
     app.add_handler(CommandHandler("risk", risk_cmd))
     app.add_handler(CommandHandler("imagepost", imagepost_cmd))
     app.add_handler(CommandHandler("imagepack", imagepack_cmd))
+    app.add_handler(CommandHandler("done_pack", done_pack_cmd))
+    app.add_handler(CommandHandler("cancel_pack", cancel_pack_cmd))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CallbackQueryHandler(handle_callback))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_or_edit))
