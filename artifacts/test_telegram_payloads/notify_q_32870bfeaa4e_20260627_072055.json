@@ -1,0 +1,42 @@
+{
+  "item_id": "q_32870bfeaa4e",
+  "chat_id": "TEST_MODE",
+  "text": "📌 *New Queue Item*\n\n*Action:* Create Digest Post\n*Classification:* `digest_candidate`\n*Risk:* 🟢 LOW\n*Confidence:* 85%\n*Source:* daily_digest_builder\n\n*Reason:* daily_digest_builder: 2 items included\n\n*Suggested text:*\n📌 Dnevni pregled sezonskih poslova — 2026-06-27\n\nOglasi su prikupljeni iz javnih izvora i/ili od članova grupe. Pre odlaska obavezno proverite uslove direktno sa osobom iz oglasa.\n\n🔹 **1. Poslodavac traži**\n   *berba malina* — Arilje\n   Plata: 5000 RSD dnevno\n   Uslovi: smeštaj: da (smeštaj obezbeđe\n\nID: `q_32870bfeaa4e...`",
+  "parse_mode": "Markdown",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "✅ Approve",
+          "callback_data": "approve:q_32870bfeaa4e"
+        },
+        {
+          "text": "❌ Reject",
+          "callback_data": "reject:q_32870bfeaa4e"
+        }
+      ],
+      [
+        {
+          "text": "✏️ Edit",
+          "callback_data": "edit:q_32870bfeaa4e"
+        },
+        {
+          "text": "❓ Request Info",
+          "callback_data": "needs_info:q_32870bfeaa4e"
+        }
+      ],
+      [
+        {
+          "text": "⚠️ Escalate",
+          "callback_data": "escalate:q_32870bfeaa4e"
+        },
+        {
+          "text": "🚫 Spam",
+          "callback_data": "mark_spam:q_32870bfeaa4e"
+        }
+      ]
+    ]
+  },
+  "test_mode": true,
+  "saved_at": "2026-06-27T07:20:55.190975"
+}

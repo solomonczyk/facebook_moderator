@@ -1,0 +1,30 @@
+{
+  "date": "2026-06-27",
+  "items_included": 2,
+  "items_excluded": 4,
+  "excluded_reasons": [
+    "q_demo_003: not approved",
+    "q_demo_004: not approved",
+    "q_demo_005: not approved",
+    "q_demo_006: not approved"
+  ],
+  "digest_text": "📌 Dnevni pregled sezonskih poslova — 2026-06-27\n\nOglasi su prikupljeni iz javnih izvora i/ili od članova grupe. Pre odlaska obavezno proverite uslove direktno sa osobom iz oglasa.\n\n🔹 **1. Poslodavac traži**\n   *berba malina* — Arilje\n   Plata: 5000 RSD dnevno\n   Uslovi: smeštaj: da (smeštaj obezbeđen), hrana: da (3 obroka)\n   Kontakt: 064-123-4567\n   📎 Izvor: javni oglas\n\n👷 **2. Radnik traži posao**\n   *poljoprivreda* — okolina Novog Sada\n   Kontakt: 065-111-222\n   📎 Izvor: član grupe\n\n---\nAko imate svež oglas za sezonski rad, napišite: mesto rada, vrstu posla, zaradu, radno vreme, smeštaj/hranu, datum početka i kontakt.\n\nNapomena: Grupa nije poslodavac i ne garantuje uslove. Pre odlaska obavezno proverite platu, smeštaj, hranu, radno vreme, prevoz i način isplate direktno sa osobom iz oglasa.",
+  "fallback_used": false,
+  "forbidden_words_found": [],
+  "queue_item": {
+    "item_id": "q_32870bfeaa4e",
+    "action_type": "create_digest_post",
+    "status": "pending",
+    "event_id": null,
+    "lead_id": null,
+    "suggested_text": "📌 Dnevni pregled sezonskih poslova — 2026-06-27\n\nOglasi su prikupljeni iz javnih izvora i/ili od članova grupe. Pre odlaska obavezno proverite uslove direktno sa osobom iz oglasa.\n\n🔹 **1. Poslodavac traži**\n   *berba malina* — Arilje\n   Plata: 5000 RSD dnevno\n   Uslovi: smeštaj: da (smeštaj obezbeđen), hrana: da (3 obroka)\n   Kontakt: 064-123-4567\n   📎 Izvor: javni oglas\n\n👷 **2. Radnik traži posao**\n   *poljoprivreda* — okolina Novog Sada\n   Kontakt: 065-111-222\n   📎 Izvor: član grupe\n\n---\nAko imate svež oglas za sezonski rad, napišite: mesto rada, vrstu posla, zaradu, radno vreme, smeštaj/hranu, datum početka i kontakt.\n\nNapomena: Grupa nije poslodavac i ne garantuje uslove. Pre odlaska obavezno proverite platu, smeštaj, hranu, radno vreme, prevoz i način isplate direktno sa osobom iz oglasa.",
+    "edited_text": "",
+    "reason": "daily_digest_builder: 2 items included",
+    "operator_approval_required": true,
+    "created_at": "2026-06-27T07:20:55.190975"
+  },
+  "source_ids": [
+    "q_demo_001",
+    "q_demo_002"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "task_id": "013",
+  "task_name": "Daily Digest Builder from Approved Queue Items",
+  "verdict": "ACCEPTED",
+  "branch": "master",
+  "commit": "6064053",
+  "git_clean": true,
+  "runtime_changed": true,
+  "canon_changed": false,
+  "production_accepted": false,
+  "facebook_publish_executed": false,
+  "telegram_real_send_executed": false,
+  "digest_items_available": 6,
+  "digest_items_included": 2,
+  "digest_items_excluded": 4,
+  "digest_queue_item_created": true,
+  "telegram_payload_created": true,
+  "operator_approval_required": true,
+  "fallback_digest_used": false,
+  "forbidden_words_found": false,
+  "excluded_high_risk": true,
+  "excluded_spam": true,
+  "excluded_unapproved": true,
+  "tests_run": [
+    {"command": "PYTHONIOENCODING=utf-8 PYTHONPATH=backend python -m app.daily_digest --date 2026-06-27", "result": "pass", "notes": "2 included, 4 excluded, no forbidden words, queue item + Telegram created"},
+    {"command": "PYTHONIOENCODING=utf-8 PYTHONPATH=backend python -c 'test fallback mode'", "result": "pass", "notes": "Fallback with 0 usable items generates 'Nema dovoljno proverenih oglasa'"}
+  ],
+  "artifacts": [
+    "docs/audits/task_013_daily_digest_builder/README.md",
+    "docs/audits/task_013_daily_digest_builder/demo_digest_output.txt",
+    "docs/audits/task_013_daily_digest_builder/demo_digest_output.json",
+    "docs/audits/task_013_daily_digest_builder/proof.json"
+  ],
+  "blockers": []
+}
