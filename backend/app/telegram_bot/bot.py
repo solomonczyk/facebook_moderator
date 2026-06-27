@@ -115,25 +115,25 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return
     await update.message.reply_text(
         "🤖 Sezonski Runtime Agent\n\n"
-        "Mobile operator bot ready.\n\n"
-        "Main:\n"
-        "/status — Health & gates\n"
-        "/queue — Pending items\n"
-        "/drafts — Publish drafts\n"
-        "/spam — Spam quarantine\n"
-        "/digest — Daily digest\n\n"
-        "Mobile:\n"
-        "/today — Daily overview\n"
-        "/evening — Evening priority list\n"
-        "/links — Employer/worker forms\n"
-        "/reply — Smart reply drafter\n"
-        "/capture — External group post\n"
-        "/digest_next — Tomorrow digest\n\n"
-        "Manual intake:\n"
-        "/fb_post — Capture FB post\n"
-        "/fb_comment — Capture comment\n"
-        "/addlead — Quick lead analysis\n\n"
-        "/help — All commands"
+        "Операторский бот готов.\n\n"
+        "Основное:\n"
+        "/status — Состояние и ворота\n"
+        "/queue — Очередь на утверждение\n"
+        "/drafts — Черновики для FB\n"
+        "/spam — Спам-карантин\n"
+        "/digest — Собрать дайджест\n\n"
+        "Мобильный режим:\n"
+        "/today — Что сегодня\n"
+        "/evening — Что вечером\n"
+        "/links — Ссылки на формы\n"
+        "/reply — Сгенерировать ответ\n"
+        "/capture — Пост из другой группы\n"
+        "/digest_next — Дайджест на завтра\n\n"
+        "Ручной ввод:\n"
+        "/fb_post — Текст FB поста\n"
+        "/fb_comment — Текст FB комментария\n"
+        "/addlead — Быстрый анализ\n\n"
+        "/help — Все команды"
     )
 
 
@@ -262,22 +262,22 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await _reject_unknown(update, context)
         return
     await update.message.reply_text(
-        "/status — Health & gates\n"
-        "/queue — Pending items + buttons\n"
-        "/digest — Daily digest draft\n"
-        "/forms — Intake API reference\n"
-        "/drafts — Publish drafts\n"
-        "/spam — Spam quarantine\n"
-        "/links — Employer/worker forms (copy-paste)\n"
-        "/today — Daily overview\n"
-        "/evening — Evening priority list\n"
-        "/capture — External group post\n"
-        "/digest_next — Tomorrow digest\n"
-        "/reply <text> — Smart reply\n"
-        "/fb_post <text> — Capture FB post\n"
-        "/fb_comment <text> — Capture comment\n"
-        "/addlead <text> — Quick lead analysis\n"
-        "/help — All commands"
+        "/status — Состояние и ворота\n"
+        "/queue — Очередь + кнопки\n"
+        "/digest — Дайджест\n"
+        "/forms — API структурированного ввода\n"
+        "/drafts — Черновики для публикации\n"
+        "/spam — Спам-карантин\n"
+        "/links — Формы (ссылки + текст для FB)\n"
+        "/today — Сводка на сегодня\n"
+        "/evening — Вечерний приоритетный список\n"
+        "/capture — Пост из другой группы\n"
+        "/digest_next — Дайджест на завтра\n"
+        "/reply <текст> — Сгенерировать ответ\n"
+        "/fb_post <текст> — Захват FB поста\n"
+        "/fb_comment <текст> — Захват комментария\n"
+        "/addlead <текст> — Быстрый анализ\n"
+        "/help — Все команды"
     )
 
 
@@ -288,21 +288,20 @@ async def forms_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await _reject_unknown(update, context)
         return
     await update.message.reply_text(
-        "📋 *Strukturirani unos*\n\n"
-        "*Za poslodavce:*\n"
-        "`POST /api/intake/employer-offer`\n"
-        "Obavezna polja: employer_name, work_location, job_type, workers_needed, "
+        "📋 Структурированный ввод\n\n"
+        "Работодатели:\n"
+        "POST /api/intake/employer-offer\n"
+        "Обязательные поля: employer_name, work_location, job_type, workers_needed, "
         "start_date, pay_amount, pay_type, working_hours_or_norm, "
         "housing_provided, food_provided, payment_frequency, contact\n\n"
-        "*Za radnike:*\n"
-        "`POST /api/intake/worker-search`\n"
-        "Obavezna polja: worker_name, current_location, people_count, "
+        "Работники:\n"
+        "POST /api/intake/worker-search\n"
+        "Обязательные поля: worker_name, current_location, people_count, "
         "desired_job_type, available_from, housing_needed, food_needed, contact\n\n"
-        "Primer:\n"
-        "`curl -X POST http://127.0.0.1:8000/api/intake/employer-offer "
+        "Пример:\n"
+        "curl -X POST http://127.0.0.1:8010/api/intake/employer-offer "
         "-H \"Content-Type: application/json\" "
-        "-d '{\"employer_name\":\"Test\",\"work_location\":\"Sivac\",...}'`",
-        parse_mode="Markdown",
+        "-d '{\"employer_name\":\"Test\",\"work_location\":\"Sivac\",...}'"
     )
 
 
@@ -326,16 +325,16 @@ async def drafts_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         drafts = [i for i in pending if i["status"] == "pending"]
 
     if not drafts:
-        await update.message.reply_text("✅ Nema draft-ova za ručno objavljivanje.")
+        await update.message.reply_text("✅ Нет черновиков для ручной публикации.")
         return
 
-    await update.message.reply_text(f"📰 *Draft-ovi za ručno objavljivanje:* {len(drafts)}", parse_mode="Markdown")
+    await update.message.reply_text(f"📰 Черновики для FB: {len(drafts)}")
     for d in drafts[:5]:
         text = d.get("suggested_text", "")[:300]
         sid = d.get("item_id", "")[:16]
         status = d.get("status", "?")
-        msg = f"`{sid}...` [{status}]\n{text}"
-        await update.message.reply_text(msg, parse_mode="Markdown")
+        msg = f"Черновик `{sid}...` [{status}]\n{text}"
+        await update.message.reply_text(msg)
 
 
 # ── /spam — spam quarantine ───────────────────────────────────────────────
@@ -351,10 +350,10 @@ async def spam_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     spam_items = pq.get_all("spam_candidate") + pq.get_all("spam")
 
     if not spam_items:
-        await update.message.reply_text("✅ Spam karantin prazan.")
+        await update.message.reply_text("✅ Спам-карантин пуст.")
         return
 
-    await update.message.reply_text(f"🚫 *Spam karantin:* {len(spam_items)}", parse_mode="Markdown")
+    await update.message.reply_text(f"🚫 Спам-карантин: {len(spam_items)}")
     for s in spam_items[:5]:
         sid = s.get("item_id", "")[:16]
         reason = s.get("reason", "")[:100]
@@ -371,7 +370,7 @@ async def reply_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     text = update.message.text or ""
     msg_text = text.removeprefix("/reply").strip()
     if not msg_text:
-        await update.message.reply_text("Upotreba: /reply <tekst poruke>\n\nBot analizira poruku i predlaže odgovor.")
+        await update.message.reply_text("Использование: /reply <текст>\n\nБот анализирует сообщение и предлагает ответ.")
         return
 
     # Quick classification
@@ -409,11 +408,11 @@ async def reply_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     })
 
     await update.message.reply_text(
-        f"📋 Analiza poruke\n\n"
-        f"Tip: {intent}\n"
-        f"Rizik: {risk}\n\n"
-        f"Predlog odgovora:\n{reply}\n\n"
-        f"Sledeći korak: kopirajte odgovor i pošaljite ručno u Facebook.",
+        f"📋 Анализ сообщения\n\n"
+        f"Тип: {intent}\n"
+        f"Риск: {risk}\n\n"
+        f"Готовый ответ (скопировать в FB):\n{reply}\n\n"
+        f"Следующий шаг: скопируйте и отправьте в Facebook вручную.",
     )
 
 
@@ -518,10 +517,10 @@ async def _capture_text(update, text: str, source_type: str):
 
     await update.message.reply_text(
         f"📋 {source_type}\n"
-        f"Klasifikacija: {cls}\n"
-        f"Rizik: {risk} | Akcija: {action}\n\n"
-        f"Predlog odgovora:\n{reply}\n\n"
-        f"✅ Sačuvano. Objavite ručno u Facebook.",
+        f"Тип: {cls}\n"
+        f"Риск: {risk} | Действие: {action}\n\n"
+        f"Ответ (скопировать в FB):\n{reply}\n\n"
+        f"✅ Сохранено. Опубликуйте в Facebook вручную.",
     )
 
 
@@ -538,23 +537,23 @@ async def today_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     questions = [i for i in new if "question" in str(i.get("raw_json", {}).get("source_type", ""))]
     spam = [i for i in all_items if i["status"] in ("spam", "spam_candidate")]
 
-    msg = "📅 *Današnji pregled*\n\n"
-    msg += f"📰 Novi draft-ovi: {len(new)}\n"
-    msg += f"❓ Pitanja: {len(questions)}\n"
-    msg += f"🚫 Spam/rizik: {len(spam)}\n\n"
+    msg = "📅 Сводка на сегодня\n\n"
+    msg += f"📰 Новые черновики: {len(new)}\n"
+    msg += f"❓ Вопросы: {len(questions)}\n"
+    msg += f"🚫 Спам/риск: {len(spam)}\n\n"
 
-    msg += "*Za uraditi danas:*\n"
-    msg += "1. Pregledaj /drafts\n"
-    msg += "2. Odgovori na pitanja\n"
-    msg += "3. Proveri /spam\n"
-    msg += "4. Pokreni /digest\n"
-    msg += "5. Objavi ručno u FB grupu\n\n"
+    msg += "Что сделать сегодня:\n"
+    msg += "1. /drafts — проверить черновики\n"
+    msg += "2. Ответить на вопросы (вручную в FB)\n"
+    msg += "3. /spam — проверить карантин\n"
+    msg += "4. /digest — собрать дайджест\n"
+    msg += "5. Скопировать и опубликовать в FB вручную\n\n"
 
-    msg += "Forme:\n"
-    msg += "Poslodavci: https://forms.gle/KovE1kMFxMF7nq8w5\n"
-    msg += "Radnici: https://forms.gle/UvbaekC86m8EE5X87"
+    msg += "Формы:\n"
+    msg += "Работодатели: https://forms.gle/KovE1kMFxMF7nq8w5\n"
+    msg += "Работники: https://forms.gle/UvbaekC86m8EE5X87"
 
-    await update.message.reply_text(msg, parse_mode="Markdown")
+    await update.message.reply_text(msg)
 
 
 # ── /links — form links + Serbian copy-paste ──────────────────────────────
@@ -563,20 +562,19 @@ async def links_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not _is_operator(update): await _reject_unknown(update, context); return
 
     await update.message.reply_text(
-        "📋 *Linkovi*\n\n"
-        "*Za poslodavce:*\n"
+        "📋 Ссылки и тексты для Facebook\n\n"
+        "Форма для работодателей:\n"
         "https://forms.gle/KovE1kMFxMF7nq8w5\n\n"
-        "✂️ Kopiraj za FB:\n"
+        "✂️ Скопировать в FB:\n"
         "Ako tražite sezonske radnike, popunite ovu formu. "
         "Administrator proverava podatke pre objave:\n"
         "https://forms.gle/KovE1kMFxMF7nq8w5\n\n"
-        "*Za radnike:*\n"
+        "Форма для работников:\n"
         "https://forms.gle/UvbaekC86m8EE5X87\n\n"
-        "✂️ Kopiraj za FB:\n"
+        "✂️ Скопировать в FB:\n"
         "Ako tražite sezonski posao, popunite ovu formu. "
         "Administrator proverava podatke pre objave:\n"
-        "https://forms.gle/UvbaekC86m8EE5X87",
-        parse_mode="Markdown",
+        "https://forms.gle/UvbaekC86m8EE5X87"
     )
 
 
@@ -598,25 +596,25 @@ async def evening_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
               and i.get("action_type") == "publish_own_group_post"]
     spam = [i for i in all_items if i["status"] in ("spam", "spam_candidate")]
 
-    msg = "🌙 *Večernji pregled*\n\n"
+    msg = "🌙 Вечерняя сводка\n\n"
 
     if high:
-        msg += f"🔴 *Prioritet 1 — Rizik:* {len(high)}\n"
+        msg += f"🔴 Приоритет 1 — Риск: {len(high)}\n"
         for h in high[:3]:
             msg += f"  `{h['item_id'][:12]}...` {h.get('reason', '')[:80]}\n"
     if questions:
-        msg += f"\n🟡 *Pitanja:* {len(questions)}\n"
+        msg += f"\n🟡 Вопросы: {len(questions)}\n"
     if offers:
-        msg += f"\n🟢 *Ponude:* {len(offers)}\n"
+        msg += f"\n🟢 Вакансии: {len(offers)}\n"
     if spam:
-        msg += f"\n⚫ *Spam:* {len(spam)}\n"
+        msg += f"\n⚫ Спам: {len(spam)}\n"
 
     if not any([high, questions, offers, spam]):
-        msg += "✅ Nema stavki za večeras."
+        msg += "✅ На сегодня задач нет."
 
-    msg += "\n✂️ Svi odgovori su spremni u /drafts. Kopiraj i objavi ručno."
+    msg += "\n✂️ Ответы готовы в /drafts. Скопируйте и опубликуйте в FB вручную."
 
-    await update.message.reply_text(msg, parse_mode="Markdown")
+    await update.message.reply_text(msg)
 
 
 # ── /digest_next — next-day digest from external captures ─────────────────
@@ -666,9 +664,8 @@ async def digest_next_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     })
 
     await update.message.reply_text(
-        f"📌 *Digest za sutra*\n\n{digest[:1000]}"
-        f"\n\n✅ {len(captures)} stavki. Objavite ručno u FB.",
-        parse_mode="Markdown",
+        f"📌 Дайджест на завтра\n\n{digest[:1000]}"
+        f"\n\n✅ {len(captures)} позиций. Опубликуйте в Facebook вручную."
     )
 
 
@@ -677,19 +674,18 @@ async def digest_next_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 async def fb_help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not _is_operator(update): await _reject_unknown(update, context); return
     await update.message.reply_text(
-        "📱 *Mobilni režim — komande*\n\n"
-        "/fb_post <tekst> — kopirani FB post\n"
-        "/fb_comment <tekst> — kopirani FB komentar\n"
-        "/fb_question <tekst> — pitanje\n"
-        "/fb_review <tekst> — iskustvo/recenzija\n"
-        "/fb_member <tekst> — profil člana\n"
-        "/capture <tekst> — post iz druge grupe\n"
-        "/reply <tekst> — analiza i predlog odgovora\n"
-        "/today — današnji pregled\n"
-        "/links — forme (copy-paste)\n"
-        "/evening — večernji pregled\n"
-        "/digest_next — digest za sutra",
-        parse_mode="Markdown",
+        "📱 Мобильный режим — команды\n\n"
+        "/fb_post <текст> — скопированный FB пост\n"
+        "/fb_comment <текст> — скопированный FB комментарий\n"
+        "/fb_question <текст> — вопрос\n"
+        "/fb_review <текст> — отзыв\n"
+        "/fb_member <текст> — профиль участника\n"
+        "/capture <текст> — пост из другой группы\n"
+        "/reply <текст> — анализ + готовый ответ\n"
+        "/today — сводка на сегодня\n"
+        "/links — формы (ссылки + текст для FB)\n"
+        "/evening — вечерняя сводка\n"
+        "/digest_next — дайджест на завтра"
     )
 
 
@@ -892,23 +888,22 @@ async def _natural_language_assistant(update: Update, context: ContextTypes.DEFA
         else:
             draft = "Hvala. Administrator će pregledati i odgovoriti."
 
-        resp = (f"📋 *Analiza*\n"
-                f"Tip: {cls} | Rizik: {risk} | Akcija: {action}\n\n"
-                f"*Predlog odgovora:*\n{draft}\n\n"
-                f"✂️ Kopirajte i pošaljite ručno u Facebook.")
+        resp = (f"📋 Анализ\n"
+                f"Тип: {cls} | Риск: {risk} | Действие: {action}\n\n"
+                f"Готовый ответ (скопировать в FB):\n{draft}\n\n"
+                f"✂️ Скопируйте и отправьте в Facebook вручную.")
 
     # Fallback: help
     if resp is None:
-        resp = ("🤖 *Asistent*\n\n"
-                "Pošaljite tekst za analizu ili:\n"
-                "/fb_post — FB post\n"
-                "/reply — predlog odgovora\n"
-                "/today — današnji pregled\n"
-                "/links — forme\n"
-                "/evening — večernji pregled\n"
-                "/help — sve komande")
+        resp = ("🤖 Ассистент\n\n"
+                "Отправьте текст для анализа или:\n"
+                "/reply — сгенерировать ответ\n"
+                "/today — сводка на сегодня\n"
+                "/links — формы\n"
+                "/evening — вечерняя сводка\n"
+                "/help — все команды")
 
-    await update.message.reply_text(resp, parse_mode="Markdown")
+    await update.message.reply_text(resp)
 
 
 async def handle_text_for_edit(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
