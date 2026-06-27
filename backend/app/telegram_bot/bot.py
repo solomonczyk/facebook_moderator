@@ -801,14 +801,103 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
 # ── Edit Text Handler ─────────────────────────────────────────────────────
 
+async def handle_text_or_edit(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Handle non-command text: edit mode first, then natural language assistant."""
+    if not update.message or not update.message.text:
+        return
+
+    editing_item_id = context.user_data.get("editing_item_id")
+    if editing_item_id:
+        await handle_text_for_edit(update, context)
+        return
+
+    # ── Natural Language Assistant Mode ──────────────────────────────────
+    await _natural_language_assistant(update, context)
+
+
+async def _natural_language_assistant(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Detect intent from natural language and respond helpfully."""
+    if not _is_operator(update):
+        await update.message.reply_text("Access denied.")
+        return
+
+    text = (update.message.text or "").strip()
+    t = text.lower()
+    resp = None
+
+    # Intent: daily summary
+    if any(w in t for w in ["что у меня", "на сегодня", "сегодня", "дневной", "dnevni", "pregled",
+                              "шта има", "шта треба", "šta ima", "šta treba"]):
+        await today_cmd(update, context)
+        return
+
+    # Intent: forms / links
+    if any(w in t for w in ["forma", "formu", "link", "линк", "ссылк", "анкет"]):
+        await links_cmd(update, context)
+        return
+
+    # Intent: digest capture (add to next digest)
+    if any(w in t for w in ["добавь", "дайджест", "digest", "додај", "dodaj",
+                              "треба радника", "tražimo", "potrebni", "zapošljavamo"]):
+        await _capture_text(update, text, "natural_language_capture")
+        return
+
+    # Intent: draft reply — contains Serbian question-like text
+    if any(w in t for w in ["что ответить", "шта одговорити", "kako da odgovorim",
+                              "ответ", "odgovor", "odgovori", "reply", "da li", "kako"]):
+        await reply_cmd(update, context)
+        return
+
+    # Intent: classify text (looks like FB post/comment)
+    serbian_markers = ["tražim", "tražimo", "potrebni", "berba", "branje", "plastenik",
+                       "dnevnica", "smeštaj", "hrana", "kontakt", "posao", "radnici",
+                       "čuvajte", "iskustvo", "radio sam", "radila sam"]
+    russian_markers = ["ищу", "требуются", "работа", "вакансия", "опыт"]
+
+    if any(m in t for m in serbian_markers + russian_markers):
+        from ..operator_mvp.mvp_api import _classify_rule_based, _classify_risk, _determine_action
+        cls, fields = _classify_rule_based(text)
+        risk, flags = _classify_risk(t, cls, fields)
+        action = _determine_action(cls, risk, bool(fields.get("contact")), bool(fields.get("location")))
+
+        # Build Serbian reply draft
+        if cls == "spam":
+            draft = "Ova objava je uklonjena jer krši pravila grupe."
+        elif cls == "employer_warning":
+            draft = "Hvala na informaciji. Administrator će pregledati."
+        elif cls == "job_offer":
+            draft = "Hvala na objavi! Popunite formu za poslodavce: https://forms.gle/KovE1kMFxMF7nq8w5"
+        elif cls == "worker_search":
+            draft = "Hvala! Popunite formu za radnike: https://forms.gle/UvbaekC86m8EE5X87"
+        else:
+            draft = "Hvala. Administrator će pregledati i odgovoriti."
+
+        resp = (f"📋 *Analiza*\n"
+                f"Tip: {cls} | Rizik: {risk} | Akcija: {action}\n\n"
+                f"*Predlog odgovora:*\n{draft}\n\n"
+                f"✂️ Kopirajte i pošaljite ručno u Facebook.")
+
+    # Fallback: help
+    if resp is None:
+        resp = ("🤖 *Asistent*\n\n"
+                "Pošaljite tekst za analizu ili:\n"
+                "/fb_post — FB post\n"
+                "/reply — predlog odgovora\n"
+                "/today — današnji pregled\n"
+                "/links — forme\n"
+                "/evening — večernji pregled\n"
+                "/help — sve komande")
+
+    await update.message.reply_text(resp, parse_mode="Markdown")
+
+
 async def handle_text_for_edit(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Handle text messages that may be edit replies."""
+    """Handle text messages that are edit replies."""
     if not update.message or not update.message.text:
         return
 
     editing_item_id = context.user_data.get("editing_item_id")
     if not editing_item_id:
-        # Not editing — could be a command; let other handlers process
         return
 
     if not _is_operator(update):
@@ -897,7 +986,7 @@ def start_bot():
     app.add_handler(CommandHandler("fb_help", fb_help_cmd))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CallbackQueryHandler(handle_callback))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_for_edit))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_or_edit))
 
     import threading, asyncio
     def run_polling():
