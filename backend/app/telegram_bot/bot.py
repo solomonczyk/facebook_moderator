@@ -1095,6 +1095,167 @@ async def imagepack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         await update.message.reply_text(f"✅ Отправлено {sent} изображений. Опубликуйте в FB вручную.")
 
 
+# ── /growthpack — ready-to-use growth texts ─────────────────────────────
+
+GROWTH_POSTS = [
+    (
+        "🔹 Poslodavci, objavite posao besplatno!\n\n"
+        "Tražite radnike za berbu, plastenik, građevinu ili pakovanje? "
+        "Objavite u grupi Sezonski rad Srbija — besplatno, brzo, bez registracije.\n\n"
+        "Popunite formu i mi pripremamo objavu:\n"
+        "https://forms.gle/KovE1kMFxMF7nq8w5\n\n"
+        "Grupa broji hiljade radnika iz cele Srbije."
+    ),
+    (
+        "👷 Tražite sezonski posao?\n\n"
+        "Pratite grupu Sezonski rad Srbija — svakodnevno nove ponude: "
+        "berba, plastenik, hladnjača, građevina, pakovanje i drugi sezonski poslovi.\n\n"
+        "Ako tražite posao, popunite formu:\n"
+        "https://forms.gle/UvbaekC86m8EE5X87\n\n"
+        "Svi oglasi su pregledani pre objave."
+    ),
+    (
+        "📌 Zašto se isplati objaviti u našoj grupi?\n\n"
+        "✅ Ciljana publika — radnici koji traže sezonski posao\n"
+        "✅ Objava se priprema i pregleda pre objave\n"
+        "✅ Bez spam filtera i algoritamskih ograničenja\n"
+        "✅ Možete navesti sve detalje: platu, smeštaj, hranu, radno vreme\n\n"
+        "Poslodavci: https://forms.gle/KovE1kMFxMF7nq8w5\n"
+        "Radnici: https://forms.gle/UvbaekC86m8EE5X87"
+    ),
+]
+
+OUTREACH_MESSAGES = [
+    (
+        "Zdravo! Vodim grupu Sezonski rad Srbija — "
+        "pomažemo radnicima da nađu sezonski posao, a poslodavcima da nađu radnike. "
+        "Ako imate grupu koja bi mogla da sarađuje, javite se. "
+        "Radimo isključivo ručno, bez botova i automatskih objava."
+    ),
+    (
+        "Pozdrav! Grupa Sezonski rad Srbija raste i tražimo partnere. "
+        "Ako znate grupe gde se okupljaju sezonski radnici ili poslodavci, "
+        "molimo vas da podelite link. Sve objave su pregledane pre objave."
+    ),
+    (
+        "Ćao! Organizujemo sezonske poslove u Srbiji i tražimo saradnju. "
+        "Imamo forme za poslodavce i radnike, sve je besplatno. "
+        "Ako možemo da sarađujemo, pišite."
+    ),
+]
+
+COMMENT_REPLIES = [
+    # Worker looking for job
+    "Ako tražite sezonski posao, prijavite se u grupu Sezonski rad Srbija. "
+    "Link: https://forms.gle/UvbaekC86m8EE5X87",
+    # Employer looking for workers
+    "Ako tražite radnike, objavite u Sezonski rad Srbija. "
+    "Link: https://forms.gle/KovE1kMFxMF7nq8w5",
+    # General
+    "Pregled sezonskih poslova: https://forms.gle/KovE1kMFxMF7nq8w5",
+    # Worker asking about pay
+    "Sezonski rad Srbija — svakodnevno nove ponude sa platama, smeštajem i kontaktom. "
+    "Link: https://forms.gle/UvbaekC86m8EE5X87",
+    # General seasonal work mention
+    "Pridružite se grupi Sezonski rad Srbija — besplatni oglasi za sezonske poslove.",
+]
+
+WEEKLY_DIGEST_PROMO = (
+    "📌 Sezonski rad Srbija — nedeljni pregled\n\n"
+    "Svake nedelje pripremamo pregled najboljih ponuda. "
+    "Pratite grupu i budite prvi koji saznaju za nove poslove.\n\n"
+    "Poslodavci: https://forms.gle/KovE1kMFxMF7nq8w5\n"
+    "Radnici: https://forms.gle/UvbaekC86m8EE5X87\n\n"
+    "Sve objave su pregledane pre objavljivanja."
+)
+
+SAFETY_CHECKLIST_POST = (
+    "🔒 Pre nego što prihvatite sezonski posao — proverite:\n\n"
+    "1. Platu/dnevnicu — dogovorite pre polaska\n"
+    "2. Smeštaj — da li je obezbeđen i kakav je\n"
+    "3. Hranu — ko snosi troškove\n"
+    "4. Radno vreme — koliko sati dnevno\n"
+    "5. Prevoz — da li je organizovan\n"
+    "6. Poslodavca — proverite kontakt pre odlaska\n"
+    "7. Ugovor — ako je moguće, potpišite\n\n"
+    "❗ Ne dajte JMBG, pasoš ili novac unapred.\n"
+    "❗ Ako vam nešto nije jasno — pitajte u grupi.\n\n"
+    "Grupa nije poslodavac i ne garantuje uslove."
+)
+
+
+async def growthpack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+
+    await update.message.reply_text(
+        "📦 Пакет для роста группы\n\n"
+        f"📰 Посты ({len(GROWTH_POSTS)}):\n"
+        f"💬 Для админов ({len(OUTREACH_MESSAGES)}):\n"
+        f"💬 Комментарии ({len(COMMENT_REPLIES)}):\n"
+        f"📌 Анонс дайджеста\n"
+        f"🔒 Чек-лист безопасности\n\n"
+        "Отправляю посты..."
+    )
+
+    for i, post in enumerate(GROWTH_POSTS, 1):
+        await update.message.reply_text(f"📰 Пост {i}:\n\n{post}")
+
+    await update.message.reply_text("💬 Сообщения для админов других групп:")
+    for i, msg in enumerate(OUTREACH_MESSAGES, 1):
+        await update.message.reply_text(f"💬 #{i}:\n\n{msg}")
+
+    await update.message.reply_text("💬 Ответы в комментариях:")
+    for i, reply in enumerate(COMMENT_REPLIES, 1):
+        await update.message.reply_text(f"💬 #{i}:\n\n{reply}")
+
+    await update.message.reply_text(f"📌 Анонс дайджеста:\n\n{WEEKLY_DIGEST_PROMO}")
+    await update.message.reply_text(f"🔒 Чек-лист безопасности:\n\n{SAFETY_CHECKLIST_POST}")
+
+    await update.message.reply_text(
+        "✅ Все тексты готовы. Копируйте и публикуйте вручную."
+    )
+
+
+# ── /admin_pitch — message for other group admins ────────────────────────
+
+async def admin_pitch_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+
+    await update.message.reply_text(
+        "💬 Сообщение администратору другой группы:\n\n"
+        "Выберите и скопируйте:\n\n"
+        "1) Нейтральное:\n"
+        f"{OUTREACH_MESSAGES[0]}\n\n"
+        "2) О сотрудничестве:\n"
+        f"{OUTREACH_MESSAGES[1]}\n\n"
+        "3) Короткое:\n"
+        f"{OUTREACH_MESSAGES[2]}\n\n"
+        "Отправляйте вручную в личные сообщения. "
+        "Не спамьте, не публикуйте в чужих группах без разрешения."
+    )
+
+
+# ── /promo_comment — short reply for comments ────────────────────────────
+
+async def promo_comment_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+    text = (update.message.text or "").removeprefix("/promo_comment").strip()
+    if text:
+        await update.message.reply_text(
+            f"📌 На основе вашего текста:\n\n{text}\n\n"
+            f"💬 Предложенный ответ:\n"
+            f"{COMMENT_REPLIES[2]}\n\n"
+            f"Доступные ответы:\n"
+            f"• {COMMENT_REPLIES[0]}\n"
+            f"• {COMMENT_REPLIES[1]}\n"
+            f"• {COMMENT_REPLIES[3]}\n"
+            f"• {COMMENT_REPLIES[4]}"
+        )
+    else:
+        replies = "\n".join([f"{i+1}. {r}" for i, r in enumerate(COMMENT_REPLIES)])
+        await update.message.reply_text(f"💬 Готовые ответы для комментариев:\n\n{replies}")
+
+
 async def fb_help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not _is_operator(update): await _reject_unknown(update, context); return
     await update.message.reply_text(
@@ -1479,6 +1640,9 @@ def start_bot():
     app.add_handler(CommandHandler("imagepack", imagepack_cmd))
     app.add_handler(CommandHandler("done_pack", done_pack_cmd))
     app.add_handler(CommandHandler("cancel_pack", cancel_pack_cmd))
+    app.add_handler(CommandHandler("growthpack", growthpack_cmd))
+    app.add_handler(CommandHandler("admin_pitch", admin_pitch_cmd))
+    app.add_handler(CommandHandler("promo_comment", promo_comment_cmd))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CallbackQueryHandler(handle_callback))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_or_edit))
