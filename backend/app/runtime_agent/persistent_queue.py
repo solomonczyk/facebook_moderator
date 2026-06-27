@@ -13,9 +13,9 @@ from typing import Optional
 
 logger = logging.getLogger("sezonski.persistent_queue")
 
-DEFAULT_DB_PATH = os.path.join(
+DEFAULT_DB_PATH = os.path.abspath(os.path.join(
     os.path.dirname(__file__), "..", "..", "persistent_queue.db"
-)
+))
 
 
 class PersistentQueueStore:

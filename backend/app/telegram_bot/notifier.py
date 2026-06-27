@@ -140,11 +140,31 @@ def send_notification(item: dict) -> bool:
     msg, keyboard = build_notification_message(item)
     item_id = item.get("item_id", "unknown")
 
+    # ── PERSIST to SQLite BEFORE sending Telegram ──────────────────────
+    _persist_item(item)
+
     if is_test_mode():
         return _save_test_payload(item_id, msg, keyboard)
 
     # Real send via Telegram API
     return _send_real(msg, keyboard)
+
+
+def _persist_item(item: dict) -> None:
+    """Save item to persistent SQLite queue before Telegram notification."""
+    try:
+        # Use absolute path for server compatibility
+        db_path = os.path.join(
+            os.path.dirname(__file__), "..", "..", "persistent_queue.db"
+        )
+        db_path = os.path.abspath(db_path)
+
+        from ..runtime_agent.persistent_queue import get_persistent_queue
+        pq = get_persistent_queue(db_path)
+        pq.add(item)
+        logger.debug(f"Persisted item {item.get('item_id', '?')[:16]} to {db_path}")
+    except Exception as e:
+        logger.warning(f"Failed to persist item to SQLite: {e}")
 
 
 def _save_test_payload(item_id: str, msg: str, keyboard: dict) -> bool:
