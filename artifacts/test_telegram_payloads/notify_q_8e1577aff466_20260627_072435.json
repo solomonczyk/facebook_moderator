@@ -1,0 +1,42 @@
+{
+  "item_id": "q_8e1577aff466",
+  "chat_id": "TEST_MODE",
+  "text": "📰 *New Queue Item*\n\n*Action:* Publish Own Group Post\n*Classification:* `job_offer`\n*Risk:* 🟢 LOW\n*Confidence:* 85%\n*Source:* facebook_public_screenshot\n\n*Reason:* class=job_offer risk=low\n\n*Suggested text:*\nTražimo 5 radnika za berbu malina Arilje. Smeštaj i hrana obezbeđeni. Dnevnica 5000 RSD. Kontakt 064-123-4567.\n\nID: `q_8e1577aff466...`",
+  "parse_mode": "Markdown",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "✅ Approve",
+          "callback_data": "approve:q_8e1577aff466"
+        },
+        {
+          "text": "❌ Reject",
+          "callback_data": "reject:q_8e1577aff466"
+        }
+      ],
+      [
+        {
+          "text": "✏️ Edit",
+          "callback_data": "edit:q_8e1577aff466"
+        },
+        {
+          "text": "❓ Request Info",
+          "callback_data": "needs_info:q_8e1577aff466"
+        }
+      ],
+      [
+        {
+          "text": "⚠️ Escalate",
+          "callback_data": "escalate:q_8e1577aff466"
+        },
+        {
+          "text": "🚫 Spam",
+          "callback_data": "mark_spam:q_8e1577aff466"
+        }
+      ]
+    ]
+  },
+  "test_mode": true,
+  "saved_at": "2026-06-27T07:24:35.857495"
+}

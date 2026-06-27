@@ -1,0 +1,42 @@
+{
+  "item_id": "q_3d8cde355823",
+  "chat_id": "TEST_MODE",
+  "text": "📌 *New Queue Item*\n\n*Action:* Create Digest Post\n*Classification:* `digest`\n*Risk:* 🟢 LOW\n*Confidence:* 85%\n*Source:* daily_digest\n\n*Reason:* daily_digest_builder: 2 items included\n\n*Suggested text:*\n📌 Dnevni pregled sezonskih poslova — 27.06.2026\n\nOglasi su prikupljeni iz javnih izvora i/ili od članova grupe. Pre odlaska obavezno proverite uslove direktno sa osobom iz oglasa.\n\n🔹 **1. Poslodavac traži**\n   📎 Izvor: javni oglas\n\n👷 **2. Radnik traži posao**\n   📎 Izvor: javni oglas\n\n---\nAko imate s\n\nID: `q_3d8cde355823...`",
+  "parse_mode": "Markdown",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "✅ Approve",
+          "callback_data": "approve:q_3d8cde355823"
+        },
+        {
+          "text": "❌ Reject",
+          "callback_data": "reject:q_3d8cde355823"
+        }
+      ],
+      [
+        {
+          "text": "✏️ Edit",
+          "callback_data": "edit:q_3d8cde355823"
+        },
+        {
+          "text": "❓ Request Info",
+          "callback_data": "needs_info:q_3d8cde355823"
+        }
+      ],
+      [
+        {
+          "text": "⚠️ Escalate",
+          "callback_data": "escalate:q_3d8cde355823"
+        },
+        {
+          "text": "🚫 Spam",
+          "callback_data": "mark_spam:q_3d8cde355823"
+        }
+      ]
+    ]
+  },
+  "test_mode": true,
+  "saved_at": "2026-06-27T07:25:04.060441"
+}

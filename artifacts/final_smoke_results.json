@@ -1,0 +1,38 @@
+{
+  "started_at": "2026-06-27T07:25:04.054439",
+  "phases": {
+    "intake": {
+      "groups": 5,
+      "candidates": 5,
+      "new": 5
+    },
+    "queue": {
+      "items": 5
+    },
+    "operator": {
+      "actions": 5,
+      "approved": 2
+    },
+    "digest": {
+      "included": 2,
+      "excluded": 0,
+      "fallback": false,
+      "forbidden_words": 0,
+      "queue_item_id": "q_3d8cde355823"
+    }
+  },
+  "final_digest": "📌 Dnevni pregled sezonskih poslova — 27.06.2026\n\nOglasi su prikupljeni iz javnih izvora i/ili od članova grupe. Pre odlaska obavezno proverite uslove direktno sa osobom iz oglasa.\n\n🔹 **1. Poslodavac traži**\n   📎 Izvor: javni oglas\n\n👷 **2. Radnik traži posao**\n   📎 Izvor: javni oglas\n\n---\nAko imate svež oglas za sezonski rad, napišite: mesto rada, vrstu posla, zaradu, radno vreme, smeštaj/hranu, datum početka i kontakt.\n\nNapomena: Grupa nije poslodavac i ne garantuje uslove. Pre odlaska obavezno proverite platu, smeštaj, hranu, radno vreme, prevoz i način isplate direktno sa osobom iz oglasa.",
+  "safety": {
+    "facebook_login_executed": false,
+    "facebook_publish_executed": false,
+    "facebook_comment_executed": false,
+    "facebook_message_executed": false,
+    "telegram_test_mode": true,
+    "telegram_real_send_executed": false,
+    "production_accepted": false,
+    "operator_approval_required_for_all": true,
+    "unsafe_excluded": true,
+    "manual_fb_publish": true
+  },
+  "finished_at": "2026-06-27T07:25:04.060441"
+}

@@ -1,0 +1,42 @@
+{
+  "item_id": "q_64e45fc6cdcf",
+  "chat_id": "TEST_MODE",
+  "text": "📰 *New Queue Item*\n\n*Action:* Publish Own Group Post\n*Classification:* `worker_search`\n*Risk:* 🟢 LOW\n*Confidence:* 85%\n*Source:* facebook_public_screenshot\n\n*Reason:* class=worker_search risk=low\n\n*Suggested text:*\nTražim posao u poljoprivredi. Imam iskustvo 3 godine. Okolina Novog Sada. Kontakt 065-111-222.\n\nID: `q_64e45fc6cdcf...`",
+  "parse_mode": "Markdown",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "✅ Approve",
+          "callback_data": "approve:q_64e45fc6cdcf"
+        },
+        {
+          "text": "❌ Reject",
+          "callback_data": "reject:q_64e45fc6cdcf"
+        }
+      ],
+      [
+        {
+          "text": "✏️ Edit",
+          "callback_data": "edit:q_64e45fc6cdcf"
+        },
+        {
+          "text": "❓ Request Info",
+          "callback_data": "needs_info:q_64e45fc6cdcf"
+        }
+      ],
+      [
+        {
+          "text": "⚠️ Escalate",
+          "callback_data": "escalate:q_64e45fc6cdcf"
+        },
+        {
+          "text": "🚫 Spam",
+          "callback_data": "mark_spam:q_64e45fc6cdcf"
+        }
+      ]
+    ]
+  },
+  "test_mode": true,
+  "saved_at": "2026-06-27T07:24:35.858497"
+}

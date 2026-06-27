@@ -1,0 +1,37 @@
+{
+  "task_id": "014",
+  "task_name": "Operator Runbook + Final Production Readiness Smoke",
+  "verdict": "ACCEPTED",
+  "branch": "master",
+  "commit": "bdd6996",
+  "git_clean": true,
+  "runtime_changed": true,
+  "canon_changed": false,
+  "production_accepted": false,
+  "facebook_login_executed": false,
+  "facebook_publish_executed": false,
+  "facebook_comment_executed": false,
+  "facebook_message_executed": false,
+  "telegram_test_mode": true,
+  "telegram_real_send_executed": false,
+  "public_intake_passed": true,
+  "queue_passed": true,
+  "telegram_notification_passed": true,
+  "operator_simulation_passed": true,
+  "digest_builder_passed": true,
+  "final_digest_created": true,
+  "final_digest_requires_approval": true,
+  "unsafe_items_excluded": true,
+  "manual_facebook_publish_required": true,
+  "tests_run": [
+    {"command": "PYTHONIOENCODING=utf-8 PYTHONPATH=backend python -m app.final_smoke --dry-run", "result": "pass", "notes": "Full 6-phase pipeline: intake, classify, queue, Telegram, operator, digest. All OK."}
+  ],
+  "artifacts": [
+    "docs/operator/DAILY_WORKFLOW.md",
+    "docs/audits/task_014_final_smoke/README.md",
+    "docs/audits/task_014_final_smoke/final_smoke_results.json",
+    "docs/audits/task_014_final_smoke/final_digest_text.txt",
+    "docs/audits/task_014_final_smoke/proof.json"
+  ],
+  "blockers": []
+}
