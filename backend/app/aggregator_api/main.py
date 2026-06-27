@@ -40,6 +40,14 @@ try:
 except ImportError:
     pass
 
+# Google Forms bridge (020)
+try:
+    from ..runtime_intake.google_forms_bridge import router as gforms_router
+    app.include_router(gforms_router)
+    logger.info("Google Forms bridge registered (employer-offer, worker-search)")
+except ImportError:
+    pass
+
 # Account worker API (005C)
 try:
     from ..account_worker.worker_api import router as worker_router
