@@ -122,8 +122,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "/drafts — Черновики для FB\n"
         "/spam — Спам-карантин\n"
         "/digest — Собрать дайджест\n"
-        "/postpack — Вечерний пакет публикации\n"
-        "/publish_ready — Безопасные черновики\n\n"
+        "/postpack — Вечерний пакет (копировать и вставить в FB)\n"
+        "/publish_ready — Безопасные черновики\n"
+        "/done <id> — Отметить опубликованным\n"
+        "/skip <id> — Пропустить\n"
+        "/risk <id> — Отметить риск\n\n"
         "Мобильный режим:\n"
         "/today — Что сегодня\n"
         "/evening — Что вечером\n"
@@ -278,6 +281,9 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "/capture — Пост из другой группы\n"
         "/digest_next — Дайджест на завтра\n"
         "/reply <текст> — Сгенерировать ответ\n"
+        "/done <id> — Опубликовано\n"
+        "/skip <id> — Пропустить\n"
+        "/risk <id> — Риск\n"
         "/fb_post <текст> — Захват FB поста\n"
         "/fb_comment <текст> — Захват комментария\n"
         "/addlead <текст> — Быстрый анализ\n"
@@ -755,10 +761,14 @@ async def postpack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     lines.append("━━━━━━━━━━━━━━━━━━━━━")
     lines.append("")
     lines.append("ДЕЙСТВИЕ: Скопируйте текст выше и опубликуйте в FB вручную.")
+    lines.append("После публикации ничего отмечать не нужно.")
     lines.append("Форма для работодателей: https://forms.gle/KovE1kMFxMF7nq8w5")
     lines.append("Форма для работников: https://forms.gle/UvbaekC86m8EE5X87")
     lines.append("")
-    lines.append("После публикации: /queue → Approve → Mark executed")
+    lines.append("Если хотите отметить статус:")
+    lines.append("/done <item_id> — опубликовано (published_manually)")
+    lines.append("/skip <item_id> — пропустить")
+    lines.append("/risk <item_id> — отметить как риск")
     lines.append("")
 
     await update.message.reply_text("\n".join(lines))
@@ -790,6 +800,39 @@ async def publish_ready_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) 
             f"Черновик `{sid}...`\n{text}",
         )
 
+
+# ── Status marking commands ──────────────────────────────────────────────
+
+async def _mark_item_status(update: Update, action: str, new_status: str):
+    """Generic handler for /done, /skip, /risk, /spam."""
+    text = (update.message.text or "").strip()
+    parts = text.split(None, 1)
+    if len(parts) < 2:
+        await update.message.reply_text(f"Использование: /{action} <item_id>")
+        return
+    item_id = parts[1]
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+    pq = get_persistent_queue()
+    item = pq.get(item_id)
+    if not item:
+        await update.message.reply_text(f"❌ Элемент не найден: {item_id[:16]}...")
+        return
+    operator = update.effective_user.username or str(update.effective_chat.id)
+    pq.update_status(item_id, new_status, operator, f"Marked {new_status} from Telegram")
+    await update.message.reply_text(f"✅ Статус изменён: {new_status}")
+
+
+async def done_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+    await _mark_item_status(update, "done", "published_manually")
+
+async def skip_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+    await _mark_item_status(update, "skip", "skipped")
+
+async def risk_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+    await _mark_item_status(update, "risk", "risk_review")
 
 async def fb_help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not _is_operator(update): await _reject_unknown(update, context); return
@@ -1168,6 +1211,9 @@ def start_bot():
     app.add_handler(CommandHandler("postpack", postpack_cmd))
     app.add_handler(CommandHandler("publish_ready", publish_ready_cmd))
     app.add_handler(CommandHandler("fb_help", fb_help_cmd))
+    app.add_handler(CommandHandler("done", done_cmd))
+    app.add_handler(CommandHandler("skip", skip_cmd))
+    app.add_handler(CommandHandler("risk", risk_cmd))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CallbackQueryHandler(handle_callback))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_or_edit))

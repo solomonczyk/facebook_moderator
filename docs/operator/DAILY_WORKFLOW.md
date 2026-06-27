@@ -6,12 +6,10 @@
 
 | Step | Command | What happens |
 |------|---------|-------------|
-| 1. Intake | `python -m app.facebook_public_intake --dry-run` | Discover public groups, extract candidates |
-| 2. Inspect | `python -m app.telegram_bot.demo_operator_flow` | View pending queue items |
-| 3. Notify | Telegram `/queue` command | See items with approve/reject buttons |
-| 4. Decide | Click buttons in Telegram | Approve / Reject / Edit / Escalate |
-| 5. Digest | `python -m app.daily_digest` | Build digest from approved items |
-| 6. Publish | **Manually** copy digest to Facebook group | You post, not the agent |
+| 1. Daily | `/today` | Посмотреть сводку в Telegram |
+| 2. Bundle | `/postpack` | Готовый пакет текстов для FB |
+| 3. Publish | **Manually** copy text to Facebook group | Вы публикуете, не бот |
+| 4. Status | `/done <id>` | Отметить опубликованным (опционально) |
 
 ## What the Agent Does Independently
 
