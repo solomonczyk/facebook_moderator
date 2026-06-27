@@ -114,28 +114,26 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await _reject_unknown(update, context)
         return
     await update.message.reply_text(
-        "🤖 *Sezonski Runtime Agent*\n\n"
+        "🤖 Sezonski Runtime Agent\n\n"
         "Mobile operator bot ready.\n\n"
-        "*Main:*\n"
+        "Main:\n"
         "/status — Health & gates\n"
         "/queue — Pending items\n"
         "/drafts — Publish drafts\n"
         "/spam — Spam quarantine\n"
         "/digest — Daily digest\n\n"
-        "*Mobile:*\n"
+        "Mobile:\n"
         "/today — Daily overview\n"
         "/evening — Evening priority list\n"
         "/links — Employer/worker forms\n"
         "/reply — Smart reply drafter\n"
         "/capture — External group post\n"
         "/digest_next — Tomorrow digest\n\n"
-        "*Manual intake:*\n"
+        "Manual intake:\n"
         "/fb_post — Capture FB post\n"
         "/fb_comment — Capture comment\n"
         "/addlead — Quick lead analysis\n\n"
         "/help — All commands"
-        "/help — This message",
-        parse_mode="Markdown",
     )
 
 
