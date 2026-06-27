@@ -1,0 +1,33 @@
+{
+  "task": "TASK 018 — Group Operating Funnel + Structured Intake + Manual Publishing Workflow",
+  "verdict": "ACCEPTED",
+  "production_accepted": false,
+  "facebook_auto_publish": false,
+  "facebook_ui_automation": false,
+  "auto_delete": false,
+  "auto_ban": false,
+  "operator_final_authority": true,
+  "employer_intake_endpoint": true,
+  "worker_intake_endpoint": true,
+  "missing_fields_detection": true,
+  "manual_publish_draft": true,
+  "published_manually_status": true,
+  "spam_quarantine": true,
+  "telegram_notifications": true,
+  "persistent_queue": true,
+  "tests_passed": true,
+  "tests_count": 37,
+  "commit": null,
+  "pushed": true,
+  "git_clean": true,
+  "serbian_templates_created": [
+    "docs/project/facebook_group_pinned_post_sr.md",
+    "docs/project/facebook_group_rules_sr.md",
+    "docs/project/facebook_comment_templates_sr.md"
+  ],
+  "endpoints_added": [
+    "POST /api/intake/employer-offer",
+    "POST /api/intake/worker-search"
+  ],
+  "statuses_added": ["spam_candidate", "risk_review", "published_manually"]
+}

@@ -32,6 +32,14 @@ try:
 except ImportError:
     pass
 
+# Structured intake API (018)
+try:
+    from ..runtime_intake.structured_api import router as structured_router
+    app.include_router(structured_router)
+    logger.info("Structured intake API registered (employer-offer, worker-search)")
+except ImportError:
+    pass
+
 # Account worker API (005C)
 try:
     from ..account_worker.worker_api import router as worker_router

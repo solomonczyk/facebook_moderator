@@ -1,0 +1,42 @@
+{
+  "item_id": "q_e0d3e9a35584",
+  "chat_id": "TEST_MODE",
+  "text": "⚠️ <b>HIGH RISK ITEM</b> ⚠️\n🔍 <b>New Queue Item</b>\n\n<b>Action:</b> Request Operator Review\n<b>Classification:</b> <code>spam</code>\n<b>Risk:</b> 🔴 HIGH\n<b>Confidence:</b> 85%\n<b>Source:</b> daily_pilot\n\n<b>Reason:</b> Auto spam\n\n<b>Suggested text:</b>\nONLINE KAZINO! 500e bonusa! Brza zarada! www.casino.rs\n\nID: <code>q_e0d3e9a35584...</code>",
+  "parse_mode": "HTML",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "✅ Approve",
+          "callback_data": "approve:q_e0d3e9a35584"
+        },
+        {
+          "text": "❌ Reject",
+          "callback_data": "reject:q_e0d3e9a35584"
+        }
+      ],
+      [
+        {
+          "text": "✏️ Edit",
+          "callback_data": "edit:q_e0d3e9a35584"
+        },
+        {
+          "text": "❓ Request Info",
+          "callback_data": "needs_info:q_e0d3e9a35584"
+        }
+      ],
+      [
+        {
+          "text": "⚠️ Escalate",
+          "callback_data": "escalate:q_e0d3e9a35584"
+        },
+        {
+          "text": "🚫 Spam",
+          "callback_data": "mark_spam:q_e0d3e9a35584"
+        }
+      ]
+    ]
+  },
+  "test_mode": true,
+  "saved_at": "2026-06-27T09:11:23.074254"
+}
