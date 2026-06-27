@@ -1,0 +1,32 @@
+{
+  "task_id": "011",
+  "task_name": "Telegram Operator Approval Flow",
+  "verdict": "ACCEPTED",
+  "branch": "master",
+  "commit": "535abd8",
+  "git_clean": true,
+  "runtime_changed": true,
+  "canon_changed": false,
+  "production_accepted": false,
+  "telegram_test_mode": true,
+  "telegram_real_operator_send_executed": false,
+  "telegram_public_group_send_executed": false,
+  "facebook_publish_executed": false,
+  "facebook_comment_executed": false,
+  "facebook_message_executed": false,
+  "external_side_effects": false,
+  "demo_items_total": 3,
+  "demo_items_passed": 3,
+  "queue_transitions_verified": true,
+  "operator_approval_required_for_publish": true,
+  "secrets_found": false,
+  "blockers": [],
+  "tests_run": [
+    {"command": "PYTHONIOENCODING=utf-8 PYTHONPATH=backend python backend/app/telegram_bot/demo_operator_flow.py", "result": "pass", "notes": "3/3 items: approve, needs_info, escalate. All transitions verified. 3 test payloads saved."}
+  ],
+  "artifacts": [
+    "docs/audits/task_011_telegram_operator_flow/README.md",
+    "docs/audits/task_011_telegram_operator_flow/proof.json",
+    "artifacts/test_telegram_payloads/*.json"
+  ]
+}

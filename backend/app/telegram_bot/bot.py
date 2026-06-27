@@ -17,7 +17,8 @@ logging.getLogger("httpcore").setLevel(logging.WARNING)
 try:
     from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
     from telegram.ext import (
-        Application, CommandHandler, CallbackQueryHandler, ContextTypes,
+        Application, CommandHandler, CallbackQueryHandler, MessageHandler,
+        filters, ContextTypes,
     )
     TELEGRAM_AVAILABLE = True
 except ImportError:
@@ -325,14 +326,80 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         await query.edit_message_text(f"❓ Needs info\nID: `{item_id[:16]}...`", parse_mode="Markdown")
 
     elif action == "edit":
+        # Edit flow: prompt operator to send new text
+        context.user_data["editing_item_id"] = item_id
         await query.edit_message_text(
-            f"✏️ Edit requested for `{item_id[:16]}...`\n"
-            "Use operator console or API to edit the suggested text.",
+            f"✏️ *Edit Mode*\n\n"
+            f"Item: `{item_id[:16]}...`\n"
+            f"Original text:\n```\n{item.suggested_text[:200]}\n```\n\n"
+            f"Reply to this chat with the new text to save the edit.\n"
+            f"After editing, use /queue to approve or reject.",
+            parse_mode="Markdown",
+        )
+
+    elif action == "escalate":
+        # Escalation: flag item for deeper operator review
+        item.mark_needs_info(f"Escalated by operator: {operator}", operator)
+        agent.audit.record("telegram_escalate", f"Item: {item_id}", new_state="needs_info", operator=operator)
+        await query.edit_message_text(
+            f"⚠️ *Escalated for operator review*\n\n"
+            f"ID: `{item_id[:16]}...`\n"
+            f"Action: This item requires manual operator review.\n"
+            f"Check the full context and decide: publish, edit, or reject.",
             parse_mode="Markdown",
         )
 
     else:
         await query.edit_message_text(f"Unknown action: {action}")
+
+
+# ── Edit Text Handler ─────────────────────────────────────────────────────
+
+async def handle_text_for_edit(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Handle text messages that may be edit replies."""
+    if not update.message or not update.message.text:
+        return
+
+    editing_item_id = context.user_data.get("editing_item_id")
+    if not editing_item_id:
+        # Not editing — could be a command; let other handlers process
+        return
+
+    if not _is_operator(update):
+        await update.message.reply_text("Access denied.")
+        return
+
+    agent = _get_agent()
+    if not agent:
+        await update.message.reply_text("Runtime agent not initialized.")
+        return
+
+    item = agent.queue.get(editing_item_id)
+    if not item:
+        await update.message.reply_text(f"Queue item not found: {editing_item_id}")
+        context.user_data.pop("editing_item_id", None)
+        return
+
+    new_text = update.message.text.strip()
+    operator = update.effective_user.username or str(update.effective_chat.id)
+
+    # Save edited text
+    item.edit(new_text, operator)
+    agent.audit.record(
+        "telegram_edit_text",
+        f"Item: {editing_item_id}, new_text_len={len(new_text)}",
+        new_state="edited",
+        operator=operator,
+    )
+    context.user_data.pop("editing_item_id", None)
+
+    await update.message.reply_text(
+        f"✏️ *Edit saved*\n\n"
+        f"Item: `{editing_item_id[:16]}...`\n"
+        f"New text:\n```\n{new_text[:200]}\n```\n\n"
+        f"Use /queue to approve or reject.",
+        parse_mode="Markdown",
+    )
 
 
 # ── Bot Runner ──────────────────────────────────────────────────────────────
@@ -369,6 +436,7 @@ def start_bot():
     app.add_handler(CommandHandler("addlead", addlead_cmd))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CallbackQueryHandler(handle_callback))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_for_edit))
 
     import threading, asyncio
     def run_polling():

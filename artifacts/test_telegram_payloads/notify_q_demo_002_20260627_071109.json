@@ -1,0 +1,42 @@
+{
+  "item_id": "q_demo_002",
+  "chat_id": "TEST_MODE",
+  "text": "📰 *New Queue Item*\n\n*Action:* Publish Own Group Post\n*Classification:* `job_offer`\n*Risk:* 🟡 MEDIUM\n*Confidence:* 65%\n*Source:* facebook_public_screenshot\n\n*Reason:* Incomplete: no pay, no location, no phone.\n\n*Missing:* pay, location, contact\n\n*Suggested text:*\nPotrebni radnici za plastenik. Javite se inbox.\n\nID: `q_demo_002...`",
+  "parse_mode": "Markdown",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "✅ Approve",
+          "callback_data": "approve:q_demo_002"
+        },
+        {
+          "text": "❌ Reject",
+          "callback_data": "reject:q_demo_002"
+        }
+      ],
+      [
+        {
+          "text": "✏️ Edit",
+          "callback_data": "edit:q_demo_002"
+        },
+        {
+          "text": "❓ Request Info",
+          "callback_data": "needs_info:q_demo_002"
+        }
+      ],
+      [
+        {
+          "text": "⚠️ Escalate",
+          "callback_data": "escalate:q_demo_002"
+        },
+        {
+          "text": "🚫 Spam",
+          "callback_data": "mark_spam:q_demo_002"
+        }
+      ]
+    ]
+  },
+  "test_mode": true,
+  "saved_at": "2026-06-27T07:11:09.341635"
+}

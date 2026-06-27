@@ -1,0 +1,42 @@
+{
+  "item_id": "q_demo_003",
+  "chat_id": "TEST_MODE",
+  "text": "⚠️ *HIGH RISK ITEM* ⚠️\n🔍 *New Queue Item*\n\n*Action:* Request Operator Review\n*Classification:* `employer_warning`\n*Risk:* 🔴 HIGH\n*Confidence:* 78%\n*Source:* facebook_manual\n\n*Reason:* Employer warning with serious accusation. Must be escalated.\n\n*Missing:* employer verification, evidence\n\n*Suggested text:*\nČuvajte se poslodavca iz Surčina! Ne isplaćuje dogovorenu dnevnicu!\n\nID: `q_demo_003...`",
+  "parse_mode": "Markdown",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "✅ Approve",
+          "callback_data": "approve:q_demo_003"
+        },
+        {
+          "text": "❌ Reject",
+          "callback_data": "reject:q_demo_003"
+        }
+      ],
+      [
+        {
+          "text": "✏️ Edit",
+          "callback_data": "edit:q_demo_003"
+        },
+        {
+          "text": "❓ Request Info",
+          "callback_data": "needs_info:q_demo_003"
+        }
+      ],
+      [
+        {
+          "text": "⚠️ Escalate",
+          "callback_data": "escalate:q_demo_003"
+        },
+        {
+          "text": "🚫 Spam",
+          "callback_data": "mark_spam:q_demo_003"
+        }
+      ]
+    ]
+  },
+  "test_mode": true,
+  "saved_at": "2026-06-27T07:11:09.342749"
+}

@@ -61,6 +61,14 @@ try:
 except ImportError:
     pass
 
+# Telegram operator API (011)
+try:
+    from ..telegram_bot.api import router as telegram_api_router
+    app.include_router(telegram_api_router)
+    logger.info("Telegram operator API router registered")
+except ImportError:
+    pass
+
 
 @app.on_event("startup")
 def on_startup():
