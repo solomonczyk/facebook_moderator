@@ -9,6 +9,7 @@ import sys, os, json, argparse
 from datetime import datetime
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+from app.env_loader import load_env; load_env()
 os.environ.setdefault("TELEGRAM_TEST_MODE", "true")
 
 

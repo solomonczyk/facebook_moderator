@@ -1,4 +1,6 @@
 {
+  "env_file_found": false,
+  "env_file_path": "not found",
   "bot_token_configured": false,
   "bot_token_masked": "[NOT SET]",
   "operator_chat_id_configured": false,
@@ -7,7 +9,7 @@
   "can_real_send": false,
   "allowed_chat_ids": "(none — operator only)",
   "production_accepted": false,
-  "checked_at": "2026-06-27T07:28:56.472239",
+  "checked_at": "2026-06-27T07:38:22.610981",
   "warnings": [
     "TELEGRAM_BOT_TOKEN not configured — real send impossible",
     "TELEGRAM_OPERATOR_CHAT_ID not configured — real send impossible",

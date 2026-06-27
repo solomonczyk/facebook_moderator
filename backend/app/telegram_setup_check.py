@@ -7,6 +7,9 @@ import sys, os, json
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
+from app.env_loader import load_env, _mask
+load_env()  # Load .env from project root before checking vars
+
 
 def mask(value: str) -> str:
     if not value or len(value) < 8:
@@ -15,12 +18,17 @@ def mask(value: str) -> str:
 
 
 def check() -> dict:
+    from app.env_loader import load_env, _mask
+    env_diag = load_env()
+
     token = os.getenv("TELEGRAM_BOT_TOKEN", "")
     chat_id = os.getenv("TELEGRAM_OPERATOR_CHAT_ID", "")
     test_mode = os.getenv("TELEGRAM_TEST_MODE", "true").lower() == "true"
     allowed = os.getenv("TELEGRAM_ALLOWED_CHAT_IDS", "")
 
     results = {
+        "env_file_found": env_diag["env_file_found"],
+        "env_file_path": env_diag["env_file_path"],
         "bot_token_configured": bool(token and token != "REPLACE_ME"),
         "bot_token_masked": mask(token),
         "operator_chat_id_configured": bool(chat_id and chat_id != "REPLACE_ME"),
@@ -54,6 +62,7 @@ def main():
     print("=" * 55)
 
     r = check()
+    print(f"  .env file:      {'FOUND' if r.get('env_file_found') else 'NOT FOUND'} ({r.get('env_file_path', '?')})")
     print(f"  Bot token:      {r['bot_token_masked']}")
     print(f"  Operator chat:  {r['operator_chat_id_masked']}")
     print(f"  Test mode:      {r['test_mode']}")

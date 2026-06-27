@@ -3,10 +3,18 @@
 Supports test mode: saves notification payloads to disk instead of sending.
 """
 
-import os
+import os, sys
 import json
 import logging
 from datetime import datetime
+
+# Ensure .env is loaded when notifier is imported
+try:
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+    from app.env_loader import load_env
+    load_env()
+except ImportError:
+    pass
 
 logger = logging.getLogger("sezonski.telegram.notifier")
 
