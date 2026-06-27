@@ -2,8 +2,8 @@
   "brain_version": "1.0.0",
   "build": 1,
   "release": "stable",
-  "checksum": "70b318c223fb589630a5df5709a8de30764fa4b249e7760429f962d6d80ec79e",
-  "built_at": "2026-06-26T18:17:03.392140+00:00",
+  "checksum": "9aea699c8126177df02c081e3adefda2e3ed4916ed1e26d575706714fe4ce6e7",
+  "built_at": "2026-06-27T06:07:10.845455+00:00",
   "source_files": [
     "CANON/00_AGENT_CONSTITUTION.md",
     "CANON/01_OPERATOR_CHARTER.md",

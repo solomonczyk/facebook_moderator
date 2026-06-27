@@ -41,10 +41,15 @@
     "no_secrets_in_files": true,
     "forbidden_public_claims_documented": true
   },
+  "system_prompt": {
+    "lines": 1626,
+    "usable_by_llm": true,
+    "built_from_sources": 14
+  },
   "git": {
-    "committed": false,
-    "commit_hash": null,
+    "committed": true,
+    "commit_hash": "f02528a",
     "pushed": false,
-    "working_tree_clean": false
+    "working_tree_clean": true
   }
 }
