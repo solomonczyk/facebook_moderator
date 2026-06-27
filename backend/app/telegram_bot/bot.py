@@ -753,7 +753,12 @@ async def postpack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     if offers:
         for o in offers[:3]:
             oid = o.get("item_id", "")[:12]
-            text = o.get("suggested_text", "") or o.get("raw_json", {}).get("original", "")
+            text = (o.get("suggested_text", "")
+                    or o.get("edited_text", "")
+                    or (o.get("raw_json") or {}).get("original", "")
+                    or (o.get("raw_json") or {}).get("suggested_text", "")
+                    or (o.get("raw_json") or {}).get("text", "")
+                    or "")
             lines.append(f"[ID: {oid}]")
             lines.append(text[:800])
             lines.append("")
@@ -1041,14 +1046,34 @@ async def imagepack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         )
         return
 
-    from ..image_poster import generate_image_post
+    from ..image_poster import generate_image_post, PILLOW_AVAILABLE
+    if not PILLOW_AVAILABLE:
+        await update.message.reply_text("❌ Pillow не установлен на сервере. Картинки недоступны.")
+        return
+
     sent = 0
+    errors = []
     for item in safe[:3]:
-        text = item.get("suggested_text") or item.get("raw_json", {}).get("original", "")
-        if not text:
+        # Collect text from ALL possible fields
+        text = (item.get("suggested_text", "")
+                or item.get("edited_text", "")
+                or (item.get("raw_json") or {}).get("original", "")
+                or (item.get("raw_json") or {}).get("suggested_text", "")
+                or (item.get("raw_json") or {}).get("text", "")
+                or "")
+        text = text.strip()
+        if len(text) < 10:
+            errors.append(f"{item.get('item_id', '?')[:12]}: too short ({len(text)} chars)")
             continue
-        png = generate_image_post(text[:400])
+
+        try:
+            png = generate_image_post(text)
+        except Exception as e:
+            errors.append(f"{item.get('item_id', '?')[:12]}: exception: {e}")
+            continue
+
         if not png:
+            errors.append(f"{item.get('item_id', '?')[:12]}: generator returned None")
             continue
 
         import io
@@ -1061,8 +1086,11 @@ async def imagepack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         )
         sent += 1
 
+    if errors:
+        await update.message.reply_text("\n".join(["❌ Ошибки:"] + errors[:3]))
+
     if sent == 0:
-        await update.message.reply_text("❌ Изображения не созданы. Текст слишком короткий или Pillow недоступен.")
+        await update.message.reply_text("❌ Нет изображений. Текст отсутствует или слишком короткий.")
     else:
         await update.message.reply_text(f"✅ Отправлено {sent} изображений. Опубликуйте в FB вручную.")
 
