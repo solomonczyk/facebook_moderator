@@ -13,10 +13,10 @@ This document is the single source of truth for current project state. A new AI 
 
 ## AI START HERE
 
-**Current goal:** Операторский контур готов. TASK 009–016C завершены. Telegram реальный подключён. Daily pilot работает. Facebook публикация — manual.
+**Current goal:** Операторский контур готов. TASK 009–018 завершены. Structured intake API, persistent queue, Telegram callbacks, daily digest — всё работает. Facebook публикация — manual.
 
 **Current runtime:**
-- Branch: `master`, commit: `0eee5c3`
+- Branch: `master`, commit: `dbb1137`
 - VPS: `/opt/facebook_moderator`. DeepSeek-V4-Pro active.
 - **Telegram REAL:** активен. Токен: `8599****68FQ`. Чат: `5396****6361`.
 - `.env`: `/opt/facebook_moderator/backend/.env` (найден, загружен).
@@ -205,6 +205,7 @@ Full decisions: [PROJECT_CANON/ADR.md](PROJECT_CANON/ADR.md). Summary:
 | 016C | `178838b` | **Real Telegram Pilot Confirmed** ✅ |
 | 017 | `1877742` | Persistent Queue for Telegram Callbacks |
 | 017B | `0eee5c3` | Persist Queue Items at Creation Time ✅ |
+| 018 | `dbb1137` | Group Operating Funnel + Structured Intake ✅ |
 
 Full history: [CHANGELOG.md](CHANGELOG.md)
 
