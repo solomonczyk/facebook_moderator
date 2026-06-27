@@ -1,6 +1,6 @@
 # PROJECT_MEMORY — Canonical Source of Truth
 
-> Last updated: 2026-06-27 10:30 UTC
+> Last updated: 2026-06-27 20:30 UTC
 > Project: Sezonski rad Srbija | Poslovi i iskustva radnika
 
 This document is the single source of truth for current project state. A new AI session begins here.
@@ -13,10 +13,10 @@ This document is the single source of truth for current project state. A new AI 
 
 ## AI START HERE
 
-**Current goal:** Операторский контур готов. TASK 009–018 завершены. Structured intake API, persistent queue, Telegram callbacks, daily digest — всё работает. Facebook публикация — manual.
+**Current goal:** Операторский контур готов. TASK 009–023 завершены. Telegram бот на русском, Google Forms bridge, image-post генерация, pack-публикация. Facebook — manual.
 
 **Current runtime:**
-- Branch: `master`, commit: `dbb1137`
+- Branch: `master`, commit: `82cfd25`
 - VPS: `/opt/facebook_moderator`. DeepSeek-V4-Pro active.
 - **Telegram REAL:** активен. Токен: `8599****68FQ`. Чат: `5396****6361`.
 - `.env`: `/opt/facebook_moderator/backend/.env` (найден, загружен).
@@ -30,9 +30,9 @@ This document is the single source of truth for current project state. A new AI 
 - Runtime API: 0.2.1
 
 **Current priorities:**
-1. Операторский daily workflow: `python3 -m app.daily_pilot --real`
-2. Ручная публикация дайджеста в Facebook группу
-3. TASK 018 — Production readiness / systemd service
+1. Ежедневный вечерний workflow: `/postpack` → скопировать в FB вручную
+2. `/imagepost` — картинки для FB
+3. `/done_pack` — отметить опубликованным
 
 **Current blockers:** Нет.
 
@@ -103,7 +103,7 @@ Facebook Group → Runtime Intake → Runtime Agent → Analyst Agent
 | Field | Value |
 |-------|-------|
 | Current branch | `master` |
-| Current commit | `0eee5c3` |
+| Current commit | `82cfd25` |
 | DeepSeek status | Active (provider: deepseek, model: DeepSeek-V4-Pro) |
 | LLM primary | deepseek |
 | Regex-only mode | false |
@@ -206,6 +206,13 @@ Full decisions: [PROJECT_CANON/ADR.md](PROJECT_CANON/ADR.md). Summary:
 | 017 | `1877742` | Persistent Queue for Telegram Callbacks |
 | 017B | `0eee5c3` | Persist Queue Items at Creation Time ✅ |
 | 018 | `dbb1137` | Group Operating Funnel + Structured Intake ✅ |
+| 019 | `ef5d9ba` | Real Operator Launch Pack ✅ |
+| 020 | `b877da1` | Google Forms Bridge + Mobile Operator Mode ✅ |
+| 021 | `e106158` | E2E + Runtime fixes ✅ |
+| 022 | `8919d4c` | Russian Operator UI + Serbian Texts + Image Posts ✅ |
+| 022B | `ba45d19` | Align Workflow With Real UI ✅ |
+| 022E | `82cfd25` | Real Operator Safety Fix (test exclusion, packs) ✅ |
+| 023 | `5aca410` | Simple Image Posts via Pillow ✅ |
 
 Full history: [CHANGELOG.md](CHANGELOG.md)
 
@@ -242,8 +249,8 @@ See [ROADMAP.md](ROADMAP.md) for full roadmap.
 | Field | Value |
 |-------|-------|
 | Branch | `master` |
-| Latest commit | `0eee5c3` |
-| Latest message | fix: switch Telegram parse_mode from Markdown to HTML |
+| Latest commit | `82cfd25` |
+| Latest message | fix: TASK 022E — Real Operator Safety Fix |
 | Git clean | Yes (except Obsidian workspace config) |
 | Pushed | Yes (GitHub: solomonczyk/facebook_moderator) |
 | Last check | 2026-06-27 10:30 UTC |
@@ -339,9 +346,10 @@ See [PROJECT_CANON/ARCHITECTURE.md](PROJECT_CANON/ARCHITECTURE.md) for diagram.
 
 Last 10 major updates. Full history: [CHANGELOG.md](CHANGELOG.md)
 
-1. **2026-06-27** — TASK 017B: Persist Queue Items at Creation Time ✅ (6 rows in persistent_queue.db)
-2. **2026-06-27** — TASK 017: Persistent Queue for Telegram Callbacks (32 tests, SQLite-backed)
-3. **2026-06-27** — TASK 016C: Real Telegram Pilot Confirmed ✅
+1. **2026-06-27** — TASK 023: Image Posts (Pillow PNG generator) ✅
+2. **2026-06-27** — TASK 022E: Real Operator Safety Fix (test exclusion, pack system) ✅
+3. **2026-06-27** — TASK 022B: Align Workflow With Real UI (/done, /skip, /risk) ✅
+4. **2026-06-27** — TASK 022: Russian Operator UI + Minimal Publishing Pipeline ✅
 3. **2026-06-27** — TASK 016: Real Daily Workflow Pilot (7-step pipeline)
 4. **2026-06-27** — TASK 015: Real Telegram Enablement (setup_check, send_test, queue_test)
 5. **2026-06-27** — TASK 014: Operator Runbook + Final Smoke (DAILY_WORKFLOW.md)
