@@ -13,10 +13,10 @@ This document is the single source of truth for current project state. A new AI 
 
 ## AI START HERE
 
-**Current goal:** Операторский контур готов. TASK 009–024A завершены. Telegram бот на русском, Google Forms bridge, image-post генерация, growth pack, pack-публикация. Facebook — manual.
+**Current goal:** Операторский контур готов. TASK 009–025 завершены. Telegram бот на русском, batch capture, morning digest, image-post, growth pack, pack-публикация. Facebook — manual.
 
 **Current runtime:**
-- Branch: `master`, commit: `ca21f2b`
+- Branch: `master`, commit: `705e854`
 - VPS: `/opt/facebook_moderator`. DeepSeek-V4-Pro active.
 - **Telegram REAL:** активен. Токен: `8599****68FQ`. Чат: `5396****6361`.
 - `.env`: `/opt/facebook_moderator/backend/.env` (найден, загружен).
@@ -30,9 +30,9 @@ This document is the single source of truth for current project state. A new AI 
 - Runtime API: 0.2.1
 
 **Current priorities:**
-1. Ежедневный вечерний workflow: `/postpack` → скопировать в FB вручную
-2. `/imagepost` / `/imagepack` — картинки для FB
-3. `/growthpack` — привлечение участников
+1. Утром: `/capture_batch` — захват объявлений из FB
+2. `/morning_digest` — собрать дайджест
+3. Вечером: `/postpack` → скопировать в FB вручную
 4. `/done_pack` — отметить опубликованным
 
 **Current blockers:** Нет.
@@ -217,6 +217,7 @@ Full decisions: [PROJECT_CANON/ADR.md](PROJECT_CANON/ADR.md). Summary:
 | 023A | `810bffa` | Fix /imagepack Real Draft Input ✅ |
 | 024 | `de57779` | Semi-Automatic Group Growth Pack ✅ |
 | 024A | `42372f4` | Growth commands in /start ✅ |
+| 025 | `705e854` | External FB batch capture + morning digest ✅ |
 
 Full history: [CHANGELOG.md](CHANGELOG.md)
 
@@ -253,7 +254,7 @@ See [ROADMAP.md](ROADMAP.md) for full roadmap.
 | Field | Value |
 |-------|-------|
 | Branch | `master` |
-| Latest commit | `82cfd25` |
+| Latest commit | `705e854` |
 | Latest message | fix: TASK 022E — Real Operator Safety Fix |
 | Git clean | Yes (except Obsidian workspace config) |
 | Pushed | Yes (GitHub: solomonczyk/facebook_moderator) |
@@ -350,10 +351,10 @@ See [PROJECT_CANON/ARCHITECTURE.md](PROJECT_CANON/ARCHITECTURE.md) for diagram.
 
 Last 10 major updates. Full history: [CHANGELOG.md](CHANGELOG.md)
 
-1. **2026-06-27** — TASK 024A: Growth commands in /start ✅
-2. **2026-06-27** — TASK 024: Group Growth Pack (growthpack, admin_pitch, promo_comment) ✅
-3. **2026-06-27** — TASK 023A: Fix /imagepack (5-field text extraction) ✅
-4. **2026-06-27** — TASK 023: Image Posts (Pillow PNG generator) ✅
+1. **2026-06-28** — TASK 025: External FB batch capture + morning digest ✅
+2. **2026-06-27** — TASK 024A: Growth commands in /start ✅
+3. **2026-06-27** — TASK 024: Group Growth Pack ✅
+4. **2026-06-27** — TASK 023A: Fix /imagepack ✅
 3. **2026-06-27** — TASK 016: Real Daily Workflow Pilot (7-step pipeline)
 4. **2026-06-27** — TASK 015: Real Telegram Enablement (setup_check, send_test, queue_test)
 5. **2026-06-27** — TASK 014: Operator Runbook + Final Smoke (DAILY_WORKFLOW.md)
