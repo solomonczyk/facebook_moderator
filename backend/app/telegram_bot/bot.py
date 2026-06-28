@@ -734,6 +734,12 @@ async def postpack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             continue
         offers.append(i)
 
+    # Captured external leads (batch capture items)
+    captured = [i for i in all_items if i["status"] in ("pending", "approved")
+                and i.get("source") == "external_batch_capture"
+                and not _is_test_item(i)
+                and i["status"] not in ("spam_candidate", "spam")]
+
     worker_items = [i for i in all_items if i["status"] in ("pending",)
                     and i.get("classification") == "worker_search"
                     and not _is_test_item(i)]
@@ -771,6 +777,16 @@ async def postpack_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             lines.append("")
     else:
         lines.append("Нет готовых постов на сегодня.")
+        lines.append("")
+
+    # Captured external leads
+    if captured:
+        lines.append(f"📎 Eksterni oglasi ({len(captured)})")
+        for c in captured[:3]:
+            cid = c.get("item_id", "")[:12]
+            text = (c.get("suggested_text", "")
+                    or (c.get("raw_json") or {}).get("original", ""))[:200]
+            lines.append(f"  [ID: {cid}] {text}")
         lines.append("")
 
     # Worker section
@@ -1263,6 +1279,108 @@ async def promo_comment_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         await update.message.reply_text(f"💬 Готовые ответы для комментариев:\n\n{replies}")
 
 
+# ── /capture_batch — messy multi-post text → queue items ────────────────
+
+async def capture_batch_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+    text = (update.message.text or "").removeprefix("/capture_batch").strip()
+    if not text:
+        await update.message.reply_text(
+            "Использование: /capture_batch <скопированный текст из FB>\n\n"
+            "Можно отправлять несколько объявлений сразу. "
+            "Бот разделит, извлечет поля и создаст queue items."
+        )
+        return
+
+    from ..batch_capture import process_batch
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+
+    pq = get_persistent_queue()
+    items = process_batch(text)
+
+    if not items:
+        await update.message.reply_text("❌ Не удалось извлечь объявления из текста.")
+        return
+
+    created = 0
+    for item in items:
+        pq.add(item)
+        # Also try to add to in-memory runtime queue for Telegram notification
+        try:
+            from ..runtime_agent.action_queue import QueueItem, ActionType
+            agent = _get_agent()
+            if agent:
+                atype = ActionType.PUBLISH_OWN_GROUP_POST if item["action_type"] == "publish_own_group_post" else ActionType.REQUEST_OPERATOR_REVIEW
+                qi = QueueItem(item_id=item["item_id"], action_type=atype,
+                              suggested_text=item.get("suggested_text", ""),
+                              reason=item.get("reason", ""), operator_approval_required=True)
+                agent.queue.add(qi)
+        except Exception:
+            pass
+        created += 1
+
+    risk_counts = {}
+    for item in items:
+        r = item.get("risk_level", "?")
+        risk_counts[r] = risk_counts.get(r, 0) + 1
+
+    summary = "\n".join([f"  {risk}: {count}" for risk, count in sorted(risk_counts.items())])
+
+    await update.message.reply_text(
+        f"✅ Создано {created} элементов из {len(items)} объявлений.\n\n"
+        f"Риски:\n{summary}\n\n"
+        f"После публикации отметьте /done_pack или /cancel_pack.\n"
+        f"/morning_digest — собрать дайджест."
+    )
+
+
+# ── /morning_digest — digest from today's captured leads ─────────────────
+
+async def morning_digest_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_operator(update): await _reject_unknown(update, context); return
+
+    from ..runtime_agent.persistent_queue import get_persistent_queue
+    from ..batch_capture import build_morning_digest
+    pq = get_persistent_queue()
+    all_items = pq.get_all()
+
+    # Filter: external batch captures from today
+    today = __import__("datetime").datetime.utcnow().strftime("%Y-%m-%d")
+    captured = [i for i in all_items if i.get("source") == "external_batch_capture"
+                 and today in i.get("created_at", "")]
+
+    if not captured:
+        captured = [i for i in all_items if i.get("source") == "external_batch_capture"]
+
+    if not captured:
+        await update.message.reply_text(
+            "📌 Нет захваченных объявлений.\n"
+            "Используйте /capture_batch для добавления."
+        )
+        return
+
+    digest = build_morning_digest(captured)
+
+    # Save as queue item
+    import uuid
+    item_id = f"q_{uuid.uuid4().hex[:12]}"
+    pq.add({
+        "item_id": item_id, "action_type": "create_digest_post",
+        "status": "pending", "suggested_text": digest,
+        "reason": "morning_digest from external captures",
+        "operator_approval_required": True,
+        "source": "morning_digest",
+        "created_at": __import__("datetime").datetime.utcnow().isoformat(),
+    })
+
+    await update.message.reply_text(
+        f"📌 Jutarnji pregled — {len(captured)} oglasa\n\n"
+        f"{digest[:1500]}"
+        f"\n\n✅ Дайджест сохранён (`{item_id[:12]}...`). "
+        f"Опубликуйте в FB вручную после проверки."
+    )
+
+
 async def fb_help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not _is_operator(update): await _reject_unknown(update, context); return
     await update.message.reply_text(
@@ -1650,6 +1768,8 @@ def start_bot():
     app.add_handler(CommandHandler("growthpack", growthpack_cmd))
     app.add_handler(CommandHandler("admin_pitch", admin_pitch_cmd))
     app.add_handler(CommandHandler("promo_comment", promo_comment_cmd))
+    app.add_handler(CommandHandler("capture_batch", capture_batch_cmd))
+    app.add_handler(CommandHandler("morning_digest", morning_digest_cmd))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CallbackQueryHandler(handle_callback))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_or_edit))
